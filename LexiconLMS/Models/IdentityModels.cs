@@ -19,9 +19,10 @@ namespace LexiconLMS.Models
 
         public string FörNamn { get; set; }
         public string EfterNamn { get; set; }
-        public string Epost { get; set; }
         
-        public virtual int? KursId { get; set; }
+        public int? KursId { get; set; }
+
+        public virtual Kurs Kurs { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -40,6 +41,7 @@ namespace LexiconLMS.Models
         public DbSet<Modul> Moduler { get; set; }
         public DbSet<Aktivitet> Aktiviteter { get; set; }
         public DbSet<AktivitetsTyp> AktivitetsTyper { get; set; }
-        
+
+       
     }
 }

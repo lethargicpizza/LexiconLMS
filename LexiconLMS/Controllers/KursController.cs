@@ -20,6 +20,15 @@ namespace LexiconLMS.Controllers
             return View(db.Kurser.ToList());
         }
 
+        // GET: Klasslista
+        public ActionResult Klasslista()
+        {
+            var user = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            var KursId = user.KursId;
+            IQueryable<ApplicationUser> klasslista = db.Users.Where(k => k.KursId == KursId);
+            return View(klasslista);
+        }
+
         // GET: Kurs/Details/5
         public ActionResult Details(int? id)
         {
