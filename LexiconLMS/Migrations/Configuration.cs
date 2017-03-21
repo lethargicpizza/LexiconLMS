@@ -4,6 +4,8 @@ namespace LexiconLMS.Migrations
     using Microsoft.AspNet.Identity.EntityFramework;
     using Models;
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
@@ -60,15 +62,58 @@ namespace LexiconLMS.Migrations
 
         private static void CreateUsers(ApplicationDbContext context)
         {
+            //Listor med data för att slumpas
+            string[] förnamn = { "Adrian", "Ariel", "Bertil", "Berit", "Kerstin", "Siri",
+                "Angelica", "Olle", "Per", "Johan", "Ullrika", "Oscar", "Christer", "Leif", "Rasmus", "Robin",
+                "Johanna", "Greta", "Jenny"};
+            int numFörnamn = förnamn.Count();
+
+            string[] efternamn = { "Morling", "Nordenbrink", "Siponen", "Andersson", "Johnsson", "Henriksson", "Bergkvist", "Kerstinsdotter",
+                "Ahlqvist", "Bagger", "Backström", "Backlund"};
+            int numEfternamn = efternamn.Count();
+
+            List<Kurs> kurser = context.Kurser.ToList();
+            int numKurser = kurser.Count();
+
             var userStore = new UserStore<ApplicationUser>(context);
             var userManager = new UserManager<ApplicationUser>(userStore);
 
+            //Slumpa användare
             var user = new ApplicationUser();
+            Random random = new Random();
+            var lösenord = "123qwe";
+
+            IdentityResult resultat;
+            for (int i = 0; i < 40; i++)
+            {
+                user.FörNamn = förnamn[random.Next(numFörnamn)];
+                user.EfterNamn = efternamn[random.Next(numEfternamn)];
+                user.Email = $"{user.FörNamn}.{user.EfterNamn}@lms.se";
+                user.UserName = user.Email;
+                user.KursId = kurser[random.Next(numKurser)].Id;
+
+                //Om användaren finns, uppdatera den.
+                if (userManager.FindByName(user.UserName) != null)
+                {
+                    userManager.Update(user);
+                    var hashadLösen = userManager.PasswordHasher.HashPassword(lösenord);
+                    userStore.SetPasswordHashAsync(user, hashadLösen);
+                }
+                else
+                {
+                    resultat = userManager.Create(user, lösenord);
+                    if (!userManager.Create(user, lösenord).Succeeded)
+                    {
+                        throw new Exception(string.Join("\n", resultat.Errors));
+                    }
+                }
+
+            }
+
             user.UserName = "larare@lms.se";
             user.Email = user.UserName;
             user.FörNamn = "Per";
             user.EfterNamn = "Nordenbrink";
-            var lösenord = "123qwe";
 
             IdentityResult result;
             if (userManager.FindByName(user.UserName) != null)

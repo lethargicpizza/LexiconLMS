@@ -270,6 +270,7 @@
     <Content Include="Views\Moduls\Details.cshtml" />
     <Content Include="Views\Moduls\Edit.cshtml" />
     <Content Include="Views\Moduls\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
