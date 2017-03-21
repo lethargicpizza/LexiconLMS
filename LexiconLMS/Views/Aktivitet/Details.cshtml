@@ -1,0 +1,50 @@
+﻿@model LexiconLMS.Models.Aktivitet
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Aktivitet</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AktivitetsTyp.Typ)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AktivitetsTyp.Typ)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartTid)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartTid)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SlutTid)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SlutTid)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

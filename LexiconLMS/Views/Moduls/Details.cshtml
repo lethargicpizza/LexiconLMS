@@ -1,0 +1,58 @@
+﻿@model LexiconLMS.Models.Modul
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Modul</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Kurs.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Kurs.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Beskrivning)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Beskrivning)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDatum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartDatum)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SlutDatum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SlutDatum)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

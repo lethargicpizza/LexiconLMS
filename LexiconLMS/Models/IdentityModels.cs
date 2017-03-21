@@ -16,6 +16,12 @@ namespace LexiconLMS.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public string FörNamn { get; set; }
+        public string EfterNamn { get; set; }
+        public string Epost { get; set; }
+        
+        public virtual int? KursId { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -29,5 +35,11 @@ namespace LexiconLMS.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<Kurs> Kurser { get; set; }
+        public DbSet<Modul> Moduler { get; set; }
+        public DbSet<Aktivitet> Aktiviteter { get; set; }
+        public DbSet<AktivitetsTyp> AktivitetsTyper { get; set; }
+        
     }
 }
