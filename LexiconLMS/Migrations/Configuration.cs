@@ -64,7 +64,7 @@ namespace LexiconLMS.Migrations
             var userManager = new UserManager<ApplicationUser>(userStore);
 
             var user = new ApplicationUser();
-            user.UserName = "lärare@lms.se";
+            user.UserName = "larare@lms.se";
             user.Email = user.UserName;
             user.FörNamn = "Per";
             user.EfterNamn = "Nordenbrink";

@@ -4,16 +4,20 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Schema</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@if (User.IsInRole("Lärare"))
+{
+    <p>
+        @Html.ActionLink("Lägg till Modul", "Create")
+    </p>
+}
+else
+{
+    <br>
+}
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Kurs.Namn)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.Namn)
         </th>
@@ -29,29 +33,37 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Kurs.Namn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Namn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Beskrivning)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartDatum)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SlutDatum)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Namn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Beskrivning)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDatum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SlutDatum)
+            </td>
+
+            @if (User.IsInRole("Lärare"))
+            {
+                <td>
+                    @Html.ActionLink("Ändra", "Edit", new { id = item.Id })|
+                    @Html.ActionLink("Detaljer", "Details", new { id = item.Id })|
+                    @Html.ActionLink("Ta Bort", "Delete", new { id = item.Id })
+                </td>
+            }
+            else
+            {
+                <td>
+                    @Html.ActionLink("Detaljer", "Details", new { id = item.Id })
+                </td>
+            }
+        </tr>
+    }
 
 </table>
