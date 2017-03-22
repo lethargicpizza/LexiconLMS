@@ -12,11 +12,11 @@ namespace LexiconLMS.Models
         public string Namn { get; set; }
         public string Beskrivning { get; set; }
 
-        [Display (Name ="Start Datum")]
+        [Display (Name ="Startdatum")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime StartDatum { get; set; }
 
-        [Display(Name = "Start Datum")]
+        [Display(Name = "Slutdatum")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime SlutDatum { get; set; }
 

@@ -19,6 +19,7 @@ namespace LexiconLMS.Controllers
         public ActionResult Index()
         {
             var moduler = db.Moduler.Include(m => m.Kurs);
+         
             return View(moduler.ToList());
         }
 
@@ -29,11 +30,21 @@ namespace LexiconLMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Modul modul = db.Moduler.Find(id);
+
+            ModulDetaljViewModel modulDetaljViewModel = null;
+
+            modulDetaljViewModel.Modul = modul;
+
+            Aktivitet aktivitet = 
+
+
             if (modul == null)
             {
                 return HttpNotFound();
             }
+
             return View(modul);
         }
 

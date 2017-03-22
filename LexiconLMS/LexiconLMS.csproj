@@ -191,6 +191,7 @@
     <Compile Include="Models\Kurs.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Modul.cs" />
+    <Compile Include="Models\ModulDetaljViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -280,35 +281,6 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201703210931515_FörstaMigration.resx">
-      <DependentUpon>201703210931515_FörstaMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703211238217_FörstaMigrationHotFix.resx">
-      <DependentUpon>201703211238217_FörstaMigrationHotFix.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703211504590_mig.resx">
-      <DependentUpon>201703211504590_mig.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703220739597_mig3.resx">
-      <DependentUpon>201703220739597_mig3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703220756557_mig4.resx">
-      <DependentUpon>201703220756557_mig4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703220800060_mig5.resx">
-      <DependentUpon>201703220800060_mig5.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703220806027_mig6.resx">
-      <DependentUpon>201703220806027_mig6.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703220821362_mig7.resx">
-      <DependentUpon>201703220821362_mig7.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703220823079_mig71.resx">
-      <DependentUpon>201703220823079_mig71.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

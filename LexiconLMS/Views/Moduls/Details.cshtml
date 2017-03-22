@@ -8,7 +8,8 @@
 
 <p><br/><br/></p>
 
-<h3>@Html.DisplayNameFor(model => model.Beskrivning) &nbsp</h3>
+<h3>@Html.DisplayNameFor(model => model.Beskrivning):</h3>
+<i>@Html.DisplayFor(model => model.Beskrivning)</i>
 
 <div>
    
@@ -56,14 +57,14 @@
 @if (User.IsInRole("Lärare"))
 {
     <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Ändra", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Tillbaka", "Index")
     </p>
 }
 else
 {
     <p>
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Tillbaka", "Index")
     </p>
 }
 
