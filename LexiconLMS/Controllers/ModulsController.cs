@@ -10,6 +10,7 @@ using LexiconLMS.Models;
 
 namespace LexiconLMS.Controllers
 {
+    [Authorize]
     public class ModulsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

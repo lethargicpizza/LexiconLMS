@@ -178,13 +178,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201703210931515_FörstaMigration.cs" />
-    <Compile Include="Migrations\201703210931515_FörstaMigration.Designer.cs">
-      <DependentUpon>201703210931515_FörstaMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703211238217_FörstaMigrationHotFix.cs" />
-    <Compile Include="Migrations\201703211238217_FörstaMigrationHotFix.Designer.cs">
-      <DependentUpon>201703211238217_FörstaMigrationHotFix.cs</DependentUpon>
+    <Compile Include="Migrations\201703220854394_FörstaMigration.cs" />
+    <Compile Include="Migrations\201703220854394_FörstaMigration.Designer.cs">
+      <DependentUpon>201703220854394_FörstaMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201703211504590_mig.cs" />
     <Compile Include="Migrations\201703211504590_mig.Designer.cs">
@@ -299,6 +295,7 @@
     <Content Include="Views\Moduls\Details.cshtml" />
     <Content Include="Views\Moduls\Edit.cshtml" />
     <Content Include="Views\Moduls\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <Content Include="Views\Kurs\Klasslista.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -313,11 +310,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201703210931515_FörstaMigration.resx">
-      <DependentUpon>201703210931515_FörstaMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703211238217_FörstaMigrationHotFix.resx">
-      <DependentUpon>201703211238217_FörstaMigrationHotFix.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201703220854394_FörstaMigration.resx">
+      <DependentUpon>201703220854394_FörstaMigration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703211504590_mig.resx">
       <DependentUpon>201703211504590_mig.cs</DependentUpon>
