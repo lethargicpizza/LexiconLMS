@@ -178,41 +178,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201703210931515_FörstaMigration.cs" />
-    <Compile Include="Migrations\201703210931515_FörstaMigration.Designer.cs">
-      <DependentUpon>201703210931515_FörstaMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703211238217_FörstaMigrationHotFix.cs" />
-    <Compile Include="Migrations\201703211238217_FörstaMigrationHotFix.Designer.cs">
-      <DependentUpon>201703211238217_FörstaMigrationHotFix.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703211504590_mig.cs" />
-    <Compile Include="Migrations\201703211504590_mig.Designer.cs">
-      <DependentUpon>201703211504590_mig.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703220739597_mig3.cs" />
-    <Compile Include="Migrations\201703220739597_mig3.Designer.cs">
-      <DependentUpon>201703220739597_mig3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703220756557_mig4.cs" />
-    <Compile Include="Migrations\201703220756557_mig4.Designer.cs">
-      <DependentUpon>201703220756557_mig4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703220800060_mig5.cs" />
-    <Compile Include="Migrations\201703220800060_mig5.Designer.cs">
-      <DependentUpon>201703220800060_mig5.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703220806027_mig6.cs" />
-    <Compile Include="Migrations\201703220806027_mig6.Designer.cs">
-      <DependentUpon>201703220806027_mig6.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703220821362_mig7.cs" />
-    <Compile Include="Migrations\201703220821362_mig7.Designer.cs">
-      <DependentUpon>201703220821362_mig7.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703220823079_mig71.cs" />
-    <Compile Include="Migrations\201703220823079_mig71.Designer.cs">
-      <DependentUpon>201703220823079_mig71.cs</DependentUpon>
+    <Compile Include="Migrations\201703221040520_Leif.cs" />
+    <Compile Include="Migrations\201703221040520_Leif.Designer.cs">
+      <DependentUpon>201703221040520_Leif.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -313,32 +281,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201703210931515_FörstaMigration.resx">
-      <DependentUpon>201703210931515_FörstaMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703211238217_FörstaMigrationHotFix.resx">
-      <DependentUpon>201703211238217_FörstaMigrationHotFix.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703211504590_mig.resx">
-      <DependentUpon>201703211504590_mig.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703220739597_mig3.resx">
-      <DependentUpon>201703220739597_mig3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703220756557_mig4.resx">
-      <DependentUpon>201703220756557_mig4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703220800060_mig5.resx">
-      <DependentUpon>201703220800060_mig5.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703220806027_mig6.resx">
-      <DependentUpon>201703220806027_mig6.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703220821362_mig7.resx">
-      <DependentUpon>201703220821362_mig7.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703220823079_mig71.resx">
-      <DependentUpon>201703220823079_mig71.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201703221040520_Leif.resx">
+      <DependentUpon>201703221040520_Leif.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
