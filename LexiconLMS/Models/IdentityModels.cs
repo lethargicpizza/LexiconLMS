@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using System.Security.Claims;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -17,11 +18,21 @@ namespace LexiconLMS.Models
             return userIdentity;
         }
 
+        [Display(Name ="Förnamn")]
         public string FörNamn { get; set; }
+
+        [Display(Name = "Efternamn")]
         public string EfterNamn { get; set; }
-        public string Epost { get; set; }
-        
-        public virtual int? KursId { get; set; }
+
+        [Display(Name = "Namn")]
+        public string FullNamn { get { return FörNamn + " " + EfterNamn; } }
+
+        [Display(Name ="E-postadress")]
+        public override string Email  { get; set; }
+
+        public int? KursId { get; set; }
+
+        public virtual Kurs Kurs { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -40,6 +51,7 @@ namespace LexiconLMS.Models
         public DbSet<Modul> Moduler { get; set; }
         public DbSet<Aktivitet> Aktiviteter { get; set; }
         public DbSet<AktivitetsTyp> AktivitetsTyper { get; set; }
-        
+
+       
     }
 }
