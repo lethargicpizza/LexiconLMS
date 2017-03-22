@@ -35,11 +35,6 @@ namespace LexiconLMS.Controllers
 
             ModulDetaljViewModel modulDetaljViewModel = null;
 
-            modulDetaljViewModel.Modul = modul;
-
-            Aktivitet aktivitet = 
-
-
             if (modul == null)
             {
                 return HttpNotFound();
