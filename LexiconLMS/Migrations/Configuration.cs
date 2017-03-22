@@ -4,8 +4,11 @@ namespace LexiconLMS.Migrations
     using Microsoft.AspNet.Identity.EntityFramework;
     using Models;
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.Data.Entity.SqlServer;
     using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<LexiconLMS.Models.ApplicationDbContext>
@@ -17,114 +20,86 @@ namespace LexiconLMS.Migrations
 
         protected override void Seed(LexiconLMS.Models.ApplicationDbContext context)
         {
-            CreateRoles(context);
-            CreateUsers(context);
+            var roleStore = new RoleStore<IdentityRole>(context);
+            var roleManager = new RoleManager<IdentityRole>(roleStore);
 
-            //var kurser = new Kurs[]
-            //{
-            //    new Kurs { Namn = ".NET 2015", Beskrivning = "Grundläggande C# inlärning", StartDatum = new DateTime(2015,11,9) },
-            //    new Kurs { Namn = "Java 2015", Beskrivning = "Grundläggande Java", StartDatum = new DateTime(2015,11,9) },
-            //    new Kurs { Namn = ".NET 2016", Beskrivning = "Grundläggande C# inlärning", StartDatum = new DateTime(2016,3,2) },
-            //    new Kurs { Namn = "Java 2016", Beskrivning = "Grundläggande Java", StartDatum = new DateTime(2016,4,10) },
-            //    new Kurs { Namn = "Realtids Projekt", Beskrivning = "Coola realtidsprojekt stuff", StartDatum = new DateTime(2015,9,5) }
-            //};
-            //context.Kurser.AddOrUpdate(kurser);
-
-            //var moduler = new Modul[]
-            //{
-            //    new Modul { Namn = "C#", Beskrivning = "Lär dig C#", StartDatum = new DateTime(2015,9,10), SlutDatum = new DateTime(2015,10,9) },
-            //    new Modul { Namn = "MVC", Beskrivning = "Episka MVC inlärning", StartDatum = new DateTime(2015,10,10), SlutDatum = new DateTime(2015,10,20) },
-            //    new Modul { Namn = "Frontend", Beskrivning = "Lär dig Frontend", StartDatum = new DateTime(2015,10,21), SlutDatum = new DateTime(2015,11,2) },
-            //    new Modul { Namn = "Testning", Beskrivning = "Lär dig Testning med Johan", StartDatum = new DateTime(2015,11,3), SlutDatum = new DateTime(2015,11,10) },
-            //    new Modul { Namn = "Projekt", Beskrivning = "Lär dig Projekt med Adrian", StartDatum = new DateTime(2015,11,11), SlutDatum = new DateTime(2015,11,30) },
-            //};
-            //context.Moduler.AddOrUpdate(moduler);
-
-            //var aktivitetsTyper = new AktivitetsTyp[]
-            //{
-            //    new AktivitetsTyp { Typ = "E-learning" },
-            //    new AktivitetsTyp { Typ = "Föreläsning" },
-            //    new AktivitetsTyp { Typ = "Övning" },
-            //};
-            //context.AktivitetsTyper.AddOrUpdate(aktivitetsTyper);
-
-            //var aktiviteter = new Aktivitet[]
-            //{
-            //    new Aktivitet { Namn = "C# med Scott Alan", StartTid = new DateTime(2015,9,10, 8,30,0), SlutTid = new TimeSpan(12,0,0)},
-            //    new Aktivitet { Namn = "C#", StartTid = new DateTime(2015,9,10, 13,0,0), SlutTid = new TimeSpan(17,0,0)},
-            //    new Aktivitet { Namn = "Garage", StartTid = new DateTime(2015,10,10, 8,30,0), SlutTid = new TimeSpan(12,0,0)},
-            //    new Aktivitet { Namn = "Garage med Adrian", StartTid = new DateTime(2015,10,10, 13,0,0), SlutTid = new TimeSpan(17,0,0)},
-            //};
-            //context.Aktiviteter.AddOrUpdate(aktiviteter);
-        }
-
-        private static void CreateUsers(ApplicationDbContext context)
-        {
             var userStore = new UserStore<ApplicationUser>(context);
             var userManager = new UserManager<ApplicationUser>(userStore);
 
             var user = new ApplicationUser();
-            user.UserName = "larare@lms.se";
-            user.Email = user.UserName;
-            user.FörNamn = "Per";
-            user.EfterNamn = "Nordenbrink";
-            var lösenord = "123qwe";
-
-            IdentityResult result;
-            if (userManager.FindByName(user.UserName) != null)
-            {
-                userManager.Update(user);
-                var hashadLösen = userManager.PasswordHasher.HashPassword(lösenord);
-                userStore.SetPasswordHashAsync(user, hashadLösen);
-            }
-            else
-            {
-                result = userManager.Create(user, lösenord);
-                if (!userManager.Create(user, lösenord).Succeeded)
-                {
-                    throw new Exception(string.Join("\n", result.Errors));
-                }
-            }
-
-            user = new ApplicationUser();
+            string lösenord = "123qwe";
             user.UserName = "elev@lms.se";
-            user.Email = user.UserName;
-            user.FörNamn = "O'Leif";
+            user.Email = "elev@lms.se";
+            user.FörNamn = "Leif";
             user.EfterNamn = "Den Store";
 
-            if (userManager.FindByName(user.UserName) != null)
+            if (userManager.FindByName(user.UserName) == null)
             {
-                userManager.Update(user);
-                var hashedPw = userManager.PasswordHasher.HashPassword(lösenord);
-                userStore.SetPasswordHashAsync(user, hashedPw);
-            }
-
-            else
-            {
-                result = userManager.Create(user, lösenord);
-                if (!userManager.Create(user, lösenord).Succeeded)
+                IdentityResult resultat = userManager.Create(user, lösenord);
+                if (resultat.Succeeded)
                 {
-                    throw new Exception(string.Join("\n", result.Errors));
+                    throw new Exception(string.Join("\n", resultat.Errors));
                 }
             }
 
-            var lärare = userManager.FindByName("larare@lms.se");
-            userManager.AddToRole(lärare.Id, "Lärare");
+            string[] förnamn = { "Adrian", "Bertil", "Conny", "Per", "Ramus", "Olle", "Thomas", "Johan", "Dmitris" };
+            string[] efternamn = { "Ahlberg", "Anderberg", "Ahlin", "Adamsson", "Cederberg", "Bylund", "Classon", "Falk", "Fahlgren" };
 
-            var elev = userManager.FindByName("elev@lms.se");
-        }
+            int numFörnamn = förnamn.Count();
+            int numEfternamn = efternamn.Count();
 
-        private static void CreateRoles(ApplicationDbContext context)
-        {
-            var roleStore = new RoleStore<IdentityRole>(context);
-            var roleManager = new RoleManager<IdentityRole>(roleStore);
+            int numAnvändare = 40;
+            int kursId = 1;
 
-            if (!roleManager.RoleExists("Lärare"))
+            Random random = new Random();
+            for (int i = 0; i < numAnvändare; i++)
             {
-                var role = new IdentityRole();
-                role.Name = "Lärare";
-                roleManager.Create(role);
+                var användare = new ApplicationUser();
+                användare.FörNamn = förnamn[random.Next(numFörnamn)];
+                användare.EfterNamn = efternamn[random.Next(numEfternamn)];
+                användare.Email = $"{user.FörNamn}.{user.EfterNamn}@lms.se";
+                användare.UserName = user.Email;
+                användare.KursId = kursId;
+
+                userManager.Create(användare, lösenord);
             }
+
+            var kurser = new Kurs[]
+            {
+                new Kurs { Namn = ".NET 2015", Beskrivning = "Grundläggande C# inlärning", StartDatum = new DateTime(2015,11,9) },
+                new Kurs { Namn = "Java 2015", Beskrivning = "Grundläggande Java", StartDatum = new DateTime(2015,11,9) },
+                new Kurs { Namn = ".NET 2016", Beskrivning = "Grundläggande C# inlärning", StartDatum = new DateTime(2016,3,2) },
+                new Kurs { Namn = "Java 2016", Beskrivning = "Grundläggande Java", StartDatum = new DateTime(2016,4,10) },
+                new Kurs { Namn = "Realtids Projekt", Beskrivning = "Coola realtidsprojekt stuff", StartDatum = new DateTime(2015,9,5) }
+            };
+            context.Kurser.AddOrUpdate(kurser);
+
+            var moduler = new Modul[]
+            {
+                new Modul { Namn = "C#", Beskrivning = "Lär dig C#", StartDatum = new DateTime(2015,9,10), SlutDatum = new DateTime(2015,10,9) },
+                new Modul { Namn = "MVC", Beskrivning = "Episka MVC inlärning", StartDatum = new DateTime(2015,10,10), SlutDatum = new DateTime(2015,10,20) },
+                new Modul { Namn = "Frontend", Beskrivning = "Lär dig Frontend", StartDatum = new DateTime(2015,10,21), SlutDatum = new DateTime(2015,11,2) },
+                new Modul { Namn = "Testning", Beskrivning = "Lär dig Testning med Johan", StartDatum = new DateTime(2015,11,3), SlutDatum = new DateTime(2015,11,10) },
+                new Modul { Namn = "Projekt", Beskrivning = "Lär dig Projekt med Adrian", StartDatum = new DateTime(2015,11,11), SlutDatum = new DateTime(2015,11,30) },
+            };
+            context.Moduler.AddOrUpdate(moduler);
+
+            var aktivitetsTyper = new AktivitetsTyp[]
+            {
+                new AktivitetsTyp { Typ = "E-learning" },
+                new AktivitetsTyp { Typ = "Föreläsning" },
+                new AktivitetsTyp { Typ = "Övning" },
+             };
+            context.AktivitetsTyper.AddOrUpdate(aktivitetsTyper);
+
+            var aktiviteter = new Aktivitet[]
+            {
+                    new Aktivitet { Namn = "C# med Scott Alan", StartTid = new DateTime(2015,9,10, 8,30,0), SlutTid = new TimeSpan(12,0,0)},
+                    new Aktivitet { Namn = "C#", StartTid = new DateTime(2015,9,10, 13,0,0), SlutTid = new TimeSpan(17,0,0)},
+                    new Aktivitet { Namn = "Garage", StartTid = new DateTime(2015,10,10, 8,30,0), SlutTid = new TimeSpan(12,0,0)},
+                    new Aktivitet { Namn = "Garage med Adrian", StartTid = new DateTime(2015,10,10, 13,0,0), SlutTid = new TimeSpan(17,0,0)},
+            };
+            context.Aktiviteter.AddOrUpdate(aktiviteter);
         }
     }
 }
