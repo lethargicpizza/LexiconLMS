@@ -28,7 +28,7 @@ namespace LexiconLMS.Controllers
             var KursId = user.KursId;
 
             // IQueryable<ApplicationUser> klasslista = db.Users.Where(k => k.KursId == KursId);
-            IQueryable<ApplicationUser> klasslista = from k in db.Users select k;
+            IQueryable<ApplicationUser> klasslista = from k in db.Users where k.KursId == KursId select k;
             klasslista = klasslista.OrderBy(k => k.FörNamn);
 
 
