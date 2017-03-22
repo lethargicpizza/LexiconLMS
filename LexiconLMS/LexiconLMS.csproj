@@ -178,13 +178,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201703210931515_FörstaMigration.cs" />
-    <Compile Include="Migrations\201703210931515_FörstaMigration.Designer.cs">
-      <DependentUpon>201703210931515_FörstaMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703211238217_FörstaMigrationHotFix.cs" />
-    <Compile Include="Migrations\201703211238217_FörstaMigrationHotFix.Designer.cs">
-      <DependentUpon>201703211238217_FörstaMigrationHotFix.cs</DependentUpon>
+    <Compile Include="Migrations\201703220854394_FörstaMigration.cs" />
+    <Compile Include="Migrations\201703220854394_FörstaMigration.Designer.cs">
+      <DependentUpon>201703220854394_FörstaMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -284,11 +280,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201703210931515_FörstaMigration.resx">
-      <DependentUpon>201703210931515_FörstaMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703211238217_FörstaMigrationHotFix.resx">
-      <DependentUpon>201703211238217_FörstaMigrationHotFix.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201703220854394_FörstaMigration.resx">
+      <DependentUpon>201703220854394_FörstaMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

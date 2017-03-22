@@ -8,6 +8,7 @@ namespace LexiconLMS.Migrations
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.Data.Entity.SqlServer;
     using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<LexiconLMS.Models.ApplicationDbContext>
@@ -19,8 +20,49 @@ namespace LexiconLMS.Migrations
 
         protected override void Seed(LexiconLMS.Models.ApplicationDbContext context)
         {
-            CreateRoles(context);
-            CreateUsers(context);
+            var roleStore = new RoleStore<IdentityRole>(context);
+            var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+            var userStore = new UserStore<ApplicationUser>(context);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+
+            var user = new ApplicationUser();
+            string lösenord = "123qwe";
+            user.UserName = "elev@lms.se";
+            user.Email = "elev@lms.se";
+            user.FörNamn = "Leif";
+            user.EfterNamn = "Den Store";
+
+            if (userManager.FindByName(user.UserName) == null)
+            {
+                IdentityResult resultat = userManager.Create(user, lösenord);
+                if (resultat.Succeeded)
+                {
+                    throw new Exception(string.Join("\n", resultat.Errors));
+                }
+            }
+
+            string[] förnamn = { "Adrian", "Bertil", "Conny", "Per", "Ramus", "Olle", "Thomas", "Johan", "Dmitris" };
+            string[] efternamn = { "Ahlberg", "Anderberg", "Ahlin", "Adamsson", "Cederberg", "Bylund", "Classon", "Falk", "Fahlgren" };
+
+            int numFörnamn = förnamn.Count();
+            int numEfternamn = efternamn.Count();
+
+            int numAnvändare = 40;
+            int kursId = 1;
+
+            Random random = new Random();
+            for (int i = 0; i < numAnvändare; i++)
+            {
+                var användare = new ApplicationUser();
+                användare.FörNamn = förnamn[random.Next(numFörnamn)];
+                användare.EfterNamn = efternamn[random.Next(numEfternamn)];
+                användare.Email = $"{user.FörNamn}.{user.EfterNamn}@lms.se";
+                användare.UserName = user.Email;
+                användare.KursId = kursId;
+
+                userManager.Create(användare, lösenord);
+            }
 
             var kurser = new Kurs[]
             {
@@ -47,129 +89,17 @@ namespace LexiconLMS.Migrations
                 new AktivitetsTyp { Typ = "E-learning" },
                 new AktivitetsTyp { Typ = "Föreläsning" },
                 new AktivitetsTyp { Typ = "Övning" },
-            };
+             };
             context.AktivitetsTyper.AddOrUpdate(aktivitetsTyper);
 
             var aktiviteter = new Aktivitet[]
             {
-                new Aktivitet { Namn = "C# med Scott Alan", StartTid = new DateTime(2015,9,10, 8,30,0), SlutTid = new TimeSpan(12,0,0)},
-                new Aktivitet { Namn = "C#", StartTid = new DateTime(2015,9,10, 13,0,0), SlutTid = new TimeSpan(17,0,0)},
-                new Aktivitet { Namn = "Garage", StartTid = new DateTime(2015,10,10, 8,30,0), SlutTid = new TimeSpan(12,0,0)},
-                new Aktivitet { Namn = "Garage med Adrian", StartTid = new DateTime(2015,10,10, 13,0,0), SlutTid = new TimeSpan(17,0,0)},
+                    new Aktivitet { Namn = "C# med Scott Alan", StartTid = new DateTime(2015,9,10, 8,30,0), SlutTid = new TimeSpan(12,0,0)},
+                    new Aktivitet { Namn = "C#", StartTid = new DateTime(2015,9,10, 13,0,0), SlutTid = new TimeSpan(17,0,0)},
+                    new Aktivitet { Namn = "Garage", StartTid = new DateTime(2015,10,10, 8,30,0), SlutTid = new TimeSpan(12,0,0)},
+                    new Aktivitet { Namn = "Garage med Adrian", StartTid = new DateTime(2015,10,10, 13,0,0), SlutTid = new TimeSpan(17,0,0)},
             };
             context.Aktiviteter.AddOrUpdate(aktiviteter);
-        }
-
-        private static void CreateUsers(ApplicationDbContext context)
-        {
-            //Listor med data för att slumpas
-            string[] förnamn = { "Adrian", "Ariel", "Bertil", "Berit", "Kerstin", "Siri",
-                "Angelica", "Olle", "Per", "Johan", "Ullrika", "Oscar", "Christer", "Leif", "Rasmus", "Robin",
-                "Johanna", "Greta", "Jenny"};
-            int numFörnamn = förnamn.Count();
-
-            string[] efternamn = { "Morling", "Nordenbrink", "Siponen", "Andersson", "Johnsson", "Henriksson", "Bergkvist", "Kerstinsdotter",
-                "Ahlqvist", "Bagger", "Backström", "Backlund"};
-            int numEfternamn = efternamn.Count();
-
-            List<Kurs> kurser = context.Kurser.ToList();
-            int numKurser = kurser.Count();
-
-            var userStore = new UserStore<ApplicationUser>(context);
-            var userManager = new UserManager<ApplicationUser>(userStore);
-
-            //Slumpa användare
-            var user = new ApplicationUser();
-            Random random = new Random();
-            var lösenord = "123qwe";
-
-            IdentityResult resultat;
-            for (int i = 0; i < 40; i++)
-            {
-                user.FörNamn = förnamn[random.Next(numFörnamn)];
-                user.EfterNamn = efternamn[random.Next(numEfternamn)];
-                user.Email = $"{user.FörNamn}.{user.EfterNamn}@lms.se";
-                user.UserName = user.Email;
-                user.KursId = kurser[random.Next(numKurser)].Id;
-
-                //Om användaren finns, uppdatera den.
-                if (userManager.FindByName(user.UserName) != null)
-                {
-                    userManager.Update(user);
-                    var hashadLösen = userManager.PasswordHasher.HashPassword(lösenord);
-                    userStore.SetPasswordHashAsync(user, hashadLösen);
-                }
-                else
-                {
-                    resultat = userManager.Create(user, lösenord);
-                    if (!userManager.Create(user, lösenord).Succeeded)
-                    {
-                        throw new Exception(string.Join("\n", resultat.Errors));
-                    }
-                }
-
-            }
-
-            user.UserName = "larare@lms.se";
-            user.Email = user.UserName;
-            user.FörNamn = "Per";
-            user.EfterNamn = "Nordenbrink";
-
-            IdentityResult result;
-            if (userManager.FindByName(user.UserName) != null)
-            {
-                userManager.Update(user);
-                var hashadLösen = userManager.PasswordHasher.HashPassword(lösenord);
-                userStore.SetPasswordHashAsync(user, hashadLösen);
-            }
-            else
-            {
-                result = userManager.Create(user, lösenord);
-                if (!userManager.Create(user, lösenord).Succeeded)
-                {
-                    throw new Exception(string.Join("\n", result.Errors));
-                }
-            }
-
-            user = new ApplicationUser();
-            user.UserName = "elev@lms.se";
-            user.Email = user.UserName;
-            user.FörNamn = "O'Leif";
-            user.EfterNamn = "Den Store";
-
-            if (userManager.FindByName(user.UserName) != null)
-            {
-                userManager.Update(user);
-                var hashedPw = userManager.PasswordHasher.HashPassword(lösenord);
-                userStore.SetPasswordHashAsync(user, hashedPw);
-            }
-
-            else
-            {
-                result = userManager.Create(user, lösenord);
-                if (!userManager.Create(user, lösenord).Succeeded)
-                {
-                    throw new Exception(string.Join("\n", result.Errors));
-                }
-            }
-
-            var lärare = userManager.FindByName("larare@lms.se");
-            userManager.AddToRole(lärare.Id, "Lärare");
-
-            var elev = userManager.FindByName("elev@lms.se");
-        }
-
-        private static void CreateRoles(ApplicationDbContext context)
-        {
-            var roleStore = new RoleStore<IdentityRole>(context);
-            var roleManager = new RoleManager<IdentityRole>(roleStore);
-
-            if (!roleManager.RoleExists("Lärare"))
-            {
-                var role = new IdentityRole();
-                role.Name = "Lärare";
-                roleManager.Create(role);
-            }
         }
     }
 }
