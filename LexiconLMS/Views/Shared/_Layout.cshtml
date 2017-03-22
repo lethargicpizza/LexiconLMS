@@ -17,13 +17,33 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("PLC Skola", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
+                @{
+                    if (User.IsInRole("Lärare"))
+                    {
+                        @Html.ActionLink("PLC Skola", "LärareIndex", "Skol", new { area = "" }, new { @class = "navbar-brand" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("PLC Skola", "ElevIndex", "Skol", new { area = "" }, new { @class = "navbar-brand" })
+                    }
+                }
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Hem", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Schema","Index","Moduls")</li>
-                    <li>@Html.ActionLink("Klasslista", "Klasslista", "Kurs")</li>
+
+                    @{
+                        if (User.IsInRole("Lärare"))
+                        {
+                            <li>@Html.ActionLink("Hem", "LärareIndex", "Skol")</li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink("Hem", "ElevIndex", "Skol")</li>
+                            <li>@Html.ActionLink("Schema", "Index", "Moduls")</li>
+                            <li>@Html.ActionLink("Klasslista", "Klasslista", "Kurs")</li>
+                        }
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

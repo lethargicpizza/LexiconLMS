@@ -18,6 +18,6 @@ namespace LexiconLMS.Models
         public int? AktivitetsTypId { get; set; }
         public virtual AktivitetsTyp AktivitetsTyp { get; set; }
 
-
+        public virtual Modul Modul { get; set; }
     }
 }
