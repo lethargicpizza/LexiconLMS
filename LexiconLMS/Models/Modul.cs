@@ -22,5 +22,7 @@ namespace LexiconLMS.Models
 
         public int? KursId { get; set; }
         public virtual Kurs Kurs { get; set; }
+
+        public virtual ICollection<Aktivitet> Aktiviteter { get; set; }
     }
 }

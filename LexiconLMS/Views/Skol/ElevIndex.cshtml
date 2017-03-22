@@ -1,0 +1,24 @@
+﻿@model LexiconLMS.Models.ElevIndexViewModel
+
+@{
+    ViewBag.Title = "ElevIndex";
+}
+
+<h2>Välkommen hem från Mallorca, @Model.Användarnamn</h2>
+
+@if (Model.PågåendeModul != null)
+{
+    <h3>Pågående Modul: @Model.PågåendeModul.Namn</h3>
+    <p>@Model.PågåendeModul.StartDatum - @Model.PågåendeModul.SlutDatum</p>
+    <p>Beskrivning: @Model.PågåendeModul.Beskrivning</p>
+
+    <h3>Veckans aktiviteter</h3>
+    foreach (var item in Model.VeckansAktiviteter)
+    {
+        <p>@item.StartTid.Date, @item.StartTid.DayOfWeek</p>
+    }
+}
+else
+{
+    <h3>Ingen pågående modul</h3>
+}
