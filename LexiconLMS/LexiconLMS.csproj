@@ -174,6 +174,7 @@
     <Compile Include="Controllers\KursController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ModulsController.cs" />
+    <Compile Include="Controllers\SkolController.cs" />
     <Compile Include="fonts\ModulController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -182,6 +183,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Aktivitet.cs" />
     <Compile Include="Models\AktivitetsTyp.cs" />
+    <Compile Include="Models\ElevIndexViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Klasslista.cs" />
     <Compile Include="Models\Kurs.cs" />
@@ -265,6 +267,7 @@
     <Content Include="Views\Moduls\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <Content Include="Views\Kurs\Klasslista.cshtml" />
+    <Content Include="Views\Skol\ElevIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
