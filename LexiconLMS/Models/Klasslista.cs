@@ -8,14 +8,14 @@ namespace LexiconLMS.Models
 {
     public class Klasslista
     {
-        //[Display(Name = "Förnamn")]
-        //public string FörNamn { get; set; }
+        //[Display(Name = "Förnamn", Order =1)]
+        public string FörNamn { get; set; }
 
-        //[Display(Name = "Efternamn")]
-        //public string EfterNamn { get; set; }
+        //[Display(Name = "Efternamn", Order=0)]
+        public string EfterNamn { get; set; }
 
-        [Display(Name = "Namn")]
-        public string FullNamn { get; set; }
+        //[Display(Name = "Namn", Order = -9)]
+        //public string FullNamn { get; set; }
 
         [Display(Name ="E-postadress")]
         public string Email { get; set; }
