@@ -18,8 +18,13 @@ namespace LexiconLMS.Controllers
         // GET: Moduls
         public ActionResult Index()
         {
+
+            var user = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            var KursId = user.KursId;
+
             var moduler = db.Moduler.Include(m => m.Kurs);
-         
+
+          
             return View(moduler.ToList());
         }
 
@@ -32,6 +37,8 @@ namespace LexiconLMS.Controllers
             }
 
             Modul modul = db.Moduler.Find(id);
+
+            
 
             ModulDetaljViewModel modulDetaljViewModel = null;
 

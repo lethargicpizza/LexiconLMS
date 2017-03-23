@@ -9,6 +9,7 @@ namespace LexiconLMS.Models
     public class Modul
     {
         public int Id { get; set; }
+        [Display(Name = "Modul")]
         public string Namn { get; set; }
         public string Beskrivning { get; set; }
 
