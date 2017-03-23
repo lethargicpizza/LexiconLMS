@@ -95,6 +95,7 @@ namespace LexiconLMS.Migrations
             användare.Email = "elev@lms.se";
             användare.FörNamn = "Leif";
             användare.EfterNamn = "Den Store";
+            användare.KursId = 1;
 
             if (userManager.FindByName(användare.UserName) == null)
             {
