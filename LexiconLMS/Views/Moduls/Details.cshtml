@@ -1,73 +1,47 @@
-﻿@model LexiconLMS.Models.Modul
+﻿@using System.Globalization;
+@model IEnumerable<LexiconLMS.Models.Aktivitet>
 
 @{
     ViewBag.Title = "Details";
+
 }
+<h2>Kurs: @Model.First().Modul.Kurs.Namn</h2>
+<h2>Modul: @Model.First().Modul.Namn &nbsp &nbsp @Model.First().Modul.StartDatum.ToShortDateString() &nbsp -- &nbsp @Model.First().Modul.SlutDatum.ToShortDateString()</h2>
 
-<h2>Modul: @Html.DisplayFor(model => model.Namn) &nbsp &nbsp @Html.DisplayFor(model => model.StartDatum) &nbsp -- &nbsp @Html.DisplayFor(model => model.SlutDatum)</h2>
+<p><br /></p>
 
-<p><br/><br/></p>
+<h3>Beskrivning:</h3>
 
-<h3>@Html.DisplayNameFor(model => model.Beskrivning):</h3>
-<i>@Html.DisplayFor(model => model.Beskrivning)</i>
 
-<p><br /><br /></p>
+<i>@Model.First().Modul.Beskrivning</i>
+
+<p><br /></p>
 
 <h3>Aktiviteter</h3>
 
-@for(int i = 1; i < 5; i++)
-{
-    <p>Aktivitet</p>
+@{
+    var culture = new CultureInfo("sv-SE");
+
+    int dag = 0;
+
+    foreach (var aktivitet in Model)
+    {
+        if (dag != @aktivitet.StartTid.Day)
+        {
+            string strDag = culture.DateTimeFormat.GetDayName(aktivitet.StartTid.DayOfWeek);
+            <h4>@culture.TextInfo.ToTitleCase(strDag) @aktivitet.StartTid.Date.ToString("M", culture)</h4>
+        }
+
+        <p>@aktivitet.StartTid.TimeOfDay - @aktivitet.SlutTid, @aktivitet.AktivitetsTyp.Typ @aktivitet.Namn</p>
+        dag = @aktivitet.StartTid.Day;
+    }
+
 }
 
-
-<div>
-   
-    <dl class="dl-horizontal">
-
-        <dd>
-           @Html.DisplayFor(model => model.Kurs.Namn)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Namn)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Namn)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Beskrivning)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Beskrivning)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDatum)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.StartDatum)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SlutDatum)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SlutDatum)
-        </dd>
-
-    </dl>
-</div>
-
 @if (User.IsInRole("Lärare"))
-{
+            {
     <p>
-        @Html.ActionLink("Ändra", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Ändra", "Edit", new { id = ViewBag.Model.Id }) |
         @Html.ActionLink("Tillbaka", "Index")
     </p>
 }
@@ -77,4 +51,3 @@ else
         @Html.ActionLink("Tillbaka", "Index")
     </p>
 }
-

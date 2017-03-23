@@ -10,6 +10,7 @@ using LexiconLMS.Models;
 
 namespace LexiconLMS.Controllers
 {
+    
     [Authorize]
     public class ModulsController : Controller
     {
@@ -46,16 +47,14 @@ namespace LexiconLMS.Controllers
 
             Modul modul = db.Moduler.Find(id);
 
-            
-
-            ModulDetaljViewModel modulDetaljViewModel = null;
-
             if (modul == null)
             {
                 return HttpNotFound();
             }
-
-            return View(modul);
+            
+            var aktiviteter = db.Aktiviteter.Where(m => m.Modul.Id == id).OrderBy(k => k.StartTid);
+          
+            return View(aktiviteter.ToList());
         }
 
         // GET: Moduls/Create
