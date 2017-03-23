@@ -4,7 +4,10 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Schema för: @ViewBag.AktuellKurs</h2>
+@if (Model != null)
+{
+    <h2>Schema för: @ViewBag.AktuellKurs</h2>
+}
 
 @if (User.IsInRole("Lärare"))
 {
@@ -17,8 +20,8 @@ else
     <br>
 }
 
-
-
+@if (Model != null)
+{ 
 <table class="table">
     <tr>
         <th>
@@ -62,5 +65,9 @@ else
             }
         </tr>
     }
-
 </table>
+}
+else
+{
+    <p>Du läser för närvarande ingen kurs!</p>
+}

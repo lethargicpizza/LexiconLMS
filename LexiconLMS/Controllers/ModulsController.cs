@@ -21,13 +21,19 @@ namespace LexiconLMS.Controllers
 
             var user = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
             var KursId = user.KursId;
-            ViewBag.AktuellKurs = user.Kurs.Beskrivning;
 
-            //var moduler = db.Moduler.Include(m => m.Kurs);
-            var moduler = db.Moduler.Where(k => k.KursId == KursId).OrderBy(k => k.StartDatum);
-           
+            if (user.Kurs != null)
+            {
+                ViewBag.AktuellKurs = user.Kurs.Beskrivning;
 
-            return View(moduler.ToList());
+                //var moduler = db.Moduler.Include(m => m.Kurs);
+                var moduler = db.Moduler.Where(k => k.KursId == KursId).OrderBy(k => k.StartDatum);
+
+
+                return View(moduler.ToList());
+            }
+
+            return View();
         }
 
         // GET: Moduls/Details/5
