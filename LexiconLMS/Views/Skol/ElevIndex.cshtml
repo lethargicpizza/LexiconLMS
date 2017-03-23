@@ -10,50 +10,41 @@
     {
         var culture = new CultureInfo("sv-SE");
 
-        <h3>@Model.PågåendeKurs.Namn</h3>
-        <p>@Model.PågåendeKurs.Beskrivning</p>
-
-        <h3>Pågående modul @Model.PågåendeModul.Namn</h3>
-        
-        <p>@Model.PågåendeModul.StartDatum till @Model.PågåendeModul.SlutDatum</p>
-        <p>@Model.PågåendeModul.Beskrivning</p>
-
-        <h3>Veckans schema: </h3>
-        int dag = 0;
-        
-        foreach (var aktivitet in Model.VeckansAktiviteter)
+        if (@Model.PågåendeKurs != null)
         {
-            if(dag != @aktivitet.StartTid.Day)
+            <h3>@Model.PågåendeKurs.Namn</h3>
+            <p>@Model.PågåendeKurs.Beskrivning</p>
+        }
+
+        if (@Model.PågåendeModul != null)
+        {
+            <h3>Pågående modul @Model.PågåendeModul.Namn</h3>
+
+            <p>@Model.PågåendeModul.StartDatum.ToString("yyyy-MM-dd") till @Model.PågåendeModul.SlutDatum.ToString("yyyy-MM-dd")</p>
+            <p>@Model.PågåendeModul.Beskrivning</p>
+        }
+
+        if (@Model.VeckansAktiviteter != null)
+        {
+            <h3>Kommande aktiviteter </h3>
+            int dag = 0;
+
+            foreach (var aktivitet in Model.VeckansAktiviteter)
             {
-                string strDag = culture.DateTimeFormat.GetDayName(aktivitet.StartTid.DayOfWeek);
-                <h4>@culture.TextInfo.ToTitleCase(strDag) @aktivitet.StartTid.Date.ToString("M", culture)</h4>
+                if (@aktivitet.StartTid.DayOfWeek != DayOfWeek.Saturday && aktivitet.StartTid.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    if (dag != @aktivitet.StartTid.Day)
+                    {
+                        string strDag = culture.DateTimeFormat.GetDayName(aktivitet.StartTid.DayOfWeek);
+                        string visaDagNamn = culture.TextInfo.ToTitleCase(strDag);
+                        string visaTextadDatum = aktivitet.StartTid.ToString("M", culture);
+                        <h4>@visaDagNamn @visaTextadDatum</h4>
+                    }
+
+                        <p>@aktivitet.StartTid.TimeOfDay.ToString(@"hh\:mm") - @aktivitet.SlutTid.ToString(@"hh\:mm") @aktivitet.AktivitetsTyp.Typ @aktivitet.Namn</p>
+                        dag = @aktivitet.StartTid.Day;
+                }
             }
-            
-            <p>@aktivitet.StartTid.TimeOfDay - @aktivitet.SlutTid, @aktivitet.AktivitetsTyp.Typ @aktivitet.Namn</p>
-            dag = @aktivitet.StartTid.Day;
         }
     }
-    else
-    {
-        <p>Ingen pågående modul</p>
-    }
 }
-
-@*
-@if (Model.PågåendeModul != null)
-{
-    <h3>Pågående Modul: @Model.PågåendeModul.Namn</h3>
-    <p>@Model.PågåendeModul.StartDatum - @Model.PågåendeModul.SlutDatum</p>
-    <p>Beskrivning: @Model.PågåendeModul.Beskrivning</p>
-
-    <h3>Veckans aktiviteter</h3>
-    foreach (var item in Model.VeckansAktiviteter)
-    {
-        <p>@item.StartTid.Date, @item.StartTid.DayOfWeek</p>
-    }
-}
-else
-{
-    <h3>Ingen pågående modul</h3>
-}
-*@
