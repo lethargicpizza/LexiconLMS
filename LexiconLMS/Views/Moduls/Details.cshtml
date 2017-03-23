@@ -1,66 +1,53 @@
-﻿@model IEnumerable<LexiconLMS.Models.Aktivitet>
+﻿@using System.Globalization;
+@model IEnumerable<LexiconLMS.Models.Aktivitet>
 
 @{
     ViewBag.Title = "Details";
-    
+
 }
 <h2>Kurs: @Model.First().Modul.Kurs.Namn</h2>
 <h2>Modul: @Model.First().Modul.Namn &nbsp &nbsp @Model.First().Modul.StartDatum.ToShortDateString() &nbsp -- &nbsp @Model.First().Modul.SlutDatum.ToShortDateString()</h2>
 
-<p><br/><br/></p>
+<p><br /></p>
 
 <h3>Beskrivning:</h3>
 
 
 <i>@Model.First().Modul.Beskrivning</i>
 
-<p><br /><br /></p>
+<p><br /></p>
 
 <h3>Aktiviteter</h3>
 
-<table class="table">
+@{
+    var culture = new CultureInfo("sv-SE");
 
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Namn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StartTid)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SlutTid)
-        </th>
-        <th></th>
-    </tr>
+    int dag = 0;
 
-    @foreach (var a in Model)
+    foreach (var aktivitet in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => a.Namn)
-            </td>
-            <td>
-                @Html.DisplayFor(model => a.StartTid)
-            </td>
-            <td>
-                @Html.DisplayFor(model => a.SlutTid)
-            </td>
-        </tr>
+        if (dag != @aktivitet.StartTid.Day)
+        {
+            string strDag = culture.DateTimeFormat.GetDayName(aktivitet.StartTid.DayOfWeek);
+            <h4>@culture.TextInfo.ToTitleCase(strDag) @aktivitet.StartTid.Date.ToString("M", culture)</h4>
+        }
+
+        <p>@aktivitet.StartTid.TimeOfDay - @aktivitet.SlutTid, @aktivitet.AktivitetsTyp.Typ @aktivitet.Namn</p>
+        dag = @aktivitet.StartTid.Day;
     }
 
-</table>
+}
 
-    @if (User.IsInRole("Lärare"))
-    {
-        <p>
-            @Html.ActionLink("Ändra", "Edit", new { id = ViewBag.Model.Id }) |
-            @Html.ActionLink("Tillbaka", "Index")
-        </p>
-    }
-    else
-    {
-        <p>
-            @Html.ActionLink("Tillbaka", "Index")
-        </p>
-    }
-
+@if (User.IsInRole("Lärare"))
+            {
+    <p>
+        @Html.ActionLink("Ändra", "Edit", new { id = ViewBag.Model.Id }) |
+        @Html.ActionLink("Tillbaka", "Index")
+    </p>
+}
+else
+{
+    <p>
+        @Html.ActionLink("Tillbaka", "Index")
+    </p>
+}

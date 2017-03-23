@@ -3,7 +3,7 @@ namespace LexiconLMS.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class FörstaMig : DbMigration
+    public partial class LeifMig : DbMigration
     {
         public override void Up()
         {
@@ -16,13 +16,13 @@ namespace LexiconLMS.Migrations
                         StartTid = c.DateTime(nullable: false),
                         SlutTid = c.Time(nullable: false, precision: 7),
                         AktivitetsTypId = c.Int(),
-                        Modul_Id = c.Int(),
+                        ModulId = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AktivitetsTyps", t => t.AktivitetsTypId)
-                .ForeignKey("dbo.Moduls", t => t.Modul_Id)
+                .ForeignKey("dbo.Moduls", t => t.ModulId)
                 .Index(t => t.AktivitetsTypId)
-                .Index(t => t.Modul_Id);
+                .Index(t => t.ModulId);
             
             CreateTable(
                 "dbo.AktivitetsTyps",
@@ -142,7 +142,7 @@ namespace LexiconLMS.Migrations
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUsers", "KursId", "dbo.Kurs");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.Aktivitets", "Modul_Id", "dbo.Moduls");
+            DropForeignKey("dbo.Aktivitets", "ModulId", "dbo.Moduls");
             DropForeignKey("dbo.Aktivitets", "AktivitetsTypId", "dbo.AktivitetsTyps");
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
@@ -152,7 +152,7 @@ namespace LexiconLMS.Migrations
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.AspNetUsers", new[] { "KursId" });
             DropIndex("dbo.Moduls", new[] { "KursId" });
-            DropIndex("dbo.Aktivitets", new[] { "Modul_Id" });
+            DropIndex("dbo.Aktivitets", new[] { "ModulId" });
             DropIndex("dbo.Aktivitets", new[] { "AktivitetsTypId" });
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.AspNetUserRoles");
