@@ -17,9 +17,10 @@ namespace LexiconLMS.Controllers
         {
             string användarId = User.Identity.GetUserId();
             var användare = db.Users.Where(u => u.Id == användarId).FirstOrDefault();
-            var moduler = db.Moduler.Where(m => m.KursId == användare.KursId);
 
-            var kurs = db.Kurser.Where(k => k.Id == användare.KursId).FirstOrDefault();
+            var moduler = db.Moduler.Where(m => m.KursId == användare.KursId);
+            var kurs = db.Kurser.Where(k => k.Id == användare.KursId)?.FirstOrDefault();
+
             IEnumerable<Aktivitet> aktiviteter = null;
             Modul pågåendeModul = null;
 
@@ -29,6 +30,7 @@ namespace LexiconLMS.Controllers
                 if(idag >= modul.StartDatum.DayOfYear && idag <= modul.SlutDatum.DayOfYear)
                 {
                     pågåendeModul = modul;
+                    break;
                 }
             }
 
@@ -48,7 +50,5 @@ namespace LexiconLMS.Controllers
 
             return View(viewModel);
         }
-
-
     }
 }
