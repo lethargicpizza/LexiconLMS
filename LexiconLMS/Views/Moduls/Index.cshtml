@@ -38,7 +38,16 @@ else
 
     @foreach (var item in Model)
     {
-        <tr>
+
+        bool currentmodule = (DateTime.Now >= item.StartDatum  && DateTime.Now <= item.SlutDatum);
+        string bgcolor = "";
+        if (currentmodule)
+        { 
+            bgcolor = "aqua";
+        }     
+           <tr style='background-color:@bgcolor'>
+        
+
             <td>
                 @Html.DisplayFor(modelItem => item.Namn)
             </td>
