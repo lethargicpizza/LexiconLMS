@@ -1,80 +1,66 @@
-﻿@model LexiconLMS.Models.Modul
+﻿@model IEnumerable<LexiconLMS.Models.Aktivitet>
 
 @{
     ViewBag.Title = "Details";
+    
 }
-
-<h2>Modul: @Html.DisplayFor(model => model.Namn) &nbsp &nbsp @Html.DisplayFor(model => model.StartDatum) &nbsp -- &nbsp @Html.DisplayFor(model => model.SlutDatum)</h2>
+<h2>Kurs: @Model.First().Modul.Kurs.Namn</h2>
+<h2>Modul: @Model.First().Modul.Namn &nbsp &nbsp @Model.First().Modul.StartDatum.ToShortDateString() &nbsp -- &nbsp @Model.First().Modul.SlutDatum.ToShortDateString()</h2>
 
 <p><br/><br/></p>
 
-<h3>@Html.DisplayNameFor(model => model.Beskrivning):</h3>
-<i>@Html.DisplayFor(model => model.Beskrivning)</i>
+<h3>Beskrivning:</h3>
+
+
+<i>@Model.First().Modul.Beskrivning</i>
 
 <p><br /><br /></p>
 
 <h3>Aktiviteter</h3>
 
-@for(int i = 1; i < 5; i++)
-{
-    <p>Aktivitet</p>
-}
+<table class="table">
 
-
-<div>
-   
-    <dl class="dl-horizontal">
-
-        <dd>
-           @Html.DisplayFor(model => model.Kurs.Namn)
-        </dd>
-
-        <dt>
+    <tr>
+        <th>
             @Html.DisplayNameFor(model => model.Namn)
-        </dt>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartTid)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SlutTid)
+        </th>
+        <th></th>
+    </tr>
 
-        <dd>
-            @Html.DisplayFor(model => model.Namn)
-        </dd>
+    @foreach (var a in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => a.Namn)
+            </td>
+            <td>
+                @Html.DisplayFor(model => a.StartTid)
+            </td>
+            <td>
+                @Html.DisplayFor(model => a.SlutTid)
+            </td>
+        </tr>
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Beskrivning)
-        </dt>
+</table>
 
-        <dd>
-            @Html.DisplayFor(model => model.Beskrivning)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDatum)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.StartDatum)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SlutDatum)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SlutDatum)
-        </dd>
-
-    </dl>
-</div>
-
-@if (User.IsInRole("Lärare"))
-{
-    <p>
-        @Html.ActionLink("Ändra", "Edit", new { id = Model.Id }) |
-        @Html.ActionLink("Tillbaka", "Index")
-    </p>
-}
-else
-{
-    <p>
-        @Html.ActionLink("Tillbaka", "Index")
-    </p>
-}
+    @if (User.IsInRole("Lärare"))
+    {
+        <p>
+            @Html.ActionLink("Ändra", "Edit", new { id = ViewBag.Model.Id }) |
+            @Html.ActionLink("Tillbaka", "Index")
+        </p>
+    }
+    else
+    {
+        <p>
+            @Html.ActionLink("Tillbaka", "Index")
+        </p>
+    }
 

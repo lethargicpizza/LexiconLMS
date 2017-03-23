@@ -187,6 +187,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Aktivitet.cs" />
     <Compile Include="Models\AktivitetsTyp.cs" />
+    <Compile Include="Models\AktivitetsVariabler.cs" />
     <Compile Include="Models\ElevIndexViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Klasslista.cs" />
