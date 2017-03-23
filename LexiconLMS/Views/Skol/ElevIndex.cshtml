@@ -1,17 +1,37 @@
-﻿@model LexiconLMS.Models.Modul
+﻿@using System.Globalization;
+@model LexiconLMS.Models.ElevIndexViewModel
 
 @{
     ViewBag.Title = "Hem";
 }
 
-<h3>Hem</h3>
-
 @{ 
     if (Model != null)
     {
-        <h4>Pågående modul, @Model.Namn</h4>
-        <p>@Model.StartDatum till @Model.SlutDatum</p>
-        <p>@Model.Beskrivning</p>
+        var culture = new CultureInfo("sv-SE");
+
+        <h3>@Model.PågåendeKurs.Namn</h3>
+        <p>@Model.PågåendeKurs.Beskrivning</p>
+
+        <h3>Pågående modul @Model.PågåendeModul.Namn</h3>
+        
+        <p>@Model.PågåendeModul.StartDatum till @Model.PågåendeModul.SlutDatum</p>
+        <p>@Model.PågåendeModul.Beskrivning</p>
+
+        <h3>Veckans schema: </h3>
+        int dag = 0;
+        
+        foreach (var aktivitet in Model.VeckansAktiviteter)
+        {
+            if(dag != @aktivitet.StartTid.Day)
+            {
+                string strDag = culture.DateTimeFormat.GetDayName(aktivitet.StartTid.DayOfWeek);
+                <h4>@culture.TextInfo.ToTitleCase(strDag) @aktivitet.StartTid.Date.ToString("M", culture)</h4>
+            }
+            
+            <p>@aktivitet.StartTid.TimeOfDay - @aktivitet.SlutTid, @aktivitet.AktivitetsTyp.Typ @aktivitet.Namn</p>
+            dag = @aktivitet.StartTid.Day;
+        }
     }
     else
     {
