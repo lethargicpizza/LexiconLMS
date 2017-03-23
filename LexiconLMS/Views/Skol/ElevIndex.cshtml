@@ -1,11 +1,45 @@
-﻿@model LexiconLMS.Models.ElevIndexViewModel
+﻿@using System.Globalization;
+@model LexiconLMS.Models.ElevIndexViewModel
 
 @{
-    ViewBag.Title = "ElevIndex";
+    ViewBag.Title = "Hem";
 }
 
-<h2>Välkommen hem från Mallorca, @Model.Användarnamn</h2>
+@{ 
+    if (Model != null)
+    {
+        var culture = new CultureInfo("sv-SE");
 
+        <h3>@Model.PågåendeKurs.Namn</h3>
+        <p>@Model.PågåendeKurs.Beskrivning</p>
+
+        <h3>Pågående modul @Model.PågåendeModul.Namn</h3>
+        
+        <p>@Model.PågåendeModul.StartDatum till @Model.PågåendeModul.SlutDatum</p>
+        <p>@Model.PågåendeModul.Beskrivning</p>
+
+        <h3>Veckans schema: </h3>
+        int dag = 0;
+        
+        foreach (var aktivitet in Model.VeckansAktiviteter)
+        {
+            if(dag != @aktivitet.StartTid.Day)
+            {
+                string strDag = culture.DateTimeFormat.GetDayName(aktivitet.StartTid.DayOfWeek);
+                <h4>@culture.TextInfo.ToTitleCase(strDag) @aktivitet.StartTid.Date.ToString("M", culture)</h4>
+            }
+            
+            <p>@aktivitet.StartTid.TimeOfDay - @aktivitet.SlutTid, @aktivitet.AktivitetsTyp.Typ @aktivitet.Namn</p>
+            dag = @aktivitet.StartTid.Day;
+        }
+    }
+    else
+    {
+        <p>Ingen pågående modul</p>
+    }
+}
+
+@*
 @if (Model.PågåendeModul != null)
 {
     <h3>Pågående Modul: @Model.PågåendeModul.Namn</h3>
@@ -22,3 +56,4 @@ else
 {
     <h3>Ingen pågående modul</h3>
 }
+*@

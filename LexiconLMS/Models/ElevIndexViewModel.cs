@@ -8,6 +8,7 @@ namespace LexiconLMS.Models
     public class ElevIndexViewModel
     {
         public string Användarnamn { get; set; }
+        public Kurs PågåendeKurs { get; set; }
         public Modul PågåendeModul { get; set; }
         public IEnumerable<Aktivitet> VeckansAktiviteter { get; set; }
     }

@@ -4,7 +4,10 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Schema för: @ViewBag.AktuellKurs</h2>
+@if (Model != null)
+{
+    <h2>Schema för: @ViewBag.AktuellKurs</h2>
+}
 
 @if (User.IsInRole("Lärare"))
 {
@@ -17,8 +20,8 @@ else
     <br>
 }
 
-
-
+@if (Model != null)
+{ 
 <table class="table">
     <tr>
         <th>
@@ -35,7 +38,16 @@ else
 
     @foreach (var item in Model)
     {
-        <tr>
+
+        bool currentmodule = (DateTime.Now >= item.StartDatum  && DateTime.Now <= item.SlutDatum);
+        string bgcolor = "";
+        if (currentmodule)
+        { 
+            bgcolor = "aqua";
+        }     
+           <tr style='background-color:@bgcolor'>
+        
+
             <td>
                 @Html.DisplayFor(modelItem => item.Namn)
             </td>
@@ -62,5 +74,9 @@ else
             }
         </tr>
     }
-
 </table>
+}
+else
+{
+    <p>Du läser för närvarande ingen kurs!</p>
+}
