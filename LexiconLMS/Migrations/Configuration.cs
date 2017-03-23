@@ -22,28 +22,37 @@ namespace LexiconLMS.Migrations
         {
             var kurser = new Kurs[]
             {
-                new Kurs { Namn = ".NET 2015", Beskrivning = "Grundläggande C# inlärning", StartDatum = new DateTime(2015,11,9) },
-                new Kurs { Namn = "Java 2015", Beskrivning = "Grundläggande Java", StartDatum = new DateTime(2015,11,9) },
-                new Kurs { Namn = ".NET 2016", Beskrivning = "Grundläggande C# inlärning", StartDatum = new DateTime(2016,3,2) },
-                new Kurs { Namn = "Java 2016", Beskrivning = "Grundläggande Java", StartDatum = new DateTime(2016,4,10) },
-                new Kurs { Namn = "Realtids Projekt", Beskrivning = "Coola realtidsprojekt stuff", StartDatum = new DateTime(2015,9,5) }
+                //1-3
+                new Kurs { Namn = ".NET 2017", Beskrivning = "Grundläggande C# inlärning", StartDatum = new DateTime(2016,12,9) },
+                new Kurs { Namn = "Java 2017", Beskrivning = "Grundläggande Java", StartDatum = new DateTime(2016,12,9) },
+                new Kurs { Namn = "Realtids Projekt", Beskrivning = "Grundläggande C# inlärning", StartDatum = new DateTime(2015,3,2) },
             };
             context.Kurser.AddOrUpdate(kurser);
             context.SaveChanges();
 
-            var moduler = new Modul[]
+            Modul[] moduler = new Modul[]
             {
-                new Modul { Namn = "C#", Beskrivning = "Lär dig C#", StartDatum = new DateTime(2015,9,10), SlutDatum = new DateTime(2015,10,9) },
-                new Modul { Namn = "MVC", Beskrivning = "Episka MVC inlärning", StartDatum = new DateTime(2015,10,10), SlutDatum = new DateTime(2015,10,20) },
-                new Modul { Namn = "Frontend", Beskrivning = "Lär dig Frontend", StartDatum = new DateTime(2015,10,21), SlutDatum = new DateTime(2015,11,2) },
-                new Modul { Namn = "Testning", Beskrivning = "Lär dig Testning med Johan", StartDatum = new DateTime(2015,11,3), SlutDatum = new DateTime(2015,11,10) },
-                new Modul { Namn = "Projekt", Beskrivning = "Lär dig Projekt med Adrian", StartDatum = new DateTime(2015,11,11), SlutDatum = new DateTime(2015,11,30) },
+                //1-5
+                new Modul { Namn = "C#", Beskrivning = "Lär dig C#", StartDatum = new DateTime(2017,1,1), SlutDatum = new DateTime(2017,2,1), KursId = 1 },
+                new Modul { Namn = "Frontend", Beskrivning = "Lär dig Frontend", StartDatum = new DateTime(2017,2,1), SlutDatum = new DateTime(2017,3,1), KursId = 1 },
+                new Modul { Namn = "MVC", Beskrivning = "Episka MVC inlärning", StartDatum = new DateTime(2017,3,1), SlutDatum = new DateTime(2017,4,1), KursId = 1 },
+                new Modul { Namn = "Testning", Beskrivning = "Lär dig Testning med Johan", StartDatum = new DateTime(2017,4,1), SlutDatum = new DateTime(2017,5,1), KursId = 1 },
+                new Modul { Namn = "Projekt", Beskrivning = "Lär dig Projekt med Adrian", StartDatum = new DateTime(2017,5,1), SlutDatum = new DateTime(2017,6,1), KursId = 1 },
+                //6-8
+                new Modul { Namn = "Java", Beskrivning = "Lär dig Java", StartDatum = new DateTime(2017,1,1), SlutDatum = new DateTime(2017,2,10), KursId = 2 },
+                new Modul { Namn = "Frontend", Beskrivning = "Lär dig frontend med Java!", StartDatum = new DateTime(2017,3,1), SlutDatum = new DateTime(2017,4,30), KursId = 2},
+                new Modul { Namn = "JUnit", Beskrivning = "Lär dig testa med Java!", StartDatum = new DateTime(2017,5,1), SlutDatum = new DateTime(2017,5,10), KursId = 2 },
+                //9-11
+                new Modul { Namn = "Planering", Beskrivning = "Lär dig planera med John!", StartDatum = new DateTime(2015,3,2), SlutDatum = new DateTime(2015,3,10), KursId = 3 },
+                new Modul { Namn = "Projekt i C#", Beskrivning = "Lär dig realtidsprojekt med C#", StartDatum = new DateTime(2015,4,1), SlutDatum = new DateTime(2015,4,20), KursId = 3 },
+                new Modul { Namn = "Debugging", Beskrivning = "Realtids debugging", StartDatum = new DateTime(2015,5,1), SlutDatum = new DateTime(2015,5,10), KursId = 3 },
             };
             context.Moduler.AddOrUpdate(moduler);
             context.SaveChanges();
 
             var aktivitetsTyper = new AktivitetsTyp[]
             {
+                //1-3
                 new AktivitetsTyp { Typ = "E-learning" },
                 new AktivitetsTyp { Typ = "Föreläsning" },
                 new AktivitetsTyp { Typ = "Övning" },
@@ -51,14 +60,28 @@ namespace LexiconLMS.Migrations
             context.AktivitetsTyper.AddOrUpdate(aktivitetsTyper);
             context.SaveChanges();
 
-            var aktiviteter = new Aktivitet[]
+            string[] cAktivitetsNamn = { "C#", "Kaffeparty", "Garage", "Git", "Javascript", "HTML", "CSS", "Angular" };
+            int numAktivitetsNamn = cAktivitetsNamn.Count() - 1;
+
+            List<Aktivitet> aktiviteter = new List<Aktivitet>();
+            Random random = new Random();
+            //Seed past month, this month, and next month
+            foreach (var modul in moduler)
             {
-                    new Aktivitet { Namn = "C# med Scott Alan", StartTid = new DateTime(2015,9,10, 8,30,0), SlutTid = new TimeSpan(12,0,0)},
-                    new Aktivitet { Namn = "C#", StartTid = new DateTime(2015,9,10, 13,0,0), SlutTid = new TimeSpan(17,0,0)},
-                    new Aktivitet { Namn = "Garage", StartTid = new DateTime(2015,10,10, 8,30,0), SlutTid = new TimeSpan(12,0,0)},
-                    new Aktivitet { Namn = "Garage med Adrian", StartTid = new DateTime(2015,10,10, 13,0,0), SlutTid = new TimeSpan(17,0,0)},
-            };
-            context.Aktiviteter.AddOrUpdate(aktiviteter);
+                int startIntervall = modul.StartDatum.DayOfYear;
+                int slutIntervall = modul.SlutDatum.DayOfYear;
+                DateTime datum = modul.StartDatum;
+                for (int i = startIntervall; i < slutIntervall; i++)
+                {
+                    string namn = cAktivitetsNamn[random.Next(1, numAktivitetsNamn)];
+                    int aktivitetsTyp = random.Next(1,3);
+                    aktiviteter.Add(new Aktivitet { Namn = namn, StartTid = new DateTime(datum.Year, datum.Month, datum.Day, 8, 30, 0), SlutTid = new TimeSpan(12, 0, 0), ModulId = modul.Id, AktivitetsTypId = aktivitetsTyp });
+                    namn = cAktivitetsNamn[random.Next(1, numAktivitetsNamn)];
+                    aktiviteter.Add(new Aktivitet { Namn = namn, StartTid = new DateTime(datum.Year, datum.Month, datum.Day, 13, 0, 0), SlutTid = new TimeSpan(17, 0, 0), ModulId = modul.Id, AktivitetsTypId = aktivitetsTyp });
+                    datum = datum.AddDays(1);
+                }
+            }
+            context.Aktiviteter.AddOrUpdate(aktiviteter.ToArray());
             context.SaveChanges();
 
             var roleStore = new RoleStore<IdentityRole>(context);
@@ -73,6 +96,7 @@ namespace LexiconLMS.Migrations
             användare.Email = "elev@lms.se";
             användare.FörNamn = "Leif";
             användare.EfterNamn = "Den Store";
+            användare.KursId = 1;
 
             if (userManager.FindByName(användare.UserName) == null)
             {
@@ -92,7 +116,6 @@ namespace LexiconLMS.Migrations
             int numAnvändare = 40;
             int kursId = 1;
 
-            Random random = new Random();
             for (int i = 0; i < numAnvändare; i++)
             {
                 användare = new ApplicationUser();
