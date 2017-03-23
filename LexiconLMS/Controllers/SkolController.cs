@@ -18,15 +18,13 @@ namespace LexiconLMS.Controllers
             string användarId = User.Identity.GetUserId();
             var användare = db.Users.Where(u => u.Id == användarId).FirstOrDefault();
             var moduler = db.Moduler.Where(m => m.KursId == användare.KursId);
+            IQueryable<Aktivitet> aktiviteter;
 
             Modul pågåendeModul = null;
-            IEnumerable<Aktivitet> aktiviteter = null;
-
             int idag = DateTime.Today.DayOfYear;
-
             foreach (var modul in moduler)
             {
-                if(modul.StartDatum.DayOfYear >= idag && modul.SlutDatum.DayOfYear <= idag)
+                if(idag >= modul.StartDatum.DayOfYear && idag <= modul.SlutDatum.DayOfYear)
                 {
                     pågåendeModul = modul;
                 }
@@ -35,17 +33,17 @@ namespace LexiconLMS.Controllers
             if(pågåendeModul != null)
             {
                 int offset = 7;
-                aktiviteter = pågåendeModul.Aktiviteter.Where(a => a.StartTid.DayOfYear >= idag && a.StartTid.DayOfYear <= idag+offset);
+                //aktiviteter = pågåendeModul.Aktiviteter.Where(a => a.StartTid.DayOfYear >= idag && a.StartTid.DayOfYear <= idag+offset);
             }
 
             var viewModel = new ElevIndexViewModel
             {
                 Användarnamn = användare.FullNamn,
                 PågåendeModul = pågåendeModul,
-                VeckansAktiviteter = aktiviteter,
+                //VeckansAktiviteter = aktiviteter,
             };
 
-            return View(viewModel);
+            return View(pågåendeModul);
         }
 
 

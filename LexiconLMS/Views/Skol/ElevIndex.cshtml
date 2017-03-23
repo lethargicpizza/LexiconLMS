@@ -1,11 +1,25 @@
-﻿@model LexiconLMS.Models.ElevIndexViewModel
+﻿@model LexiconLMS.Models.Modul
 
 @{
-    ViewBag.Title = "ElevIndex";
+    ViewBag.Title = "Hem";
 }
 
-<h2>Välkommen hem från Mallorca, @Model.Användarnamn</h2>
+<h3>Hem</h3>
 
+@{ 
+    if (Model != null)
+    {
+        <h4>Pågående modul, @Model.Namn</h4>
+        <p>@Model.StartDatum till @Model.SlutDatum</p>
+        <p>@Model.Beskrivning</p>
+    }
+    else
+    {
+        <p>Ingen pågående modul</p>
+    }
+}
+
+@*
 @if (Model.PågåendeModul != null)
 {
     <h3>Pågående Modul: @Model.PågåendeModul.Namn</h3>
@@ -22,3 +36,4 @@ else
 {
     <h3>Ingen pågående modul</h3>
 }
+*@

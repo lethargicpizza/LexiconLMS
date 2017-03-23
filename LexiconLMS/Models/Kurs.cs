@@ -13,6 +13,9 @@ namespace LexiconLMS.Models
         public string Beskrivning { get; set; }
         public DateTime StartDatum { get; set; }
 
+        public int? KursMedlemsId { get; set; }
         public virtual ICollection<ApplicationUser> KursMedlemmar { get; set; }
+
+        public virtual ICollection<Modul> Moduler { get; set; } 
     }
 }
