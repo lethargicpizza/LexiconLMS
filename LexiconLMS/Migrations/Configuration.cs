@@ -74,9 +74,10 @@ namespace LexiconLMS.Migrations
                 for (int i = startIntervall; i < slutIntervall; i++)
                 {
                     string namn = cAktivitetsNamn[random.Next(1, numAktivitetsNamn)];
-                    aktiviteter.Add(new Aktivitet { Namn = namn, StartTid = new DateTime(datum.Year, datum.Month, datum.Day, 8, 30, 0), SlutTid = new TimeSpan(12, 0, 0), ModulId = modul.Id });
+                    int aktivitetsTyp = random.Next(1,3);
+                    aktiviteter.Add(new Aktivitet { Namn = namn, StartTid = new DateTime(datum.Year, datum.Month, datum.Day, 8, 30, 0), SlutTid = new TimeSpan(12, 0, 0), ModulId = modul.Id, AktivitetsTypId = aktivitetsTyp });
                     namn = cAktivitetsNamn[random.Next(1, numAktivitetsNamn)];
-                    aktiviteter.Add(new Aktivitet { Namn = namn, StartTid = new DateTime(datum.Year, datum.Month, datum.Day, 13, 0, 0), SlutTid = new TimeSpan(17, 0, 0), ModulId = modul.Id });
+                    aktiviteter.Add(new Aktivitet { Namn = namn, StartTid = new DateTime(datum.Year, datum.Month, datum.Day, 13, 0, 0), SlutTid = new TimeSpan(17, 0, 0), ModulId = modul.Id, AktivitetsTypId = aktivitetsTyp });
                     datum = datum.AddDays(1);
                 }
             }
