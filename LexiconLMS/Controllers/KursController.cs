@@ -28,12 +28,15 @@ namespace LexiconLMS.Controllers
             var KursId = user.KursId;
 
             // IQueryable<ApplicationUser> klasslista = db.Users.Where(k => k.KursId == KursId);
-            IQueryable<ApplicationUser> klasslista = from k in db.Users where k.KursId == KursId select k;
-            klasslista = klasslista.OrderBy(k => k.FörNamn);
+            // IQueryable<ApplicationUser> klasslista = from k in db.Users where k.KursId == KursId select k;
 
+            if (KursId != null)
+            {
+                var klasslista = db.Users.Where(k => k.KursId == KursId).OrderBy(k => k.FörNamn);
+                return View(klasslista);
+            }
 
-
-            return View(klasslista);
+            return View();
         }
 
         // GET: Kurs/Details/5
