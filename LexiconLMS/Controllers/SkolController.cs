@@ -19,7 +19,7 @@ namespace LexiconLMS.Controllers
             var användare = db.Users.Where(u => u.Id == användarId).FirstOrDefault();
 
             var moduler = db.Moduler.Where(m => m.KursId == användare.KursId);
-            var kurs = db.Kurser.Where(k => k.Id == användare.KursId)?.FirstOrDefault();
+            var kurs = db.Kurser.Where(k => k.Id == användare.KursId).FirstOrDefault();
 
             IEnumerable<Aktivitet> aktiviteter = null;
             Modul pågåendeModul = null;
