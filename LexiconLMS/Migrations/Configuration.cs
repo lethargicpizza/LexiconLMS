@@ -107,6 +107,21 @@ namespace LexiconLMS.Migrations
                 }
             }
 
+            användare = new ApplicationUser();
+            användare.UserName = "larare@lms.se";
+            användare.Email = "larare@lms.se";
+            användare.FörNamn = "Per";
+            användare.EfterNamn = "Den Store";
+
+            if(userManager.FindByName(användare.UserName) == null)
+            {
+                IdentityResult resultat = userManager.Create(användare, lösenord);
+                if(!resultat.Succeeded)
+                {
+                    throw new Exception(string.Join("\n", resultat.Errors));
+                }
+            }
+
             string[] förnamn = { "Adrian", "Bertil", "Conny", "Per", "Ramus", "Olle", "Thomas", "Johan", "Dmitris" };
             string[] efternamn = { "Ahlberg", "Anderberg", "Ahlin", "Adamsson", "Cederberg", "Bylund", "Classon", "Falk", "Fahlgren" };
 
