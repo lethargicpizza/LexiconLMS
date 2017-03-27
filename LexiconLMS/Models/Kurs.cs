@@ -14,6 +14,7 @@ namespace LexiconLMS.Models
         public string Beskrivning { get; set; }
 
         [Display(Name = "Start")]
+        [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime StartDatum { get; set; }
 
