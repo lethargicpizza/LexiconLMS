@@ -18,7 +18,10 @@ namespace LexiconLMS.Controllers
         // GET: Kurs
         public ActionResult Index()
         {
-            return View(db.Kurser.ToList());
+            // return View(db.Kurser.ToList());
+
+            var kurser = db.Kurser.OrderByDescending(s => s.StartDatum);
+            return View(kurser);
         }
 
         // GET: Klasslista
