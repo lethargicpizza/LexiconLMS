@@ -7,13 +7,13 @@ namespace LexiconLMS.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class mig : IMigrationMetadata
+    public sealed partial class LeifMig : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(mig));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(LeifMig));
         
         string IMigrationMetadata.Id
         {
-            get { return "201703270831188_mig"; }
+            get { return "201703270853564_LeifMig"; }
         }
         
         string IMigrationMetadata.Source

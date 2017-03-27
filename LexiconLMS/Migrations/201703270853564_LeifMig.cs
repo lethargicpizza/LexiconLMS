@@ -3,7 +3,7 @@ namespace LexiconLMS.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class mig : DbMigration
+    public partial class LeifMig : DbMigration
     {
         public override void Up()
         {
