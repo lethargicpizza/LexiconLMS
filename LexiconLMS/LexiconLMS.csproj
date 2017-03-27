@@ -172,6 +172,7 @@
     <Compile Include="Controllers\AktivitetsTypController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KursController.cs" />
+    <Compile Include="Controllers\LärareController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ModulsController.cs" />
     <Compile Include="Controllers\SkolController.cs" />
@@ -270,6 +271,7 @@
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <Content Include="Views\Kurs\Klasslista.cshtml" />
     <Content Include="Views\Skol\ElevIndex.cshtml" />
+    <Content Include="Views\Lärare\Användare.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

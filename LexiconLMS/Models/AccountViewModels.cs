@@ -70,6 +70,12 @@ namespace LexiconLMS.Models
         public string Email { get; set; }
 
         [Required]
+        [StringLength(30, ErrorMessage = "A name may have max {0} characters long.")]
+        public string Förnamn { get; set; }
+        [Required]
+        public string Efternamn { get; set; }
+
+        [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Lösenord")]
