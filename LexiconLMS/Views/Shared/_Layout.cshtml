@@ -39,6 +39,9 @@
                         if (User.IsInRole("Lärare"))
                         {
                             <li>@Html.ActionLink("Hem", "LärareIndex", "Skol")</li>
+                            <li>@Html.ActionLink("Kurser", "Index", "Kurs")</li>
+                            <li>@Html.ActionLink("Moduler", "ModulIndex", "Modul")</li>
+                            <li>@Html.ActionLink("Användare", "UserIndex", "User")</li>
                         }
                         else
                         {

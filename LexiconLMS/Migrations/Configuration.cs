@@ -30,6 +30,8 @@ namespace LexiconLMS.Migrations
             context.Kurser.AddOrUpdate(kurser);
             context.SaveChanges();
 
+            
+
             Modul[] moduler = new Modul[]
             {
                 //1-5
@@ -86,6 +88,21 @@ namespace LexiconLMS.Migrations
 
             var roleStore = new RoleStore<IdentityRole>(context);
             var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+            var roleNames = new[] { "Lärare" };
+            foreach (var roleName in roleNames)
+            {
+                if (!context.Roles.Any(r => r.Name == roleName))
+                {
+                    var role = new IdentityRole { Name = roleName };
+                    var results = roleManager.Create(role);
+
+                    if (!results.Succeeded)
+                    {
+                        throw new Exception(string.Join("\n", results.Errors));
+                    }
+                }
+            }
 
             var userStore = new UserStore<ApplicationUser>(context);
             var userManager = new UserManager<ApplicationUser>(userStore);
@@ -149,6 +166,9 @@ namespace LexiconLMS.Migrations
                     }
                 }
             }
+
+            var adminUser = userManager.FindByName("larare@lms.se");
+            userManager.AddToRole(adminUser.Id, "Lärare");
         }
     }
 }
