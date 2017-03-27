@@ -175,9 +175,14 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ModulsController.cs" />
     <Compile Include="Controllers\SkolController.cs" />
+    <Compile Include="Extensions\ExtensionMethods.cs" />
     <Compile Include="fonts\ModulController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703270831188_mig.cs" />
+    <Compile Include="Migrations\201703270831188_mig.Designer.cs">
+      <DependentUpon>201703270831188_mig.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -280,6 +285,11 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201703270831188_mig.resx">
+      <DependentUpon>201703270831188_mig.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

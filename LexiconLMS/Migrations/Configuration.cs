@@ -30,6 +30,8 @@ namespace LexiconLMS.Migrations
             context.Kurser.AddOrUpdate(kurser);
             context.SaveChanges();
 
+            
+
             Modul[] moduler = new Modul[]
             {
                 //1-5
@@ -74,10 +76,10 @@ namespace LexiconLMS.Migrations
                 for (int i = startIntervall; i < slutIntervall; i++)
                 {
                     string namn = cAktivitetsNamn[random.Next(1, numAktivitetsNamn)];
-                    int aktivitetsTyp = random.Next(1,3);
-                    aktiviteter.Add(new Aktivitet { Namn = namn, StartTid = new DateTime(datum.Year, datum.Month, datum.Day, 8, 30, 0), SlutTid = new TimeSpan(12, 0, 0), ModulId = modul.Id, AktivitetsTypId = aktivitetsTyp });
+                    int aktivitetsTyp = random.Next(1,4);
+                    aktiviteter.Add(new Aktivitet { Namn = namn, StartTid = new DateTime(datum.Year, datum.Month, datum.Day, 8, 30, 0), SlutTid = new TimeSpan(12, 0, 0), ModulId = modul.Id, AktivitetsTypId = random.Next(1, 4) });
                     namn = cAktivitetsNamn[random.Next(1, numAktivitetsNamn)];
-                    aktiviteter.Add(new Aktivitet { Namn = namn, StartTid = new DateTime(datum.Year, datum.Month, datum.Day, 13, 0, 0), SlutTid = new TimeSpan(17, 0, 0), ModulId = modul.Id, AktivitetsTypId = aktivitetsTyp });
+                    aktiviteter.Add(new Aktivitet { Namn = namn, StartTid = new DateTime(datum.Year, datum.Month, datum.Day, 13, 0, 0), SlutTid = new TimeSpan(17, 0, 0), ModulId = modul.Id, AktivitetsTypId = random.Next(1, 4) });
                     datum = datum.AddDays(1);
                 }
             }
@@ -86,6 +88,21 @@ namespace LexiconLMS.Migrations
 
             var roleStore = new RoleStore<IdentityRole>(context);
             var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+            var roleNames = new[] { "Lärare" };
+            foreach (var roleName in roleNames)
+            {
+                if (!context.Roles.Any(r => r.Name == roleName))
+                {
+                    var role = new IdentityRole { Name = roleName };
+                    var results = roleManager.Create(role);
+
+                    if (!results.Succeeded)
+                    {
+                        throw new Exception(string.Join("\n", results.Errors));
+                    }
+                }
+            }
 
             var userStore = new UserStore<ApplicationUser>(context);
             var userManager = new UserManager<ApplicationUser>(userStore);
@@ -107,6 +124,21 @@ namespace LexiconLMS.Migrations
                 }
             }
 
+            användare = new ApplicationUser();
+            användare.UserName = "larare@lms.se";
+            användare.Email = "larare@lms.se";
+            användare.FörNamn = "Per";
+            användare.EfterNamn = "Den Store";
+
+            if(userManager.FindByName(användare.UserName) == null)
+            {
+                IdentityResult resultat = userManager.Create(användare, lösenord);
+                if(!resultat.Succeeded)
+                {
+                    throw new Exception(string.Join("\n", resultat.Errors));
+                }
+            }
+
             string[] förnamn = { "Adrian", "Bertil", "Conny", "Per", "Ramus", "Olle", "Thomas", "Johan", "Dmitris" };
             string[] efternamn = { "Ahlberg", "Anderberg", "Ahlin", "Adamsson", "Cederberg", "Bylund", "Classon", "Falk", "Fahlgren" };
 
@@ -121,7 +153,7 @@ namespace LexiconLMS.Migrations
                 användare = new ApplicationUser();
                 användare.FörNamn = förnamn[random.Next(1, numFörnamn)];
                 användare.EfterNamn = efternamn[random.Next(1, numEfternamn)];
-                användare.Email = $"{användare.FörNamn}.{användare.EfterNamn}@lms.se";
+                användare.Email = $"{användare.FörNamn.ToLower()}.{användare.EfterNamn.ToLower()}@lms.se";
                 användare.UserName = användare.Email;
                 användare.KursId = kursId;
 
@@ -134,6 +166,9 @@ namespace LexiconLMS.Migrations
                     }
                 }
             }
+
+            var adminUser = userManager.FindByName("larare@lms.se");
+            userManager.AddToRole(adminUser.Id, "Lärare");
         }
     }
 }
