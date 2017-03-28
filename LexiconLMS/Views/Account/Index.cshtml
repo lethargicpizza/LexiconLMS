@@ -1,0 +1,66 @@
+﻿@model IEnumerable<LexiconLMS.Models.AccountIndexViewModel >
+@using Microsoft.AspNet.Identity
+@using LexiconLMS.Extensions
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Skapa nytt", "Register")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Epost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FullNamn)
+        </th>
+        <th>
+            @Html.DisplayName("Roll")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Kursnamn)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Epost)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FullNamn)
+        </td>
+        <td>
+            @{ 
+                string roll = item.ÄrLärare ? "Lärare" : "Elev";
+                @Html.DisplayFor(modelItem => roll)
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Kursnamn)
+        </td>
+        <td>
+            @Html.ActionLink("Ändra", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Detaljer", "Details", new { id = item.Id })
+
+            @{
+                string userId = User.Identity.GetUserId<string>();
+
+                if (item.Id != userId)
+                {
+                    <span> | </span>
+                    @Html.ActionLink("Ta bort", "Delete", new { id = item.Id })
+                }
+            }
+        </td>
+    </tr>
+}
+
+</table>

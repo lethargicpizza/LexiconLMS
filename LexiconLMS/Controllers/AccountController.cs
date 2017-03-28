@@ -2,6 +2,9 @@
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
+using System.Data;
+using System.Data.Entity;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -9,17 +12,162 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using LexiconLMS.Models;
+using System.Collections.Generic;
 
 namespace LexiconLMS.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
         public AccountController()
         {
+        }
+
+        [Authorize(Roles = "Lärare")]
+        public ActionResult Index()
+        {
+            var users = db.Users.ToList();
+            var accountIndexViewModelList = new List<AccountIndexViewModel>();
+
+            foreach (var user in users)
+            {
+                var roles = UserManager.GetRoles(user.Id).ToList();
+                var kurser = db.Kurser.Where(k => k.Id == user.KursId);
+                Kurs kurs = null;
+
+                if (kurser.Count() > 0)
+                    kurs = kurser.First();
+                
+                AccountIndexViewModel element = new AccountIndexViewModel
+                {
+                    Id = user.Id,
+                    Epost = user.Email,
+                    FullNamn = user.FörNamn + " " + user.EfterNamn,
+                    ÄrLärare = roles.Contains("Lärare") ? true : false,
+                    Kursnamn = (kurs != null) ? kurs.Namn : "",
+                };
+
+                accountIndexViewModelList.Add(element);
+            }
+
+            return View(accountIndexViewModelList);
+        }
+
+        //
+        // GET: /Account/Register
+        [AllowAnonymous]
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Lärare")]
+        public async Task<ActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, KursId = model.KursId, FörNamn = model.FirstName, EfterNamn = model.LastName };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    if (model.ÄrLärare)
+                    {
+                        var foundUser = UserManager.FindByEmail(model.Email);
+                        UserManager.AddToRole(foundUser.Id, "Lärare");
+                    }
+
+                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                    // Send an email with this link
+                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                    return RedirectToAction("Index", "Account");
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        public ActionResult Edit(string id)
+        {
+            if (String.IsNullOrWhiteSpace(id))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            var användare = UserManager.FindById(id);
+            if (användare == null)
+                return HttpNotFound();
+
+            return View(användare);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id, Email, FörNamn, Efternamn, KursId, ÄrLärare")] string id)
+        {
+
+        }
+
+        public ActionResult Details(string id)
+        {
+            if (String.IsNullOrWhiteSpace(id))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var användare = db.Users.Find(id);
+            var kurserQuery = db.Kurser.Where(k => k.Id == användare.KursId);
+            Kurs kurs = null;
+
+            if(användare == null)
+                return HttpNotFound();
+
+            if (kurserQuery.Count() > 0)
+                kurs = kurserQuery.First();
+
+            var roles = UserManager.GetRoles(användare.Id);
+            string role = "";
+            if(roles.Count() > 0)
+                role = roles.First();
+
+            var accountDetailViewModel = new AccountDetailViewModel
+            {
+                Id = användare.Id,
+                Epost = användare.Email,
+                FullNamn = användare.FörNamn + " " + användare.EfterNamn,
+                Roll = (role.CompareTo("Lärare") == 0) ? "Lärare" : "Elev",
+                Kursnamn = kurs.Namn,
+            };
+            return View(accountDetailViewModel);
+        }
+
+        public ActionResult Delete(string id)
+        {
+            if (String.IsNullOrWhiteSpace(id))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var user = db.Users.Find(id);
+            if(user == null)
+                return HttpNotFound();
+
+            return View(user);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(string id)
+        {
+            var user = UserManager.FindById(id);
+            UserManager.Delete(user);
+            return RedirectToAction("Index");
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -132,44 +280,6 @@ namespace LexiconLMS.Controllers
                     ModelState.AddModelError("", "Invalid code.");
                     return View(model);
             }
-        }
-
-        //
-        // GET: /Account/Register
-        [AllowAnonymous]
-        public ActionResult Register()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Account/Register
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                    return RedirectToAction("Index", "Home");
-                }
-                AddErrors(result);
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
         }
 
         //

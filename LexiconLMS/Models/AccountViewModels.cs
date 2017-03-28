@@ -3,6 +3,72 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LexiconLMS.Models
 {
+    public class AccountIndexViewModel
+    {
+        public string Id { get; set; }
+
+        public string Epost { get; set; }
+
+        [Display(Name = "Namn")]
+        public string FullNamn { get; set; }
+
+        [Display(Name = "Roll")]
+        public bool ÄrLärare { get; set; }
+
+        [Display(Name = "Kurs")]
+        public string Kursnamn { get; set; }
+    }
+
+    public class AccountDetailViewModel
+    {
+        public string Id { get; set; }
+
+        public string Epost { get; set; }
+
+        [Display(Name = "Namn")]
+        public string FullNamn { get; set; }
+
+        [Display(Name = "Roll")]
+        public string Roll { get; set; }
+
+        [Display(Name = "Kurs")]
+        public string Kursnamn { get; set; }
+    }
+
+    public class RegisterViewModel
+    {
+        [Required]
+        [EmailAddress]
+        [Display(Name = "E-post")]
+        public string Email { get; set; }
+
+        [Required]
+        [StringLength(30, ErrorMessage = "A name may have max {0} characters long.")]
+        [Display(Name = "Förnamn")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Efternamn")]
+        public string LastName { get; set; }
+
+        public int? KursId { get; set; }
+
+        [Display(Name = "Är lärare")]
+        public bool ÄrLärare { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Lösenord")]
+        public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Bekräfta lösenord")]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
+    }
+
+
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
@@ -60,31 +126,6 @@ namespace LexiconLMS.Models
 
         [Display(Name = "Kom ihåg mig?")]
         public bool RememberMe { get; set; }
-    }
-
-    public class RegisterViewModel
-    {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "E-postadress")]
-        public string Email { get; set; }
-
-        [Required]
-        [StringLength(30, ErrorMessage = "A name may have max {0} characters long.")]
-        public string Förnamn { get; set; }
-        [Required]
-        public string Efternamn { get; set; }
-
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Lösenord")]
-        public string Password { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Bekräfta lösenord")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
     }
 
     public class ResetPasswordViewModel
