@@ -42,13 +42,50 @@
         </div>
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Spara" class="btn btn-default" />
             </div>
         </div>
+
+        <h4>Moduler</h4>
+
+        <table>
+            @foreach (var item in Model.Moduler)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Namn)
+                    </td>
+                    <td>
+                        @*@Html.ActionLink("Redigera", "Edit", "Moduls", new { id = item.Id },null) |*@
+                        @Html.ActionLink("Detaljer", "Details", "Moduls", new { id = item.Id },null) |
+                        @Html.ActionLink("Ta bort", "RemoveModul",  new { modulId = item.Id, kursId = item.KursId})
+                    
+                    </td>
+                </tr>
+            }
+        </table>
+        <h4>Klasslista</h4>
+
+        <table>
+            @foreach (var item in Model.KursMedlemmar)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullNamn)
+                    </td>
+                    <td>
+                        @*@Html.ActionLink("Redigera", "Edit", "Moduls", new { id = item.Id },null) |*@
+                        @*@Html.ActionLink("Detaljer", "Details", "Klasslista", new { id = item.Id }, null) |*@
+                        @Html.ActionLink("Ta bort", "RemoveKursmedlem", new { userId = item.Id, kursId = item.KursId })
+
+                    </td>
+                </tr>
+            }
+        </table>
+
+        
     </div>
 }
 

@@ -41,7 +41,8 @@
 @if (User.IsInRole("Lärare"))
             {
     <p>
-        @Html.ActionLink("Ändra", "Edit", new { id = ViewBag.Model.Id }) |
+        @Html.ActionLink("Ändra", "Edit",  new { id = Model.First().ModulId }) |
+        @*@Html.ActionLink("Ändra", "Edit", new { id = ViewBag.Model.Id }) |*@
         @Html.ActionLink("Tillbaka", "Index")
     </p>
 }
