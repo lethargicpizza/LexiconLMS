@@ -19,6 +19,7 @@ namespace LexiconLMS.Models
         public DateTime StartTid { get; set; }
 
         [Display(Name = "Slut")]
+        [DisplayFormat(DataFormatString = @"{0:hh\:mm}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Time)]
         public TimeSpan SlutTid { get; set; }
         //public int AntalTimmar { get; set; } Kan ej sätta SlutTid på 12:00 med denna variant!
