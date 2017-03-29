@@ -91,7 +91,7 @@ namespace LexiconLMS.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Account");
+                    return RedirectToAction("Index");
                 }
                 AddErrors(result);
             }
@@ -100,22 +100,80 @@ namespace LexiconLMS.Controllers
             return View(model);
         }
 
+
+
+
         public ActionResult Edit(string id)
         {
             if (String.IsNullOrWhiteSpace(id))
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
             var användare = UserManager.FindById(id);
             if (användare == null)
                 return HttpNotFound();
 
-            return View(användare);
+            
+            bool ärLärare = false;
+            var roller = UserManager.GetRoles(användare.Id);
+            if (roller.Count() > 0)
+            {
+                if(roller.First().CompareTo("Lärare") == 0)
+                    ärLärare = true;
+            }
+
+            var viewModel = new AccountEditViewModel
+            {
+                Id = användare.Id,
+                Epost = användare.Email,
+                Förnamn = användare.FörNamn,
+                Efternamn = användare.EfterNamn,
+                ÄrLärare = ärLärare,
+                KursId = användare.KursId,
+                Kurser = new SelectList(db.Kurser.ToList(), "Id","Namn"),
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id, Email, FörNamn, Efternamn, KursId, ÄrLärare")] string id)
+        public ActionResult Edit([Bind(Include = "Id, Password, Epost, Förnamn, Efternamn, KursId, ÄrLärare")] AccountEditViewModel viewModel)
         {
+            if(ModelState.IsValid)
+            {
+                var användare = UserManager.FindById(viewModel.Id);
+                användare.UserName = viewModel.Epost;
+                användare.Email = viewModel.Epost;
+                användare.FörNamn = viewModel.Förnamn;
+                användare.EfterNamn = viewModel.Efternamn;
+                användare.KursId = viewModel.KursId;
 
+                if(!String.IsNullOrWhiteSpace(viewModel.Password))
+                {
+                    var resetToken = UserManager.GeneratePasswordResetToken(användare.Id);
+                    UserManager.ResetPassword(användare.Id, resetToken, viewModel.Password);
+                }
+
+                UserManager.Update(användare);
+
+                if (UserManager.IsInRole(användare.Id,"Lärare"))
+                {
+                    //Turn lärare into elev
+                    if(!viewModel.ÄrLärare)
+                        UserManager.RemoveFromRole(användare.Id, "Lärare");
+                }
+                else
+                {
+                    //Turn elev into lärare
+                    if(viewModel.ÄrLärare)
+                        UserManager.AddToRole(användare.Id, "Lärare");
+                }
+
+                return RedirectToAction("Index");
+            }
+
+            viewModel.Kurser = new SelectList(db.Kurser.ToList(), "Id", "Namn");
+            return View(viewModel);
         }
 
         public ActionResult Details(string id)
@@ -502,7 +560,7 @@ namespace LexiconLMS.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         //

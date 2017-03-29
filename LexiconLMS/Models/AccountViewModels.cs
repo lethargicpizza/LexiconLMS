@@ -3,6 +3,32 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LexiconLMS.Models
 {
+    public class AccountEditViewModel
+    {
+        public string Id { get; set; }
+
+        [RegularExpression(@"^\S*$", ErrorMessage = "Inga mellanslag tillåtna!")]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+
+        [Required]
+        public string Epost { get; set; }
+
+        [Required]
+        public string Förnamn { get; set; }
+
+        [Required]
+        public string Efternamn { get; set; }
+
+        [Display(Name = "Är lärare")]
+        public bool ÄrLärare { get; set; }
+
+        [Display(Name = "Kurs")]
+        public int? KursId { get; set; }
+
+        public System.Web.Mvc.SelectList Kurser { get; set; }
+    }
+
     public class AccountIndexViewModel
     {
         public string Id { get; set; }
