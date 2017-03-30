@@ -18,7 +18,6 @@ namespace LexiconLMS.Models
             // Add custom user claims here
             userIdentity.AddClaim(new Claim("Namn", FullNamn));
 
-
             return userIdentity;
         }
 
@@ -55,7 +54,5 @@ namespace LexiconLMS.Models
         public DbSet<Modul> Moduler { get; set; }
         public DbSet<Aktivitet> Aktiviteter { get; set; }
         public DbSet<AktivitetsTyp> AktivitetsTyper { get; set; }
-
-       
     }
 }

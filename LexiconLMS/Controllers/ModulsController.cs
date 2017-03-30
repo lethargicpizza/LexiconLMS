@@ -121,7 +121,8 @@ namespace LexiconLMS.Controllers
             {
                 db.Entry(modul).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                return RedirectToAction("Edit", "Kurs");
             }
             ViewBag.KursId = new SelectList(db.Kurser, "Id", "Namn", modul.KursId);
             return View(modul);
@@ -150,6 +151,7 @@ namespace LexiconLMS.Controllers
             Modul modul = db.Moduler.Find(id);
             db.Moduler.Remove(modul);
             db.SaveChanges();
+
             return RedirectToAction("Index");
         }
 

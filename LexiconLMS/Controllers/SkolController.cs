@@ -8,11 +8,22 @@ using System.Web.Mvc;
 
 namespace LexiconLMS.Controllers
 {
-    [Authorize]
     public class SkolController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Lärare")]
+        public ActionResult LärareIndex()
+        {
+            return View();
+        }
+
+        [Authorize]
         public ActionResult ElevIndex()
         {
             string användarId = User.Identity.GetUserId();

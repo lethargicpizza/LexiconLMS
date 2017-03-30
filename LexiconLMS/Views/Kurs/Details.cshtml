@@ -1,42 +1,41 @@
 ﻿@model LexiconLMS.Models.Kurs
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Kurs";
 }
 
-<h2>Detaljer</h2>
+<h1>@Html.DisplayFor(model => model.Namn)</h1>
+<h3>@Html.DisplayFor(model => model.StartDatum)</h3>
 
-<div>
-    <h4>Kurs</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Namn)
-        </dt>
+<p><i>@Html.DisplayFor(model => model.Beskrivning)</i></p>
 
-        <dd>
-            @Html.DisplayFor(model => model.Namn)
-        </dd>
+<p></p>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Beskrivning)
-        </dt>
+<h4>Moduler:</h4>
 
-        <dd>
-            @Html.DisplayFor(model => model.Beskrivning)
-        </dd>
+    @{
+        foreach (var modul in Model.Moduler)
+        {
+           <p>@Html.DisplayFor(model => modul.Namn)</p>
+        }
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDatum)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.StartDatum)
-        </dd>
+<h4>Klasslista</h4>
 
-    </dl>
-</div>
+<table>
+    @{ 
+        foreach (var elev in Model.KursMedlemmar)
+        {
+            <tr>
+                <td>@Html.DisplayFor(model => elev.FullNamn)</td>
+                <td>@Html.DisplayFor(model => elev.Email)</td>
+            </tr>
+        }
+    }
+</table>
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Ändra", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Tillbaka", "Index")
 </p>

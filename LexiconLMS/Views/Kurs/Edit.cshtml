@@ -1,10 +1,10 @@
 ﻿@model LexiconLMS.Models.Kurs
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Redigera";
 }
 
-<h2>Edit</h2>
+<h2>Redigera kurs</h2>
 
 
 @using (Html.BeginForm())
@@ -26,6 +26,14 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.StartDatum, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StartDatum, new { htmlAttributes = new { @class = "form-control", @Value = Model.StartDatum.ToString("yyyy-MM-dd") } })
+                @Html.ValidationMessageFor(model => model.StartDatum, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.Beskrivning, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Beskrivning, new { htmlAttributes = new { @class = "form-control" } })
@@ -33,24 +41,56 @@
             </div>
         </div>
 
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.StartDatum, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.StartDatum, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StartDatum, "", new { @class = "text-danger" })
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Spara" class="btn btn-default" />
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
+        <h4>Moduler</h4>
+
+        <table>
+            @foreach (var item in Model.Moduler)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Namn)
+                    </td>
+                    <td>
+                        @*@Html.ActionLink("Redigera", "Edit", "Moduls", new { id = item.Id },null) |*@
+                        @Html.ActionLink("Detaljer", "Details", "Moduls", new { id = item.Id },null) |
+                        @Html.ActionLink("Ta bort", "RemoveModul",  new { modulId = item.Id, kursId = item.KursId})
+                    
+                    </td>
+                </tr>
+            }
+        </table>
+        <h4>Klasslista</h4>
+
+        <table>
+            @foreach (var item in Model.KursMedlemmar)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullNamn)
+                    </td>
+                    <td>
+                        @*@Html.ActionLink("Redigera", "Edit", "Moduls", new { id = item.Id },null) |*@
+                        @*@Html.ActionLink("Detaljer", "Details", "Klasslista", new { id = item.Id }, null) |*@
+                        @Html.ActionLink("Ta bort", "RemoveKursmedlem", new { userId = item.Id, kursId = item.KursId })
+
+                    </td>
+                </tr>
+            }
+        </table>
+
+        
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Tillbaka", "Index")
 </div>
 
 @section Scripts {

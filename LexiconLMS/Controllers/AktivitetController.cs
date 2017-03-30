@@ -18,12 +18,12 @@ namespace LexiconLMS.Controllers
         // GET: Aktivitet
         public ActionResult Index()
         {
-            var aktiviteter = db.Aktiviteter.Include(a => a.AktivitetsTyp);
+            var aktiviteter = db.Aktiviteter.Include(a => a.AktivitetsTyp).OrderBy(o => o.Modul.Kurs.Namn).ThenBy(t => t.StartTid);
             return View(aktiviteter.ToList());
         }
 
         // GET: Aktivitet/Details/5
-        public ActionResult Details(int? id, int? modulID = 1)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -34,9 +34,6 @@ namespace LexiconLMS.Controllers
             {
                 return HttpNotFound();
             }
-
-            ViewBag.ModulID = modulID;
-
             return View(aktivitet);
         }
 
@@ -44,6 +41,7 @@ namespace LexiconLMS.Controllers
         public ActionResult Create()
         {
             ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ");
+            ViewBag.ModulId = new SelectList(db.Moduler, "Id", "Namn");
             return View();
         }
 
@@ -52,7 +50,7 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Namn,StartTid,SlutTid,AktivitetsTypId")] Aktivitet aktivitet)
+        public ActionResult Create([Bind(Include = "Id,Namn,StartTid,SlutTid,AktivitetsTypId,ModulId")] Aktivitet aktivitet)
         {
             if (ModelState.IsValid)
             {
@@ -62,11 +60,12 @@ namespace LexiconLMS.Controllers
             }
 
             ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ", aktivitet.AktivitetsTypId);
+            ViewBag.ModulId = new SelectList(db.Moduler, "Id", "Namn", aktivitet.ModulId);
             return View(aktivitet);
         }
 
         // GET: Aktivitet/Edit/5
-        public ActionResult Edit(int? id, int? modulID = 1)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -78,9 +77,7 @@ namespace LexiconLMS.Controllers
                 return HttpNotFound();
             }
             ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ", aktivitet.AktivitetsTypId);
-
-            ViewBag.ModulID = modulID;
-
+            ViewBag.ModulId = new SelectList(db.Moduler, "Id", "Namn", aktivitet.ModulId);
             return View(aktivitet);
         }
 
@@ -89,7 +86,7 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Namn,StartTid,SlutTid,AktivitetsTypId")] Aktivitet aktivitet)
+        public ActionResult Edit([Bind(Include = "Id,Namn,StartTid,SlutTid,AktivitetsTypId,ModulId")] Aktivitet aktivitet)
         {
             if (ModelState.IsValid)
             {
@@ -98,11 +95,13 @@ namespace LexiconLMS.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ", aktivitet.AktivitetsTypId);
+            ViewBag.ModulId = new SelectList(db.Moduler, "Id", "Namn", aktivitet.ModulId);
+
             return View(aktivitet);
         }
 
         // GET: Aktivitet/Delete/5
-        public ActionResult Delete(int? id, int? modulID = 1)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -113,9 +112,6 @@ namespace LexiconLMS.Controllers
             {
                 return HttpNotFound();
             }
-
-            ViewBag.ModulID = modulID;
-
             return View(aktivitet);
         }
 

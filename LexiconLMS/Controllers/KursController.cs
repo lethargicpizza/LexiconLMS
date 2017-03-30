@@ -18,7 +18,10 @@ namespace LexiconLMS.Controllers
         // GET: Kurs
         public ActionResult Index()
         {
-            return View(db.Kurser.ToList());
+            // return View(db.Kurser.ToList());
+
+            var kurser = db.Kurser.OrderByDescending(s => s.StartDatum);
+            return View(kurser);
         }
 
         // GET: Klasslista
@@ -76,6 +79,38 @@ namespace LexiconLMS.Controllers
 
             return View(kurs);
         }
+
+        public ActionResult RemoveModul(int modulId, int kursId)
+        {
+            // modulen ska få KursId = null
+            Modul modul = db.Moduler.Find(modulId);
+            modul.KursId = null;
+            db.Entry(modul).State = EntityState.Modified;
+            db.SaveChanges();
+
+            Kurs kurs = db.Kurser.Find(kursId);
+
+            return RedirectToAction("Edit", kurs);
+        }
+
+        public ActionResult RemoveKursmedlem(string userId, int kursId)
+        {
+            // kursmedlemmen ska få KursId = null
+            var medlemmar = db.Users.Where(u => u.Id == userId);
+
+            if (medlemmar.Count() > 0)
+            {
+                var medlem = medlemmar.First();
+                medlem.KursId = null;
+                db.Entry(medlem).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            Kurs kurs = db.Kurser.Find(kursId);
+
+            return RedirectToAction("Edit", kurs);
+        }
+    
 
         // GET: Kurs/Edit/5
         public ActionResult Edit(int? id)

@@ -4,7 +4,7 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
+<h2>Ny aktivitet</h2>
 
 
 @using (Html.BeginForm()) 
@@ -15,6 +15,15 @@
         <h4>Aktivitet</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.ModulId, "Modul", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ModulId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ModulId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.Namn, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -24,15 +33,15 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.StartTid, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.StartTid, "Starttid", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.StartTid, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.StartTid, "{0:yyyy-MM-dd HH:mm}", new { @class = "form-control datetimepicker" })
                 @Html.ValidationMessageFor(model => model.StartTid, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.SlutTid, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.SlutTid, "Sluttid", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.SlutTid, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.SlutTid, "", new { @class = "text-danger" })
@@ -40,7 +49,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.AktivitetsTypId, "AktivitetsTypId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.AktivitetsTypId, "Aktivitetstyp", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("AktivitetsTypId", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.AktivitetsTypId, "", new { @class = "text-danger" })
@@ -49,16 +58,26 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Lägg till" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Tillbaka", "Details", "Moduls", new { id = Model.Id }, null)
+    @Html.ActionLink("Tillbaka", "Index")
 </div>
 
-@section Scripts {
+@section scripts {
+    @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+    //$(function () {
+    //    $('.datetimepicker').datetimepicker();
+    //});
+
+     $('.datetimepicker').datetimepicker({
+         format: 'YYYY-MM-DD HH:mm'
+    });
+    </script>
 }
