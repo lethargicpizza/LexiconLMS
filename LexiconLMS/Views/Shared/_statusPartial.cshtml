@@ -1,0 +1,9 @@
+﻿@{ 
+    string händelse = (string)Session["Händelse"];
+    if (!String.IsNullOrWhiteSpace(händelse))
+    {
+        <div class="alert alert-success">
+            <p>@händelse</p>
+        </div>
+    }
+}

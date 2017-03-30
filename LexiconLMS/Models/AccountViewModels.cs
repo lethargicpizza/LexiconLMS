@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using LexiconLMS.DataAnnotations;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace LexiconLMS.Models
@@ -7,7 +8,9 @@ namespace LexiconLMS.Models
     {
         public string Id { get; set; }
 
-        [RegularExpression(@"^\S*$", ErrorMessage = "Inga mellanslag tillåtna!")]
+        [Password]
+        [StringLength(30, ErrorMessage = "Ett lösenord behöver vara mellan 6 till 30 tecken långt!" , MinimumLength = 6)]
+        //[RegularExpression("[^\\s ]",ErrorMessage = "Lösenord får inte innehålla mellanslag!")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

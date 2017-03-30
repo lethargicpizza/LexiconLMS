@@ -4,6 +4,14 @@
 
 @{
     ViewBag.Title = "Index";
+
+    bool ärAnvändareSkapad = ViewBag.ÄrAnvändareSkapad ?? false;
+    if (ärAnvändareSkapad)
+    {
+        <div class="container-fluid alert alert-success">
+            <strong>Lyckats</strong> Skapa användare @ViewBag.Användare
+        </div>
+    }
 }
 
 <h2>Index</h2>
@@ -11,6 +19,7 @@
 <p>
     @Html.ActionLink("Skapa nytt", "Register")
 </p>
+
 <table class="table">
     <tr>
         <th>
