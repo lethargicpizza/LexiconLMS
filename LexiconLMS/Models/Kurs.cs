@@ -10,12 +10,16 @@ namespace LexiconLMS.Models
     public class Kurs
     {
         public int Id { get; set; }
+
+        [Required]
         public string Namn { get; set; }
+
         public string Beskrivning { get; set; }
 
         [Display(Name = "Start")]
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [Required]
         public DateTime StartDatum { get; set; }
 
         // Navigation properties

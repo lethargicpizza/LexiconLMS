@@ -49,6 +49,7 @@
         </div>
 
         <h4>Moduler</h4>
+        @Html.ActionLink("Lägg till modul...", "Create", "Moduls")
 
         <table>
             @foreach (var item in Model.Moduler)
@@ -58,7 +59,7 @@
                         @Html.DisplayFor(modelItem => item.Namn)
                     </td>
                     <td>
-                        @*@Html.ActionLink("Redigera", "Edit", "Moduls", new { id = item.Id },null) |*@
+                        @Html.ActionLink("Redigera", "Edit", "Moduls", new { id = item.Id },null) |
                         @Html.ActionLink("Detaljer", "Details", "Moduls", new { id = item.Id },null) |
                         @Html.ActionLink("Ta bort", "RemoveModul",  new { modulId = item.Id, kursId = item.KursId})
                     
