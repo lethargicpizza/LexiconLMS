@@ -98,8 +98,7 @@ namespace LexiconLMS.Controllers
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                     //Skicka med alla users till index.
-                    Session["Användare"] = user.FullNamn;
-                    Session["Händelse"] = $"Lyckad ändring på användare {user.FullNamn}";
+                    TempData["Händelse"] = $"Lyckat! Skapat användare {user.FullNamn}.";
                   
                     var users = GetAllUsers();
                     return View("Index", users);
@@ -193,6 +192,7 @@ namespace LexiconLMS.Controllers
                         UserManager.AddToRole(användare.Id, "Lärare");
                 }
 
+                TempData["Händelse"] = $"Lyckat! Uppdaterat användare {viewModel.Förnamn} {viewModel.Efternamn}.";
                 return RedirectToAction("Index");
             }
 
@@ -248,6 +248,9 @@ namespace LexiconLMS.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             var user = UserManager.FindById(id);
+
+            TempData["Händelse"] = $"Lyckat! Tagit bort användare {user.FullNamn}.";
+
             UserManager.Delete(user);
             return RedirectToAction("Index");
         }
