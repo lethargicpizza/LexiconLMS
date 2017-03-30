@@ -58,10 +58,10 @@
     </div>
     <!-- Status bar -->
     @{
-        string händelse = (string)Session["Händelse"];
+        string händelse = (string)TempData["Händelse"];
         if (!String.IsNullOrWhiteSpace(händelse))
         {
-            <div class="alert alert-success">
+            <div class="alert alert-success" style="text-align:center;">
                 <p>@händelse</p>
             </div>
         }
