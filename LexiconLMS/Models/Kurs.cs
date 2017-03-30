@@ -11,7 +11,7 @@ namespace LexiconLMS.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="Ett namn krävs")]
         public string Namn { get; set; }
 
         public string Beskrivning { get; set; }
@@ -19,7 +19,7 @@ namespace LexiconLMS.Models
         [Display(Name = "Start")]
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        [Required]
+        [Required(ErrorMessage ="Ett datum krävs")]
         public DateTime StartDatum { get; set; }
 
         // Navigation properties
