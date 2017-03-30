@@ -16,12 +16,20 @@ namespace LexiconLMS.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Kurs
-        public ActionResult Index()
+        public ActionResult Index(string search = null)
         {
             // return View(db.Kurser.ToList());
 
-            var kurser = db.Kurser.OrderByDescending(s => s.StartDatum);
-            return View(kurser);
+            if (search == null)
+            {
+                var kurser = db.Kurser.OrderByDescending(s => s.StartDatum).ThenBy(s => s.Namn);
+                return View(kurser);
+            }
+            else
+            {
+                var kurser = db.Kurser.OrderByDescending(s => s.StartDatum).ThenBy(s => s.Namn).Where(i => i.Namn.Contains(search));
+                return View(kurser);
+            }
         }
 
         // GET: Klasslista
