@@ -15,10 +15,12 @@ namespace LexiconLMS.Models
 
         [Display (Name ="Startdatum")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime StartDatum { get; set; }
 
         [Display(Name = "Slutdatum")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime SlutDatum { get; set; }
 
         public int? KursId { get; set; }
