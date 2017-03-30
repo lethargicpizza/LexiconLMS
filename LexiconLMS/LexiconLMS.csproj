@@ -180,9 +180,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201703270853564_LeifMig.cs" />
-    <Compile Include="Migrations\201703270853564_LeifMig.Designer.cs">
-      <DependentUpon>201703270853564_LeifMig.cs</DependentUpon>
+    <Compile Include="Migrations\201703301344303_LeifMig.cs" />
+    <Compile Include="Migrations\201703301344303_LeifMig.Designer.cs">
+      <DependentUpon>201703301344303_LeifMig.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -287,8 +287,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201703270853564_LeifMig.resx">
-      <DependentUpon>201703270853564_LeifMig.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201703301344303_LeifMig.resx">
+      <DependentUpon>201703301344303_LeifMig.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
