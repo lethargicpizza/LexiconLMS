@@ -19,29 +19,52 @@
 
 <h3>Aktiviteter</h3>
 
+
 @{
     var culture = new CultureInfo("sv-SE");
 
     int dag = 0;
 
+
+
     foreach (var aktivitet in Model)
     {
-        if (dag != @aktivitet.StartTid.Day)
+
+        if (dag != aktivitet.StartTid.Day)
         {
             string strDag = culture.DateTimeFormat.GetDayName(aktivitet.StartTid.DayOfWeek);
-            <h4>@culture.TextInfo.ToTitleCase(strDag) @aktivitet.StartTid.Date.ToString("M", culture)</h4>
+            <p>@culture.TextInfo.ToTitleCase(strDag) @aktivitet.StartTid.Date.ToString("M", culture)</p>
         }
 
-        <p>@aktivitet.StartTid.TimeOfDay - @aktivitet.SlutTid, @aktivitet.AktivitetsTyp.Typ @aktivitet.Namn</p>
-        dag = @aktivitet.StartTid.Day;
-    }
 
+
+        dag = aktivitet.StartTid.Day;
+
+
+        if (User.IsInRole("Lärare"))
+        {
+            <p>
+                @aktivitet.StartTid.TimeOfDay - @aktivitet.SlutTid, @aktivitet.AktivitetsTyp.Typ @aktivitet.Namn
+                @Html.ActionLink("Ändra", "Edit", "Aktivitet", new { id = aktivitet.Id , modulID = ViewBag.ModulID }, null)|
+                @Html.ActionLink("Detaljer", "Details", "Aktivitet", new { id = aktivitet.Id, modulID = ViewBag.ModulID },null)|
+                @Html.ActionLink("Ta Bort", "Delete", "Aktivitet", new { id = aktivitet.Id, modulID = ViewBag.ModulID },null)
+            </p>
+
+        }
+        else
+        {
+            <p>
+                @aktivitet.StartTid.TimeOfDay - @aktivitet.SlutTid, @aktivitet.AktivitetsTyp.Typ @aktivitet.Namn
+                @Html.ActionLink("Detaljer", "Details", "Aktivitet", new { id = aktivitet.Id }, null)
+            </p>
+        }
+    }
 }
 
 @if (User.IsInRole("Lärare"))
-            {
+{
     <p>
-        @Html.ActionLink("Ändra", "Edit", new { id = ViewBag.Model.Id }) |
+        @*@Html.ActionLink("Ändra", "Edit", new { id = ViewBag.Model.Id }) |*@
         @Html.ActionLink("Tillbaka", "Index")
     </p>
 }

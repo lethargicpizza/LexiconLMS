@@ -63,7 +63,7 @@ else
                 <td>
                     @Html.ActionLink("Ändra", "Edit", new { id = item.Id })|
                     @Html.ActionLink("Detaljer", "Details", new { id = item.Id })|
-                    @Html.ActionLink("Ta Bort", "Delete", new { id = item.Id })
+                    @Html.ActionLink("Ta Bort", "Delete", new { id = item.Id })|
                 </td>
             }
             else
@@ -80,3 +80,7 @@ else
 {
     <p>Du läser för närvarande ingen kurs!</p>
 }
+<div>
+    @Html.ActionLink("Tillbaka", "Index")
+</div>
+

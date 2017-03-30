@@ -10,7 +10,7 @@ using LexiconLMS.Models;
 
 namespace LexiconLMS.Controllers
 {
-    
+
     [Authorize]
     public class ModulsController : Controller
     {
@@ -34,6 +34,16 @@ namespace LexiconLMS.Controllers
                 return View(moduler.ToList());
             }
 
+            if (User.IsInRole("Lärare"))
+            {
+                var kurser = db.Moduler;
+
+                if (kurser != null)
+                {
+                    return View(kurser.ToList());
+                }
+            }
+
             return View();
         }
 
@@ -51,9 +61,11 @@ namespace LexiconLMS.Controllers
             {
                 return HttpNotFound();
             }
-            
+
             var aktiviteter = db.Aktiviteter.Where(m => m.Modul.Id == id).OrderBy(k => k.StartTid);
-          
+
+            ViewBag.ModulID = id;
+
             return View(aktiviteter.ToList());
         }
 

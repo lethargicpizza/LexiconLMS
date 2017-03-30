@@ -23,7 +23,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Aktivitet/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, int? modulID = 1)
         {
             if (id == null)
             {
@@ -34,6 +34,9 @@ namespace LexiconLMS.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.ModulID = modulID;
+
             return View(aktivitet);
         }
 
@@ -63,7 +66,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Aktivitet/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, int? modulID = 1)
         {
             if (id == null)
             {
@@ -75,6 +78,9 @@ namespace LexiconLMS.Controllers
                 return HttpNotFound();
             }
             ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ", aktivitet.AktivitetsTypId);
+
+            ViewBag.ModulID = modulID;
+
             return View(aktivitet);
         }
 
@@ -96,7 +102,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Aktivitet/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? id, int? modulID = 1)
         {
             if (id == null)
             {
@@ -107,6 +113,9 @@ namespace LexiconLMS.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.ModulID = modulID;
+
             return View(aktivitet);
         }
 
