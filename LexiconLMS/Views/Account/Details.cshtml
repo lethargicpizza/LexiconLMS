@@ -1,0 +1,50 @@
+﻿@model LexiconLMS.Models.AccountDetailViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Detaljer</h2>
+
+<div>
+    <h4>Användare</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => Model.Epost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => Model.Epost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => Model.FullNamn )
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => Model.FullNamn )
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => Model.Roll )
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => Model.Roll)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => Model.Kursnamn )
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => Model.Kursnamn )
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Ändra", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Tillbaka till listan", "Index")
+</p>

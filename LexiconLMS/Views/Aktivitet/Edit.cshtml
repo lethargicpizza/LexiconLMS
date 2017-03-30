@@ -1,10 +1,10 @@
 ﻿@model LexiconLMS.Models.Aktivitet
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Redigera";
 }
 
-<h2>Edit</h2>
+<h2>Redigera aktivitet</h2>
 
 
 @using (Html.BeginForm())
@@ -28,7 +28,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.StartTid, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.StartTid, new { htmlAttributes = new { @class = "form-control" } })
+                @*@Html.TextBoxFor(model => model.StartTid, "{0:dd/MM/yyyy HH:mm}", new {  @class = "form-control datetimepicker" })*@
+                @Html.TextBoxFor(model => model.StartTid, "{0:yyyy-MM-dd HH:mm}", new { @class = "form-control datetimepicker" })
                 @Html.ValidationMessageFor(model => model.StartTid, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -36,16 +37,24 @@
         <div class="form-group">
             @Html.LabelFor(model => model.SlutTid, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.SlutTid, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.SlutTid,  new { htmlAttributes = new { @class = "form-control" } } )
                 @Html.ValidationMessageFor(model => model.SlutTid, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.AktivitetsTypId, "AktivitetsTypId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.AktivitetsTypId, "Aktivitetstyp", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("AktivitetsTypId", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.AktivitetsTypId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ModulId, "Modul", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ModulId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ModulId, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -55,12 +64,43 @@
             </div>
         </div>
     </div>
+
+    @*<div class="container">
+        <div class="row">
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepicker1'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker();
+            });
+            </script>
+        </div>
+    </div>*@
 }
 
 <div>
-    @Html.ActionLink("Tillbaka", "Details", "Moduls", new { id = ViewBag.ModulID }, null)
+    @Html.ActionLink("Tillbaka", "Index")
 </div>
 
-@section Scripts {
+@section scripts {
+    @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryval")
-}
+    <script type="text/javascript">
+    //$(function () {
+    //    $('.datetimepicker').datetimepicker();
+    //});
+
+     $('.datetimepicker').datetimepicker({
+         format: 'YYYY-MM-DD HH:mm'
+    });
+    </script>
+    }
+

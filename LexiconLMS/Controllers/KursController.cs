@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LexiconLMS.Models;
+using System.Data.Entity.Infrastructure;
 
 namespace LexiconLMS.Controllers
 {
@@ -16,9 +17,20 @@ namespace LexiconLMS.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Kurs
-        public ActionResult Index()
+        public ActionResult Index(string search = null)
         {
-            return View(db.Kurser.ToList());
+            // return View(db.Kurser.ToList());
+
+            if (search == null)
+            {
+                var kurser = db.Kurser.OrderByDescending(s => s.StartDatum).ThenBy(s => s.Namn);
+                return View(kurser.ToList());
+            }
+            else
+            {
+                var kurser = db.Kurser.OrderByDescending(s => s.StartDatum).ThenBy(s => s.Namn).Where(i => i.Namn.Contains(search));
+                return View(kurser.ToList());
+            }
         }
 
         // GET: Klasslista
@@ -77,6 +89,38 @@ namespace LexiconLMS.Controllers
             return View(kurs);
         }
 
+        public ActionResult RemoveModul(int modulId, int kursId)
+        {
+            // modulen ska få KursId = null
+            Modul modul = db.Moduler.Find(modulId);
+            modul.KursId = null;
+            db.Entry(modul).State = EntityState.Modified;
+            db.SaveChanges();
+
+            Kurs kurs = db.Kurser.Find(kursId);
+
+            return RedirectToAction("Edit", kurs);
+        }
+
+        public ActionResult RemoveKursmedlem(string userId, int kursId)
+        {
+            // kursmedlemmen ska få KursId = null
+            var medlemmar = db.Users.Where(u => u.Id == userId);
+
+            if (medlemmar.Count() > 0)
+            {
+                var medlem = medlemmar.First();
+                medlem.KursId = null;
+                db.Entry(medlem).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            Kurs kurs = db.Kurser.Find(kursId);
+
+            return RedirectToAction("Edit", kurs);
+        }
+    
+
         // GET: Kurs/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -131,6 +175,7 @@ namespace LexiconLMS.Controllers
             Kurs kurs = db.Kurser.Find(id);
             db.Kurser.Remove(kurs);
             db.SaveChanges();
+
             return RedirectToAction("Index");
         }
 
