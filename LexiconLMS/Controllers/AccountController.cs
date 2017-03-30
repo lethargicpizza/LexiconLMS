@@ -30,6 +30,12 @@ namespace LexiconLMS.Controllers
         [Authorize(Roles = "Lärare")]
         public ActionResult Index()
         {
+            List<AccountIndexViewModel> accountIndexViewModelList = GetAllUsers();
+            return View(accountIndexViewModelList);
+        }
+
+        private List<AccountIndexViewModel> GetAllUsers()
+        {
             var users = db.Users.ToList();
             var accountIndexViewModelList = new List<AccountIndexViewModel>();
 
@@ -41,7 +47,7 @@ namespace LexiconLMS.Controllers
 
                 if (kurser.Count() > 0)
                     kurs = kurser.First();
-                
+
                 AccountIndexViewModel element = new AccountIndexViewModel
                 {
                     Id = user.Id,
@@ -54,7 +60,7 @@ namespace LexiconLMS.Controllers
                 accountIndexViewModelList.Add(element);
             }
 
-            return View(accountIndexViewModelList);
+            return accountIndexViewModelList;
         }
 
         //
@@ -91,7 +97,12 @@ namespace LexiconLMS.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index");
+                    //Skicka med alla users till index.
+                    Session["Användare"] = user.FullNamn;
+                    Session["Händelse"] = $"Lyckad ändring på användare {user.FullNamn}";
+                  
+                    var users = GetAllUsers();
+                    return View("Index", users);
                 }
                 AddErrors(result);
             }
@@ -100,9 +111,7 @@ namespace LexiconLMS.Controllers
             return View(model);
         }
 
-
-
-
+        //GET, Edit
         public ActionResult Edit(string id)
         {
             if (String.IsNullOrWhiteSpace(id))
@@ -112,7 +121,6 @@ namespace LexiconLMS.Controllers
             if (användare == null)
                 return HttpNotFound();
 
-            
             bool ärLärare = false;
             var roller = UserManager.GetRoles(användare.Id);
             if (roller.Count() > 0)
@@ -121,6 +129,22 @@ namespace LexiconLMS.Controllers
                     ärLärare = true;
             }
 
+            var dagensDatum = DateTime.Today;
+            var allaKurser = db.Kurser.ToArray();
+            List<Kurs> kurser = new List<Kurs>();
+            foreach (var kurs in allaKurser)
+            {
+                var moduler = kurs.Moduler.ToArray();
+                var startDatum = kurs.StartDatum;
+                var slutDatum  = moduler[moduler.Count()-1].SlutDatum;
+                
+                if(dagensDatum.CompareTo(slutDatum) < 0)
+                {
+                    kurser.Add(kurs);
+                }
+            }
+
+            new SelectList(db.Kurser.ToList(), "Id", "Namn");
             var viewModel = new AccountEditViewModel
             {
                 Id = användare.Id,
@@ -129,7 +153,7 @@ namespace LexiconLMS.Controllers
                 Efternamn = användare.EfterNamn,
                 ÄrLärare = ärLärare,
                 KursId = användare.KursId,
-                Kurser = new SelectList(db.Kurser.ToList(), "Id","Namn"),
+                Kurser = new SelectList(kurser, "Id","Namn"),
             };
 
             return View(viewModel);
