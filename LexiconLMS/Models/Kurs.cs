@@ -11,6 +11,7 @@ namespace LexiconLMS.Models
     {
         public int Id { get; set; }
 
+        [Display (Name = "Kursnamn")]
         [Required(ErrorMessage ="Ett namn krävs")]
         public string Namn { get; set; }
 

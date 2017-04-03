@@ -23,6 +23,7 @@ namespace LexiconLMS.Models
         [DataType(DataType.Date)]
         public DateTime SlutDatum { get; set; }
 
+        [Display(Name = "Kursnamn")]
         public int? KursId { get; set; }
         public virtual Kurs Kurs { get; set; }
 

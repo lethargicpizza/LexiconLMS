@@ -101,13 +101,23 @@ namespace LexiconLMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+            var modulEditViewModel = new ModulEditViewModel();
+
             Modul modul = db.Moduler.Find(id);
             if (modul == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.KursId = new SelectList(db.Kurser, "Id", "Namn", modul.KursId);
-            return View(modul);
+
+            var KursId = new SelectList(db.Kurser, "Id", "Namn", modul.KursId);
+
+            modulEditViewModel.kurs = db.Kurser.Find(id);
+            modulEditViewModel.modul = modul;
+            var aktiviteter = db.Aktiviteter.Where(m => m.Modul.Id == id).OrderBy(k => k.StartTid);
+            modulEditViewModel.aktiviteter = aktiviteter.ToList();
+
+            return View(modulEditViewModel);
         }
 
         // POST: Moduls/Edit/5
