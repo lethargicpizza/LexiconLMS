@@ -110,9 +110,9 @@ namespace LexiconLMS.Controllers
                 return HttpNotFound();
             }
 
-            var KursId = new SelectList(db.Kurser, "Id", "Namn", modul.KursId);
+            var kursId = new SelectList(db.Kurser, "Id", "Namn", modul.KursId);
 
-            modulEditViewModel.kurs = db.Kurser.Find(id);
+            modulEditViewModel.kurs = db.Kurser.Find(kursId);
             modulEditViewModel.modul = modul;
             var aktiviteter = db.Aktiviteter.Where(m => m.Modul.Id == id).OrderBy(k => k.StartTid);
             modulEditViewModel.aktiviteter = aktiviteter.ToList();
