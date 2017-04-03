@@ -49,7 +49,7 @@
         </div>
 
         <h4>Moduler</h4>
-        @Html.ActionLink("Ny modul", "Create", "Moduls")
+        @Html.ActionLink("Ny modul", "Create", "Moduls", new { KursId = Model.Id }, null)
 
         <table>
             @foreach (var item in Model.Moduler)
