@@ -38,10 +38,13 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Aktivitet/Create
-        public ActionResult Create()
+        public ActionResult Create(int? ModulsId)
         {
             ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ");
-            // ViewBag.ModulId = new SelectList(db.Moduler, "Id", "Namn");     ModulId kommer från sidan "Redigera moduler" (Leif)
+
+            if (ModulsId != null)
+                TempData["RedirectTo"] = Url.Action("Edit", "Moduls", new { id = ModulsId });
+
             return View();
         }
 
@@ -60,7 +63,10 @@ namespace LexiconLMS.Controllers
             }
 
             ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ", aktivitet.AktivitetsTypId);
-            // ViewBag.ModulId = new SelectList(db.Moduler, "Id", "Namn", aktivitet.ModulId);    ModulId kommer från sidan "Redigera moduler" (Leif)
+
+            if (TempData["RedirectTo"] != null)
+                return Redirect(TempData["RedirectTo"].ToString());
+
             return View(aktivitet);
         }
 
