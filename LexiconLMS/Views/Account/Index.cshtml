@@ -3,21 +3,13 @@
 @using LexiconLMS.Extensions
 
 @{
-    ViewBag.Title = "Index";
-
-    bool ärAnvändareSkapad = ViewBag.ÄrAnvändareSkapad ?? false;
-    if (ärAnvändareSkapad)
-    {
-        <div class="container-fluid alert alert-success">
-            <strong>Lyckats</strong> Skapa användare @ViewBag.Användare
-        </div>
-    }
+    ViewBag.Title = "Alla användare";
 }
 
-<h2>Index</h2>
+<h2>Alla användare</h2>
 
 <p>
-    @Html.ActionLink("Skapa nytt", "Register")
+    @Html.ActionLink("Ny användare", "Register")
 </p>
 
 <table class="table">
@@ -29,7 +21,7 @@
             @Html.DisplayNameFor(model => model.FullNamn)
         </th>
         <th>
-            @Html.DisplayName("Roll")
+            @Html.DisplayNameFor(model => model.ÄrLärare)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Kursnamn)
@@ -56,9 +48,7 @@
             @Html.DisplayFor(modelItem => item.Kursnamn)
         </td>
         <td>
-            @Html.ActionLink("Ändra", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("Detaljer", "Details", new { id = item.Id })
-
+            @Html.ActionLink("Redigera", "Edit", new { id = item.Id })
             @{
                 string userId = User.Identity.GetUserId<string>();
 
