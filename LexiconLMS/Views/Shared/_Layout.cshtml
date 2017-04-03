@@ -21,16 +21,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @{
-                    if (User.IsInRole("Lärare"))
-                    {
-                        @Html.ActionLink("PLC Skola", "LärareIndex", "Skol", new { area = "" }, new { @class = "navbar-brand" })
-                    }
-                    else
-                    {
-                        @Html.ActionLink("PLC Skola", "ElevIndex", "Skol", new { area = "" }, new { @class = "navbar-brand" })
-                    }
-                }
+                @Html.ActionLink("PLC Skola", "Index", "Skol", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -38,7 +29,7 @@
                     @{
                         if (User.IsInRole("Lärare"))
                         {
-                            <li>@Html.ActionLink("Hem", "LärareIndex", "Skol")</li>
+                            <li>@Html.ActionLink("Hem", "Index", "Skol")</li>
                             <li>@Html.ActionLink("Kurser", "Index", "Kurs")</li>
                             <li>@Html.ActionLink("Moduler", "Index", "Moduls")</li>
                             <li>@Html.ActionLink("Aktiviteter", "Index", "Aktivitet")</li>
@@ -46,7 +37,7 @@
                         }
                         else
                         {
-                            <li>@Html.ActionLink("Hem", "ElevIndex", "Skol")</li>
+                            <li>@Html.ActionLink("Hem", "Index", "Skol")</li>
                             <li>@Html.ActionLink("Schema", "Index", "Moduls")</li>
                             <li>@Html.ActionLink("Klasslista", "Klasslista", "Kurs")</li>
                         }
@@ -61,11 +52,23 @@
         string händelse = (string)TempData["Händelse"];
         if (!String.IsNullOrWhiteSpace(händelse))
         {
-            <div class="alert alert-success" style="text-align:center;">
-                <p>@händelse</p>
-            </div>
+            string status = (string)TempData["Status"];
+            if (status.CompareTo("Lyckat") == 0)
+            {
+                <div class="alert alert-success" style="text-align:center;">
+                    <p>@händelse</p>
+                </div>
+            }
+
+            else if (status.CompareTo("Misslyckat") == 0)
+            {
+                    <div class="alert alert-danger">
+                        <p>@händelse</p>
+                    </div>
+                }
+            }
         }
-    }
+
     <!-- Body content-->
     <div class="container body-content">
         @RenderBody()

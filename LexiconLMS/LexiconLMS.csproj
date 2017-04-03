@@ -370,7 +370,6 @@
     <Content Include="Views\Account\Details.cshtml" />
     <Content Include="Views\Account\Delete.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
-    <Content Include="Views\Skol\LärareIndex.cshtml" />
     <Content Include="Views\Shared\_statusPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>

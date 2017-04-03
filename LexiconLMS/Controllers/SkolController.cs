@@ -12,15 +12,17 @@ namespace LexiconLMS.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        [Authorize]
         public ActionResult Index()
         {
-            return View();
-        }
-
-        [Authorize(Roles = "Lärare")]
-        public ActionResult LärareIndex()
-        {
-            return View();
+            if(User.IsInRole("Lärare"))
+            {
+                return RedirectToAction("Index", "Kurs");
+            }
+            else
+            {
+                return RedirectToAction("ElevIndex", "Skol");
+            }
         }
 
         [Authorize]
