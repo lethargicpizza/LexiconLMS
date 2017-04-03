@@ -4,12 +4,10 @@
     ViewBag.Title = "Ta bort";
  }
 
-<h2>Ta bort</h2>
-
-<h3>Är du säker på att du vill ta bort detta?</h3>
+<h2>Ta bort användare</h2>
+<h4>Är du säker på att du vill ta bort @Model.FullNamn ?</h4>
+<hr />
 <div>
-    <h4>Användare</h4>
-    <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => Model.Email )
@@ -34,7 +32,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Ta bort" class="btn btn-default" /> |
-            @Html.ActionLink("Tillbaka till listan", "Index")
+            @Html.ActionLink("Tillbaka", "Index")
         </div>
     }
 </div>
