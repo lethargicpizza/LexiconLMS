@@ -41,7 +41,7 @@ namespace LexiconLMS.Controllers
         public ActionResult Create()
         {
             ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ");
-            ViewBag.ModulId = new SelectList(db.Moduler, "Id", "Namn");
+            // ViewBag.ModulId = new SelectList(db.Moduler, "Id", "Namn");     ModulId kommer från sidan "Redigera moduler" (Leif)
             return View();
         }
 
@@ -60,7 +60,7 @@ namespace LexiconLMS.Controllers
             }
 
             ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ", aktivitet.AktivitetsTypId);
-            ViewBag.ModulId = new SelectList(db.Moduler, "Id", "Namn", aktivitet.ModulId);
+            // ViewBag.ModulId = new SelectList(db.Moduler, "Id", "Namn", aktivitet.ModulId);    ModulId kommer från sidan "Redigera moduler" (Leif)
             return View(aktivitet);
         }
 
