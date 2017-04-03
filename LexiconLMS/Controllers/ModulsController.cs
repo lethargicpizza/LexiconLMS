@@ -70,9 +70,12 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Moduls/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
-            ViewBag.KursId = new SelectList(db.Kurser, "Id", "Namn");
+            //ViewBag.KursId = new SelectList(db.Kurser, "Id", "Namn");
+
+            ViewBag.KursId = id;
+                       
             return View();
         }
 
@@ -85,12 +88,13 @@ namespace LexiconLMS.Controllers
         {
             if (ModelState.IsValid)
             {
+                modul.KursId = ViewBag.KursId;
                 db.Moduler.Add(modul);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.KursId = new SelectList(db.Kurser, "Id", "Namn", modul.KursId);
+            //ViewBag.KursId = new SelectList(db.Kurser, "Id", "Namn", modul.KursId);
             return View(modul);
         }
 
