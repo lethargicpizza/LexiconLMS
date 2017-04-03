@@ -8,6 +8,12 @@
 
 <h2>Alla användare</h2>
 
+@using (Html.BeginForm())
+{
+        @Html.TextBox("Söksträng", null, htmlAttributes: new { @class = "form-control col-md-2", @placeholder = "Sök e-post, förnamn, efternamn" })
+        <button class="btn btn-default" type="submit">Sök</button>
+}
+
 <p>
     @Html.ActionLink("Ny användare", "Register")
 </p>
@@ -45,7 +51,16 @@
             }
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Kursnamn)
+            @{
+                if(String.IsNullOrWhiteSpace(item.Kursnamn))
+                {
+                    <i>@Html.DisplayFor(modelItem => item.Kursnamn)</i>
+                }
+                else
+                {
+                    @Html.DisplayFor(modelItem => item.Kursnamn)
+                }
+            }
         </td>
         <td>
             @Html.ActionLink("Redigera", "Edit", new { id = item.Id })
