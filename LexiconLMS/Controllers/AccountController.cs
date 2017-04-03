@@ -136,11 +136,11 @@ namespace LexiconLMS.Controllers
             {
                 var moduler = kurs.Moduler.ToArray();
                 var startDatum = kurs.StartDatum;
-                var slutDatum  = moduler[moduler.Count()-1].SlutDatum;
-                
-                if(dagensDatum.CompareTo(slutDatum) < 0)
+
+                if (moduler.Count() > 0)
                 {
-                    kurser.Add(kurs);
+                    var slutDatum = moduler[moduler.Count() - 1].SlutDatum;
+                    if (dagensDatum.CompareTo(slutDatum) < 0) kurser.Add(kurs);
                 }
             }
 
@@ -251,7 +251,7 @@ namespace LexiconLMS.Controllers
             if(User.Identity.GetUserId().CompareTo(user.Id) == 0)
             {
                 TempData["Händelse"] = "Ojdå! Ni kan inte ta bort er själva!";
-                TempData["Status"] = "Lyckat";
+                TempData["Status"] = "Misslyckat";
                 return RedirectToAction("Index");
             }
 
