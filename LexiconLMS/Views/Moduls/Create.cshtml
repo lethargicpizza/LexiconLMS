@@ -60,7 +60,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.KursId, "KursId", htmlAttributes: new { @class = "control-label col-md-12" })
-        <input type="hidden" name="model.KursId" value="ViewBag.KursId" />
+        @Html.Hidden("KursId", (int)ViewBag.KursId)
         @Html.DisplayFor(model => model.KursId)
     </div>
 
