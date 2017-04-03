@@ -8,13 +8,15 @@ namespace LexiconLMS.Models
     {
         public string Id { get; set; }
 
+
         [Password]
         [StringLength(30, ErrorMessage = "Ett lösenord behöver vara mellan 6 till 30 tecken långt!" , MinimumLength = 6)]
-        //[RegularExpression("[^\\s ]",ErrorMessage = "Lösenord får inte innehålla mellanslag!")]
         [DataType(DataType.Password)]
+        [Display(Name = "Lösenord")]
         public string Password { get; set; }
 
         [Required]
+        [Display( Name = "E-post")]
         public string Epost { get; set; }
 
         [Required]
@@ -35,7 +37,7 @@ namespace LexiconLMS.Models
     public class AccountIndexViewModel
     {
         public string Id { get; set; }
-
+        [Display(Name ="E-post")]
         public string Epost { get; set; }
 
         [Display(Name = "Namn")]
@@ -44,6 +46,7 @@ namespace LexiconLMS.Models
         [Display(Name = "Roll")]
         public bool ÄrLärare { get; set; }
 
+        [DisplayFormat(NullDisplayText = "Ej deltagande")]
         [Display(Name = "Kurs")]
         public string Kursnamn { get; set; }
     }
@@ -93,7 +96,7 @@ namespace LexiconLMS.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Bekräfta lösenord")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessage = "Ni har matat in två olika lösenord!")]
         public string ConfirmPassword { get; set; }
     }
 

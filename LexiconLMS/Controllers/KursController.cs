@@ -133,6 +133,8 @@ namespace LexiconLMS.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.KursId = id;    // behövs för att kunna skapa moduler (via Leffes sidor) till kursen
             return View(kurs);
         }
 

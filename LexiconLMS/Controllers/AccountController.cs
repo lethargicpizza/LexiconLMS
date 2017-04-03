@@ -99,6 +99,7 @@ namespace LexiconLMS.Controllers
 
                     //Skicka med alla users till index.
                     TempData["Händelse"] = $"Lyckat! Skapat användare {user.FullNamn}.";
+                    TempData["Status"] = "Lyckat";
                   
                     var users = GetAllUsers();
                     return View("Index", users);
@@ -135,11 +136,11 @@ namespace LexiconLMS.Controllers
             {
                 var moduler = kurs.Moduler.ToArray();
                 var startDatum = kurs.StartDatum;
-                var slutDatum  = moduler[moduler.Count()-1].SlutDatum;
-                
-                if(dagensDatum.CompareTo(slutDatum) < 0)
+
+                if (moduler.Count() > 0)
                 {
-                    kurser.Add(kurs);
+                    var slutDatum = moduler[moduler.Count() - 1].SlutDatum;
+                    if (dagensDatum.CompareTo(slutDatum) < 0) kurser.Add(kurs);
                 }
             }
 
@@ -193,6 +194,7 @@ namespace LexiconLMS.Controllers
                 }
 
                 TempData["Händelse"] = $"Lyckat! Uppdaterat användare {viewModel.Förnamn} {viewModel.Efternamn}.";
+                TempData["Status"] = "Lyckat";
                 return RedirectToAction("Index");
             }
 
@@ -217,8 +219,14 @@ namespace LexiconLMS.Controllers
 
             var roles = UserManager.GetRoles(användare.Id);
             string role = "";
-            if(roles.Count() > 0)
+            if (roles.Count() > 0)
                 role = roles.First();
+
+            string kursnamn;
+            if (kurs == null)
+                kursnamn = "Deltar ej";
+            else
+                kursnamn = kurs.Namn;
 
             var accountDetailViewModel = new AccountDetailViewModel
             {
@@ -226,7 +234,7 @@ namespace LexiconLMS.Controllers
                 Epost = användare.Email,
                 FullNamn = användare.FörNamn + " " + användare.EfterNamn,
                 Roll = (role.CompareTo("Lärare") == 0) ? "Lärare" : "Elev",
-                Kursnamn = kurs.Namn,
+                Kursnamn = kursnamn,
             };
             return View(accountDetailViewModel);
         }
@@ -240,6 +248,13 @@ namespace LexiconLMS.Controllers
             if(user == null)
                 return HttpNotFound();
 
+            if(User.Identity.GetUserId().CompareTo(user.Id) == 0)
+            {
+                TempData["Händelse"] = "Ojdå! Ni kan inte ta bort er själva!";
+                TempData["Status"] = "Misslyckat";
+                return RedirectToAction("Index");
+            }
+
             return View(user);
         }
 
@@ -250,6 +265,7 @@ namespace LexiconLMS.Controllers
             var user = UserManager.FindById(id);
 
             TempData["Händelse"] = $"Lyckat! Tagit bort användare {user.FullNamn}.";
+            TempData["Status"] = "Lyckat";
 
             UserManager.Delete(user);
             return RedirectToAction("Index");
@@ -288,9 +304,8 @@ namespace LexiconLMS.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login()
         {
-            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
@@ -299,7 +314,7 @@ namespace LexiconLMS.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -312,14 +327,14 @@ namespace LexiconLMS.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToAction("ElevIndex","Skol");
+                    return RedirectToAction("Index","Skol");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    return RedirectToAction("SendCode", new { RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "Misslyckad inloggningsförsök.");
                     return View(model);
             }
         }
