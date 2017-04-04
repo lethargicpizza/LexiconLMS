@@ -189,6 +189,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Klasslista.cs" />
     <Compile Include="Models\Kurs.cs" />
+    <Compile Include="Models\LäggTillElevViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Modul.cs" />
     <Compile Include="Models\ModulDetaljViewModel.cs" />
@@ -370,6 +371,7 @@
     <Content Include="Views\Account\Delete.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Shared\_statusPartial.cshtml" />
+    <Content Include="Views\Kurs\LäggTillElev.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

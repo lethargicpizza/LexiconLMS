@@ -8,7 +8,6 @@ namespace LexiconLMS.Models
     {
         public string Id { get; set; }
 
-
         [Password]
         [StringLength(30, ErrorMessage = "Ett lösenord behöver vara mellan 6 till 30 tecken långt!" , MinimumLength = 6)]
         [DataType(DataType.Password)]

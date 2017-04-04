@@ -1,0 +1,44 @@
+﻿@using LexiconLMS.Models;
+@model LäggTillElevViewModel
+
+
+@{
+    ViewBag.Title = "Lägg Till Elev";
+}
+
+<h2>Lägg till elev i kurs</h2>
+<h4>@Model.Kursnamn</h4>
+
+@using (Html.BeginForm())
+{
+    @Html.TextBox("Söksträng", null, htmlAttributes: new { @class = "form-control col-md-2", @placeholder = "Sök e-post, förnamn, efternamn" })
+    <button class="btn btn-default" type="submit">Sök</button>
+}
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Användare.First().FullNamn )
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Användare.First().Email )
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.Användare) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FullNamn )
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.ActionLink("Lägg elev i kurs", "LäggTillElevConfirmed", new { AnvändarId = item.Id, KursId = Model.KursId })
+        </td>
+    </tr>
+}
+
+</table>
