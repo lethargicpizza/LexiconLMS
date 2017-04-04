@@ -6,8 +6,7 @@
 
 <h2>Redigera modul</h2>
 <h4>@Html.DisplayFor(model => model.modul.Namn)</h4>
-<h4>Kurs</h4>
-<h4>@Html.DisplayFor(model => model.kurs.Namn)</h4>
+<h5>@Html.DisplayFor(model => model.kurs.Namn)</h5>
 
 
 @using (Html.BeginForm("Edit","Moduls", FormMethod.Post))
@@ -61,10 +60,31 @@
         </div>*@
 
         @Html.HiddenFor(model => model.modul.KursId, "model.kurs.Id");
-        @*@Html.HiddenFor(model => model.modul.Kurs, "model.kurs.Namn");*@
+        @Html.HiddenFor(model => model.modul.Kurs, "model.kurs.Namn");
 
         <h4>Aktiviteter</h4>
-        @Html.ActionLink("Ny aktivitet", "Create", "Aktivitet", new { ModulsId = Model.modul.Id }, null)
+        @Html.ActionLink("Ny aktivitet", "Create", "Aktivitet", new { ModulId = Model.modul.Id }, null)
+
+        <table>
+            @foreach (var item in Model.aktiviteter)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Namn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartTid)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SlutTid)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Redigera", "Edit", "Aktivitet", new { id = item.Id }, null) |
+                        @Html.ActionLink("Ta bort", "Delete", "Aktivitet", new { id = item.Id }, null)
+                    </td>
+                </tr>
+            }
+        </table>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

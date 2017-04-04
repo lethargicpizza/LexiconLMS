@@ -38,12 +38,12 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Aktivitet/Create
-        public ActionResult Create(int? ModulsId)
+        public ActionResult Create(int? ModulId)
         {
             ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ");
 
-            if (ModulsId != null)
-                TempData["RedirectTo"] = Url.Action("Edit", "Moduls", new { id = ModulsId });
+            if (ModulId != null)
+                TempData["RedirectTo"] = Url.Action("Edit", "Moduls", new { id = ModulId });
 
             return View();
         }
@@ -59,7 +59,9 @@ namespace LexiconLMS.Controllers
             {
                 db.Aktiviteter.Add(aktivitet);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                return RedirectToAction("Edit", "Moduls", new { id = aktivitet.ModulId });
+                // return RedirectToAction("Index");
             }
 
             ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ", aktivitet.AktivitetsTypId);
@@ -98,15 +100,17 @@ namespace LexiconLMS.Controllers
             {
                 db.Entry(aktivitet).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit", "Moduls", new { id = aktivitet.ModulId });
             }
             ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ", aktivitet.AktivitetsTypId);
             ViewBag.ModulId = new SelectList(db.Moduler, "Id", "Namn", aktivitet.ModulId);
 
-            return View(aktivitet);
+            return RedirectToAction("Edit", "Moduls", new { id = aktivitet.ModulId } );
+
+            // return View(aktivitet);
         }
 
-        // GET: Aktivitet/Delete/5
+        // Delete som inte visar någon bekräftelse
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -114,23 +118,51 @@ namespace LexiconLMS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Aktivitet aktivitet = db.Aktiviteter.Find(id);
+
+
             if (aktivitet == null)
             {
                 return HttpNotFound();
             }
-            return View(aktivitet);
-        }
 
-        // POST: Aktivitet/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Aktivitet aktivitet = db.Aktiviteter.Find(id);
+            int modulid = (int)aktivitet.ModulId;
+
             db.Aktiviteter.Remove(aktivitet);
             db.SaveChanges();
-            return RedirectToAction("Index");
+
+
+            Modul modul = db.Moduler.Find(modulid);
+
+            return RedirectToAction("Edit", "Moduls",  modul);
         }
+
+        //// GET: Aktivitet/Delete/5
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Aktivitet aktivitet = db.Aktiviteter.Find(id);
+        //    if (aktivitet == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(aktivitet);
+        //}
+
+        // POST: Aktivitet/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    Aktivitet aktivitet = db.Aktiviteter.Find(id);
+        //    int modulid = (int)aktivitet.ModulId;    // ModulId försvinner av någon anledning, därför sparar vi undan det
+        //    //db.Aktiviteter.Remove(aktivitet);
+        //    //db.SaveChanges();
+
+        //    return RedirectToAction("Edit", "Moduls", new { id = modulid});
+        //}
 
         protected override void Dispose(bool disposing)
         {
