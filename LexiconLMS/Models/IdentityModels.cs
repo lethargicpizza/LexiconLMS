@@ -30,7 +30,7 @@ namespace LexiconLMS.Models
         [Display(Name = "Namn")]
         public string FullNamn { get { return FörNamn + " " + EfterNamn; } }
 
-        [Display(Name ="E-postadress")]
+        [Display(Name ="E-post")]
         public override string Email  { get; set; }
 
         public int? KursId { get; set; }

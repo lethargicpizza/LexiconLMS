@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using LexiconLMS.Models;
 using System.Data.Entity.Infrastructure;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace LexiconLMS.Controllers
 {
@@ -49,6 +51,54 @@ namespace LexiconLMS.Controllers
             }
 
             return View();
+        }
+
+        public ActionResult LäggTillElev(string söksträng, int kursId)
+        {
+            var UserManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var kurs = db.Kurser.Find(kursId);
+            string kursnamn = (kurs != null) ? kurs.Namn : "";
+
+            List<ApplicationUser> användareLista = new List<ApplicationUser>();
+            foreach (var användare in db.Users)
+            {
+                if ((UserManager.IsInRole(användare.Id, "Lärare")) || (användare.KursId == kursId))
+                    continue;
+
+                if(String.IsNullOrWhiteSpace(söksträng) || användare.FullNamn.Contains(söksträng) || användare.Email.Contains(söksträng))
+                    användareLista.Add(användare);
+            }
+
+            var viewModel = new LäggTillElevViewModel
+            {
+                KursId = kursId,
+                Kursnamn = kursnamn,
+                Användare = användareLista,
+                AnvändarId = "",
+            };
+            return View(viewModel);
+        }
+
+        public ActionResult LäggTillElevConfirmed(string användarId, int kursId)
+        {
+            var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var användare = userManager.FindById(användarId);
+
+            if (användare != null)
+            {
+                användare.KursId = kursId;
+                var kurs = db.Kurser.Find(kursId);
+                userManager.Update(användare);
+                TempData["Händelse"] = $"Lyckat! {användare.FullNamn} har laggts till i kurs {kurs.Namn}.";
+                TempData["Status"] = "Lyckat";
+                return RedirectToAction("LäggTillElev", new { kursId, söksträng = ViewBag.Söksträng });
+            }
+            else
+            {
+                TempData["Händelse"] = "Misslyckat! Denna användare finns inte";
+                TempData["Status"] = "Misslyckat";
+                return RedirectToAction("LäggTillElev", new { kursId, söksträng = ViewBag.Söksträng });
+            }
         }
 
         // GET: Kurs/Details/5
@@ -119,7 +169,6 @@ namespace LexiconLMS.Controllers
 
             return RedirectToAction("Edit", kurs);
         }
-    
 
         // GET: Kurs/Edit/5
         public ActionResult Edit(int? id)

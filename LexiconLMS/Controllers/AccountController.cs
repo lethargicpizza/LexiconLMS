@@ -28,13 +28,48 @@ namespace LexiconLMS.Controllers
         }
 
         [Authorize(Roles = "Lärare")]
-        public ActionResult Index()
+        public ActionResult Index(string söksträng)
         {
-            List<AccountIndexViewModel> accountIndexViewModelList = GetAllUsers();
+            List<AccountIndexViewModel> accountIndexViewModelList = new List<AccountIndexViewModel>();
+            
+            if(String.IsNullOrWhiteSpace(söksträng))
+            {
+                var viewModel = GetAllUsersForIndexViewModel();
+                return View(viewModel);
+            }
+
+            söksträng = söksträng.ToLower();
+            var users = db.Users.ToArray();
+            foreach (var user in users)
+            {
+                if(user.FörNamn.ToLower().Contains(söksträng)
+                    || user.EfterNamn.ToLower().Contains(söksträng)
+                    || user.FullNamn.ToLower().Contains(söksträng)
+                    || user.Email.ToLower().Contains(söksträng))
+                {
+                    var roles = UserManager.GetRoles(user.Id).ToList();
+                    var kurser = db.Kurser.Where(k => k.Id == user.KursId);
+                    Kurs kurs = null;
+
+                    if (kurser.Count() > 0)
+                        kurs = kurser.First();
+
+                    AccountIndexViewModel element = new AccountIndexViewModel
+                    {
+                        Id = user.Id,
+                        Epost = user.Email,
+                        FullNamn = user.FörNamn + " " + user.EfterNamn,
+                        ÄrLärare = roles.Contains("Lärare") ? true : false,
+                        Kursnamn = (kurs != null) ? kurs.Namn : "",
+                    };
+                    accountIndexViewModelList.Add(element);
+                }
+            }
+
             return View(accountIndexViewModelList);
         }
 
-        private List<AccountIndexViewModel> GetAllUsers()
+        private List<AccountIndexViewModel> GetAllUsersForIndexViewModel()
         {
             var users = db.Users.ToList();
             var accountIndexViewModelList = new List<AccountIndexViewModel>();
@@ -101,7 +136,7 @@ namespace LexiconLMS.Controllers
                     TempData["Händelse"] = $"Lyckat! Skapat användare {user.FullNamn}.";
                     TempData["Status"] = "Lyckat";
                   
-                    var users = GetAllUsers();
+                    var users = GetAllUsersForIndexViewModel();
                     return View("Index", users);
                 }
                 AddErrors(result);
