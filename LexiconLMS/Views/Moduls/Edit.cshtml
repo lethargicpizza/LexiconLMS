@@ -59,6 +59,9 @@
             </div>
         </div>
 
+        <h4>Aktiviteter</h4>
+        @Html.ActionLink("Ny aktivitet", "Create", "Aktivitet", new { ModulsId = Model.Id }, null)
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Spara" class="btn btn-default" />

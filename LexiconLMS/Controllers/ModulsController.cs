@@ -69,15 +69,27 @@ namespace LexiconLMS.Controllers
             return View(aktiviteter.ToList());
         }
 
-        // GET: Moduls/Create
-        public ActionResult Create(int id)
+        // GET: Aktivitet/Create
+        public ActionResult Create(int? KursId)
         {
-            //ViewBag.KursId = new SelectList(db.Kurser, "Id", "Namn");
+            //ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ");
 
-            ViewBag.KursId = id;
-                       
+            if (KursId != null)
+                TempData["RedirectTo"] = Url.Action("Edit", "Kurs", new { id = KursId });
+
             return View();
         }
+
+
+        //// GET: Moduls/Create
+        //public ActionResult Create(int id)
+        //{
+        //    //ViewBag.KursId = new SelectList(db.Kurser, "Id", "Namn");
+
+        //    ViewBag.KursId = id;
+
+        //    return View();
+        //}
 
         // POST: Moduls/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -88,17 +100,31 @@ namespace LexiconLMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                modul.KursId = ViewBag.KursId;
                 db.Moduler.Add(modul);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            //ViewBag.KursId = new SelectList(db.Kurser, "Id", "Namn", modul.KursId);
-            return View(modul);
-        }
+            //ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ", aktivitet.AktivitetsTypId);
 
-        // GET: Moduls/Edit/5
+            if (TempData["RedirectTo"] != null)
+                return Redirect(TempData["RedirectTo"].ToString());
+
+            return View(modul);
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        modul.KursId = ViewBag.KursId;
+        //        db.Moduler.Add(modul);
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+
+            //    //ViewBag.KursId = new SelectList(db.Kurser, "Id", "Namn", modul.KursId);
+            //    return View(modul);
+            }
+
+            // GET: Moduls/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
