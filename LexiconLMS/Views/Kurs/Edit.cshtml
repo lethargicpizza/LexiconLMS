@@ -66,8 +66,8 @@
                     </td>
                     <td>
                         @Html.ActionLink("Redigera", "Edit", "Moduls", new { id = item.Id },null) |
-                        @Html.ActionLink("Detaljer", "Details", "Moduls", new { id = item.Id },null) |
-                        @Html.ActionLink("Ta bort", "RemoveModul",  new { modulId = item.Id, kursId = item.KursId})
+                        @Html.ActionLink("Detaljer", "Details", "Moduls", new { id = item.Id, kursId = item.KursId},null) |
+                        @Html.ActionLink("Ta bort", "RemoveModul",  new { modulId = item.Id, kursId = item.KursId}, null)
                     
                     </td>
                 </tr>

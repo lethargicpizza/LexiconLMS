@@ -48,7 +48,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Moduls/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, int? kursId)
         {
             if (id == null)
             {
@@ -62,11 +62,18 @@ namespace LexiconLMS.Controllers
                 return HttpNotFound();
             }
 
+            var modulEditViewModel = new ModulEditViewModel();
+            var kurs = db.Kurser.Find(modul.KursId);
+
+            modulEditViewModel.kurs = kurs;
+            modulEditViewModel.modul = modul;
+
             var aktiviteter = db.Aktiviteter.Where(m => m.Modul.Id == id).OrderBy(k => k.StartTid);
 
-            ViewBag.ModulID = id;
+            modulEditViewModel.aktiviteter = aktiviteter.ToList();
 
-            return View(aktiviteter.ToList());
+            return View(modulEditViewModel);
+
         }
 
         // GET: Aktivitet/Create
