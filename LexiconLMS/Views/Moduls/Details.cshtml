@@ -1,32 +1,42 @@
 ﻿@using System.Globalization;
-@model IEnumerable<LexiconLMS.Models.Aktivitet>
+@model LexiconLMS.Models.ModulEditViewModel
 
 @{
     ViewBag.Title = "Details";
 
 }
-<h2>Kurs: @Model.First().Modul.Kurs.Namn</h2>
-<h2>Modul: @Model.First().Modul.Namn &nbsp &nbsp @Model.First().Modul.StartDatum.ToShortDateString() &nbsp -- &nbsp @Model.First().Modul.SlutDatum.ToShortDateString()</h2>
+<h2>Modul</h2>
 
-<p><br /></p>
+<h4>
+    @Model.modul.Namn
+    @Model.modul.StartDatum.ToShortDateString()
+    &nbsp -- &nbsp
+    @Model.modul.SlutDatum.ToShortDateString()
+</h4>
+<h4>Kurs</h4>
+<h4>@Model.kurs.Namn</h4>
+
+<p><br/></p>
 
 <h3>Beskrivning:</h3>
 
-
-<i>@Model.First().Modul.Beskrivning</i>
+<i>@Model.modul.Beskrivning</i>
 
 <p><br /></p>
 
 <h3>Aktiviteter</h3>
 
 @{
+    if(Model.aktiviteter.Count == 0)
+    {
+        <p>Det finns inga aktiviteter ...</p>
+    }
+
     var culture = new CultureInfo("sv-SE");
 
     int dag = 0;
 
-
-
-    foreach (var aktivitet in Model)
+    foreach (var aktivitet in Model.aktiviteter)
     {
 
         if (dag != aktivitet.StartTid.Day)
@@ -44,9 +54,9 @@
         {
             <p>
                 @aktivitet.StartTid.TimeOfDay - @aktivitet.SlutTid, @aktivitet.AktivitetsTyp.Typ @aktivitet.Namn
-                @Html.ActionLink("Ändra", "Edit", new { id = aktivitet.Id })|
+                @Html.ActionLink("Ändra", "Edit", "Aktivitet", new { id = aktivitet.Id }, null)|
                 @Html.ActionLink("Detaljer", "Details", "Aktivitet", new { id = aktivitet.Id }, null)|
-                @Html.ActionLink("Ta Bort", "Delete", new { id = aktivitet.Id })
+                @Html.ActionLink("Ta Bort", "Delete", "Aktivitet", new { id = aktivitet.Id }, null)
             </p>
 
         }
@@ -54,7 +64,7 @@
         {
             <p>
                 @aktivitet.StartTid.TimeOfDay -@aktivitet.SlutTid, @aktivitet.AktivitetsTyp.Typ @aktivitet.Namn
-                @Html.ActionLink("Detaljer", "Details", new { id = aktivitet.Id })
+                @Html.ActionLink("Detaljer", "Details", "Aktivitet", new { id = aktivitet.Id }, null)
             </p>
         }
     }
@@ -64,5 +74,5 @@
 
 
 <p>
-    @Html.ActionLink("Tillbaka", "Index")
+    @Html.ActionLink("Tillbaka", "Edit", "Kurs", new { id = Model.kurs.Id }, null)
 </p>

@@ -48,7 +48,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Moduls/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, int? kursId)
         {
             if (id == null)
             {
@@ -62,11 +62,18 @@ namespace LexiconLMS.Controllers
                 return HttpNotFound();
             }
 
+            var modulEditViewModel = new ModulEditViewModel();
+            var kurs = db.Kurser.Find(modul.KursId);
+
+            modulEditViewModel.kurs = kurs;
+            modulEditViewModel.modul = modul;
+
             var aktiviteter = db.Aktiviteter.Where(m => m.Modul.Id == id).OrderBy(k => k.StartTid);
 
-            ViewBag.ModulID = id;
+            modulEditViewModel.aktiviteter = aktiviteter.ToList();
 
-            return View(aktiviteter.ToList());
+            return View(modulEditViewModel);
+
         }
 
         // GET: Aktivitet/Create
@@ -102,7 +109,7 @@ namespace LexiconLMS.Controllers
             {
                 db.Moduler.Add(modul);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit", "Kurs", new { id = modul.KursId });
             }
 
             //ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ", aktivitet.AktivitetsTypId);
@@ -135,14 +142,17 @@ namespace LexiconLMS.Controllers
             var modulEditViewModel = new ModulEditViewModel();
 
             Modul modul = db.Moduler.Find(id);
+
             if (modul == null)
             {
                 return HttpNotFound();
             }
 
-            var kursId = new SelectList(db.Kurser, "Id", "Namn", modul.KursId);
+            //var kursId = new SelectList(db.Kurser, "Id", "Namn", modul.KursId);
 
-            modulEditViewModel.kurs = db.Kurser.Find(kursId);
+            Kurs kurs = db.Kurser.Find(modul.KursId);
+
+            modulEditViewModel.kurs = kurs;
             modulEditViewModel.modul = modul;
             var aktiviteter = db.Aktiviteter.Where(m => m.Modul.Id == id).OrderBy(k => k.StartTid);
             modulEditViewModel.aktiviteter = aktiviteter.ToList();
@@ -162,7 +172,7 @@ namespace LexiconLMS.Controllers
                 db.Entry(modul).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return RedirectToAction("Edit", "Kurs");
+                return RedirectToAction("Edit", "Kurs", new { id = modul.KursId });
             }
             ViewBag.KursId = new SelectList(db.Kurser, "Id", "Namn", modul.KursId);
             return View(modul);
