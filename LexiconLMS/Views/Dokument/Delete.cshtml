@@ -1,0 +1,80 @@
+﻿@model LexiconLMS.Models.Dokument
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Dokument</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DokumentTyp.Typ)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DokumentTyp.Typ)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Beskrivning)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Beskrivning)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tidsstämpel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tidsstämpel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Publiceringsdatum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Publiceringsdatum)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fil)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fil)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AnvändarId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnvändarId)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

@@ -12,8 +12,9 @@
 
 </head>
 <body>
+    @Html.Partial("_HeaderPartial")
     <!-- Navbar-->
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse" style="border-radius:0px;">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -43,7 +44,7 @@
                         }
                     }
                 </ul>
-                @Html.Partial("_LoginPartial")  
+                @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>

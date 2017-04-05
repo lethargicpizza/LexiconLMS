@@ -20,23 +20,44 @@ namespace LexiconLMS.Migrations
 
         protected override void Seed(LexiconLMS.Models.ApplicationDbContext context)
         {
+            var dokumenttyper = new DokumentTyp[]
+            {
+                //1-4
+                new DokumentTyp { Typ = "Informationsdokument"},
+                new DokumentTyp { Typ = "Föreläsningsdokument"},
+                new DokumentTyp { Typ = "Inlämningsuppgift" },
+                new DokumentTyp { Typ = "Övningsdokument" },
+            };
+            context.DokumentTyper.AddOrUpdate(dokumenttyper);
+            context.SaveChanges();
+
+            //DokumentId - 1
+            Dokument netkursdokument = new Dokument { Namn = ".Net2017-kursinformation", Beskrivning = "Kortfattad summering över .Net2017 kursen", DokumentTypId = 1, Publiceringsdatum = DateTime.Now, Fil = new byte[10]   };
+            context.Dokument.AddOrUpdate(netkursdokument);
+            context.SaveChanges();
+
             var kurser = new Kurs[]
             {
                 //1-3
-                new Kurs { Namn = ".NET 2017", Beskrivning = "Grundläggande C# inlärning", StartDatum = new DateTime(2016,12,9) },
+                new Kurs { Namn = ".NET 2017", Beskrivning = "Grundläggande C# inlärning", StartDatum = new DateTime(2016,12,9),  DokumentId = 1, },
                 new Kurs { Namn = "Java 2017", Beskrivning = "Grundläggande Java", StartDatum = new DateTime(2016,12,9) },
                 new Kurs { Namn = "Realtids Projekt", Beskrivning = "Grundläggande C# inlärning", StartDatum = new DateTime(2015,3,2) },
             };
             context.Kurser.AddOrUpdate(kurser);
             context.SaveChanges();
 
-            
+            //DokumentId 2-3
+            Dokument csharpdokument = new Dokument { Namn = "C# information", Beskrivning = "Episk summering över C# modulen", DokumentTypId = 1, Fil = new byte[10], Publiceringsdatum = DateTime.Now  };
+            Dokument frontendDokument = new Dokument { Namn = "Frontend information", Beskrivning = "Episk summering över Frontend modulen", DokumentTypId = 1, Fil = new byte[10], Publiceringsdatum = DateTime.Now };
+            context.Dokument.AddOrUpdate(csharpdokument);
+            context.Dokument.AddOrUpdate(frontendDokument);
+            context.SaveChanges();
 
             Modul[] moduler = new Modul[]
             {
                 //1-5
-                new Modul { Namn = "C#", Beskrivning = "Lär dig C#", StartDatum = new DateTime(2017,1,1), SlutDatum = new DateTime(2017,2,1), KursId = 1 },
-                new Modul { Namn = "Frontend", Beskrivning = "Lär dig Frontend", StartDatum = new DateTime(2017,2,1), SlutDatum = new DateTime(2017,3,1), KursId = 1 },
+                new Modul { Namn = "C#", Beskrivning = "Lär dig C#", StartDatum = new DateTime(2017,1,1), SlutDatum = new DateTime(2017,2,1), KursId = 1, DokumentId = 2 },
+                new Modul { Namn = "Frontend", Beskrivning = "Lär dig Frontend", StartDatum = new DateTime(2017,2,1), SlutDatum = new DateTime(2017,3,1), KursId = 1, DokumentId = 3 },
                 new Modul { Namn = "MVC", Beskrivning = "Episka MVC inlärning", StartDatum = new DateTime(2017,3,1), SlutDatum = new DateTime(2017,4,1), KursId = 1 },
                 new Modul { Namn = "Testning", Beskrivning = "Lär dig Testning med Johan", StartDatum = new DateTime(2017,4,1), SlutDatum = new DateTime(2017,5,1), KursId = 1 },
                 new Modul { Namn = "Projekt", Beskrivning = "Lär dig Projekt med Adrian", StartDatum = new DateTime(2017,5,1), SlutDatum = new DateTime(2017,6,1), KursId = 1 },
@@ -65,6 +86,13 @@ namespace LexiconLMS.Migrations
             string[] cAktivitetsNamn = { "C#", "Kaffeparty", "Garage", "Git", "Javascript", "HTML", "CSS", "Angular" };
             int numAktivitetsNamn = cAktivitetsNamn.Count() - 1;
 
+            //Dokumentid 4-5
+            Dokument övningsdokument = new Dokument { Namn = "Garage", Beskrivning = "Garage övningsuppgift", DokumentTypId = 4, Publiceringsdatum = DateTime.Now, Tidsstämpel = DateTime.Now.AddMonths(1), Fil = new byte[10] };
+            Dokument föreläsningsdokument = new Dokument { Namn = "Föreläsnings sliders", Beskrivning = "Föreläsningens powerpoint presentationer", DokumentTypId = 2, Publiceringsdatum = DateTime.Now, Tidsstämpel = DateTime.Now.AddMonths(1), Fil = new byte[10] };
+            context.Dokument.AddOrUpdate(övningsdokument);
+            context.Dokument.AddOrUpdate(föreläsningsdokument);
+            context.SaveChanges();
+
             List<Aktivitet> aktiviteter = new List<Aktivitet>();
             Random random = new Random();
             //Seed past month, this month, and next month
@@ -77,7 +105,13 @@ namespace LexiconLMS.Migrations
                 {
                     string namn = cAktivitetsNamn[random.Next(1, numAktivitetsNamn)];
                     int aktivitetsTyp = random.Next(1,4);
-                    aktiviteter.Add(new Aktivitet { Namn = namn, StartTid = new DateTime(datum.Year, datum.Month, datum.Day, 8, 30, 0), SlutTid = new TimeSpan(12, 0, 0), ModulId = modul.Id, AktivitetsTypId = random.Next(1, 4) });
+                    Aktivitet morgon = new Aktivitet { Namn = namn, StartTid = new DateTime(datum.Year, datum.Month, datum.Day, 8, 30, 0), SlutTid = new TimeSpan(12, 0, 0), ModulId = modul.Id, AktivitetsTypId = random.Next(1, 4) };
+                    if (morgon.AktivitetsTypId == 3)
+                        morgon.DokumentsId = 4;
+                    else if (morgon.AktivitetsTypId == 2)
+                        morgon.DokumentsId = 2;
+
+                    aktiviteter.Add(morgon);
                     namn = cAktivitetsNamn[random.Next(1, numAktivitetsNamn)];
                     aktiviteter.Add(new Aktivitet { Namn = namn, StartTid = new DateTime(datum.Year, datum.Month, datum.Day, 13, 0, 0), SlutTid = new TimeSpan(17, 0, 0), ModulId = modul.Id, AktivitetsTypId = random.Next(1, 4) });
                     datum = datum.AddDays(1);
