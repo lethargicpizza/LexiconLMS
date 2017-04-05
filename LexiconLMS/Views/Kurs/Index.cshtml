@@ -12,14 +12,12 @@
     <button class="btn btn-default" type="submit">Sök</button>
 }
 
-<p>
-    @Html.ActionLink("Ny kurs", "Create")
-</p>
 
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Namn)
+            
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Beskrivning)
@@ -29,7 +27,7 @@
         </th>
         <th></th>
     </tr>
-
+    <tr><td>@Html.ActionLink("Ny kurs", "Create")</td><td></td><td></td><td></td></tr>
     @foreach (var item in Model)
     {
         <tr>
