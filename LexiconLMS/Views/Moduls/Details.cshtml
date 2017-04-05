@@ -45,7 +45,7 @@
             <p>@culture.TextInfo.ToTitleCase(strDag) @aktivitet.StartTid.Date.ToString("M", culture)</p>
         }
 
-        <p></p>
+       
 
         dag = aktivitet.StartTid.Day;
 
@@ -54,9 +54,9 @@
         {
             <p>
                 @aktivitet.StartTid.TimeOfDay - @aktivitet.SlutTid, @aktivitet.AktivitetsTyp.Typ @aktivitet.Namn
-                @Html.ActionLink("Ändra", "Edit", "Aktivitet", new { id = aktivitet.Id }, null)|
+                @*@Html.ActionLink("Ändra", "Edit", "Aktivitet", new { id = aktivitet.Id }, null)|
                 @Html.ActionLink("Detaljer", "Details", "Aktivitet", new { id = aktivitet.Id }, null)|
-                @Html.ActionLink("Ta Bort", "Delete", "Aktivitet", new { id = aktivitet.Id }, null)
+                @Html.ActionLink("Ta Bort", "Delete", "Aktivitet", new { id = aktivitet.Id }, null)*@
             </p>
 
         }
@@ -64,7 +64,7 @@
         {
             <p>
                 @aktivitet.StartTid.TimeOfDay -@aktivitet.SlutTid, @aktivitet.AktivitetsTyp.Typ @aktivitet.Namn
-                @Html.ActionLink("Detaljer", "Details", "Aktivitet", new { id = aktivitet.Id }, null)
+                @*@Html.ActionLink("Detaljer", "Details", "Aktivitet", new { id = aktivitet.Id }, null)*@
             </p>
         }
     }

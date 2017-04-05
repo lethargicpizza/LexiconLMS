@@ -25,7 +25,7 @@ namespace LexiconLMS.Controllers
 
             if (user.Kurs != null)
             {
-                ViewBag.AktuellKurs = user.Kurs.Beskrivning;
+                ViewBag.KursNamn = user.Kurs.Namn;
 
                 //var moduler = db.Moduler.Include(m => m.Kurs);
                 var moduler = db.Moduler.Where(k => k.KursId == KursId).OrderBy(k => k.StartDatum);
