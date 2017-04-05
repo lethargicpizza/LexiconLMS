@@ -48,10 +48,22 @@
             </div>
         </div>
 
-        <h4>Moduler</h4>
-        @Html.ActionLink("Ny modul", "Create", "Moduls", new { KursId = Model.Id }, null)
+        <h4>Moduler</h4>   @Html.ActionLink("Ny modul", "Create", "Moduls", new { KursId = Model.Id }, null)
+       
 
-        <table>
+        <table class="table">
+            <tr>
+                <th>
+                    Modul
+                </th>
+                <th>
+                    Start
+                </th>
+                <th>
+                    Slut
+                </th>
+                <th></th>
+            </tr>
             @foreach (var item in Model.Moduler)
             {
                 <tr>
@@ -75,7 +87,7 @@
         </table>
         <h4>Klasslista</h4>
         @Html.ActionLink("Lägg till elev", "LäggTillElev", new { kursId = Model.Id })
-        <table>
+        <table class="table">
             @foreach (var item in Model.KursMedlemmar)
             {
                 <tr>
