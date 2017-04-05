@@ -29,11 +29,12 @@ namespace LexiconLMS.Models
         //public int AntalTimmar { get; set; } Kan ej sätta SlutTid på 12:00 med denna variant!
 
         public int? AktivitetsTypId { get; set; }
+        public int? DokumentsId { get; set; }
+        public int? ModulId { get; set; }
 
         [Display(Name ="Aktivitetstyp")]
         public virtual AktivitetsTyp AktivitetsTyp { get; set; }
-
-        public int? ModulId { get; set; }
+        public virtual Dokument Aktivitetdokument { get; set; }
         public virtual Modul Modul { get; set; }
     }
 }

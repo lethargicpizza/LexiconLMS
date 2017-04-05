@@ -25,8 +25,10 @@ namespace LexiconLMS.Models
 
         [Display(Name = "Kursnamn")]
         public int? KursId { get; set; }
-        public virtual Kurs Kurs { get; set; }
+        public int? DokumentId { get; set; }
 
+        public virtual Kurs Kurs { get; set; }
+        public virtual Dokument Moduldokument { get; set; }
         public virtual ICollection<Aktivitet> Aktiviteter { get; set; }
     }
 }

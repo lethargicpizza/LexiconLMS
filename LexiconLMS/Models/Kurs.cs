@@ -23,7 +23,10 @@ namespace LexiconLMS.Models
         [Required(ErrorMessage ="Ett datum krävs")]
         public DateTime StartDatum { get; set; }
 
+        public int? DokumentId { get; set; }
+
         // Navigation properties
+        public virtual Dokument Kursdokument { get; set; }
         public virtual ICollection<ApplicationUser> KursMedlemmar { get; set; }
         public virtual ICollection<Modul> Moduler { get; set; } 
         
