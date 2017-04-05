@@ -37,12 +37,16 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Ta bort" class="btn btn-default" /> |
-            @Html.ActionLink("Tillbaka", "Index")
+        <div class="form-actions no-color col-md-offset-2 col-md-10">
+            <input type="submit" value="Ta bort" class="btn btn-default" />
         </div>
+
+            <div>
+                @Html.ActionLink("Tillbaka", "Index")
+            </div>
     }
 </div>
