@@ -9,10 +9,10 @@
 <h5>Kurs @Model.kurs.Namn</h5>
 
 
-@using (Html.BeginForm("Edit","Moduls", FormMethod.Post))
+@using (Html.BeginForm("Edit", "Moduls", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -51,13 +51,13 @@
         </div>
 
         @*<div class="form-group">
-            @Html.LabelFor(model => model.modul.KursId, "Kursnamn", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.modul.Kurs.Namn, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.DropDownList("modul.KursId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.modul.KursId, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                @Html.LabelFor(model => model.modul.KursId, "Kursnamn", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.modul.Kurs.Namn, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.DropDownList("modul.KursId", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.modul.KursId, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         @Html.HiddenFor(model => model.modul.KursId, "model.kurs.Id");
         @Html.HiddenFor(model => model.modul.Kurs, "model.kurs.Namn");
@@ -69,33 +69,86 @@
             </div>
         </div>
 
-        <h4>Aktiviteter</h4>
-        @Html.ActionLink("Ny aktivitet", "Create", "Aktivitet", new { ModulId = Model.modul.Id }, null)
 
-        <table>
-            @foreach (var item in Model.aktiviteter)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Namn)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartTid)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SlutTid)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Redigera", "Edit", "Aktivitet", new { id = item.Id }, null) |
-                        @Html.ActionLink("Ta bort", "Delete", "Aktivitet", new { id = item.Id }, null)
-                    </td>
-                </tr>
-            }
-        </table>
-
-       
 
     </div>
+}
+
+
+
+<h4>Aktiviteter</h4>
+@Html.ActionLink("Ny aktivitet", "Create", "Aktivitet", new { ModulId = Model.modul.Id }, null)
+
+@*<table>
+        @foreach (var item in Model.aktiviteter)
+                {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Namn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SlutTid)
+                </td>
+                <td>
+                    @Html.ActionLink("Redigera", "Edit", "Aktivitet", new { id = item.Id }, null) |
+                    @Html.ActionLink("Ta bort", "Delete", "Aktivitet", new { id = item.Id }, null)
+                </td>
+            </tr>
+        }
+    </table>*@
+
+
+@if (Model.aktiviteter.Count != 0)
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.aktiviteter.First().Namn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.aktiviteter.First().StartTid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.aktiviteter.First().SlutTid)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.aktiviteter)
+        {
+
+            bool currentmodule = DateTime.Now.Date == item.StartTid.Date;
+
+            string bgcolor = "";
+
+            if (currentmodule)
+            {
+                bgcolor = "aqua";
+            }
+            <tr style='background-color:@bgcolor'>
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Namn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SlutTid)
+                </td>
+
+                <td>
+                    @Html.ActionLink("Redigera", "Edit", "Aktivitet", new { id = item.Id }, null) |
+                    @Html.ActionLink("Ta bort", "Delete", "Aktivitet", new { id = item.Id }, null)
+                </td>
+
+            </tr>
+        }
+    </table>
 }
 
 <div>
