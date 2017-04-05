@@ -30,27 +30,38 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Namn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Beskrivning)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartDatum)
-        </td>
-        <td>
-            @Html.ActionLink("Redigera", "Edit", new { id=item.Id }) | 
-            @Html.ActionLink("Detaljer", "Details", new { id=item.Id }) | 
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Namn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Beskrivning)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDatum)
+            </td>
+            <td>
 
-            @if (item.Moduler.Count == 0 && item.KursMedlemmar.Count == 0)
-            {
-                @Html.ActionLink("Ta bort", "Delete", new { id = item.Id })
-            }
-        </td>
-    </tr>
-}
+
+                @if (item.Moduler.Count == 0 && item.KursMedlemmar.Count == 0)
+                {
+                    <p>
+                        @Html.ActionLink("Redigera", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Detaljer", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Ta bort", "Delete", new { id = item.Id })
+                    </p>
+                }
+                else
+                {
+                    <p>
+                        @Html.ActionLink("Redigera", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Detaljer", "Details", new { id = item.Id })
+                    </p>
+                }
+            </td>
+        </tr>
+    }
 
 </table>
