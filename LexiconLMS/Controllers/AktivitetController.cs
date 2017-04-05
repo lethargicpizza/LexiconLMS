@@ -45,7 +45,12 @@ namespace LexiconLMS.Controllers
             if (ModulId != null)
                 TempData["RedirectTo"] = Url.Action("Edit", "Moduls", new { id = ModulId });
 
-            return View();
+            var startvärden = new Aktivitet();    // Dimitris källarlösning (startvärden)
+            startvärden.ModulId = ModulId;
+            startvärden.StartTid = DateTime.Now;
+            startvärden.SlutTid = TimeSpan.Parse(DateTime.Now.AddHours(3).ToShortTimeString());
+
+            return View(startvärden);
         }
 
         // POST: Aktivitet/Create

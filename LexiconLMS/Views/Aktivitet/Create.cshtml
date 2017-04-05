@@ -7,10 +7,10 @@
 <h2>Skapa aktivitet</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>@Html.DisplayFor(model => model.Modul.Namn)</h4>
         <hr />
@@ -35,7 +35,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.StartTid, "Starttid", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.StartTid, "{0:yyyy-MM-dd HH:mm}", new { @class = "form-control datetimepicker" })
+                @Html.TextBoxFor(model => model.StartTid, "{0:yyyy-MM-dd HH:mm}", new { @class = "form-control datetimepicker", @value = DateTime.Now })
                 @Html.ValidationMessageFor(model => model.StartTid, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -63,10 +63,10 @@
         </div>
     </div>
 }
-
 <div>
-    @Html.ActionLink("Tillbaka", "Index")
+    @Html.ActionLink("Tillbaka", "Edit", "Moduls", new { id = Model.ModulId }, null)
 </div>
+
 
 @section scripts {
     @Scripts.Render("~/bundles/bootstrap")
@@ -76,8 +76,10 @@
     //    $('.datetimepicker').datetimepicker();
     //});
 
-     $('.datetimepicker').datetimepicker({
-         format: 'YYYY-MM-DD HH:mm'
-    });
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm'
+        });
+
+        
     </script>
 }
