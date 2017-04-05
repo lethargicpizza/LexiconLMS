@@ -30,7 +30,7 @@ namespace LexiconLMS.Models
         [Display(Name = "Namn")]
         public string FullNamn { get { return FörNamn + " " + EfterNamn; } }
 
-        [Display(Name ="E-postadress")]
+        [Display(Name ="E-post")]
         public override string Email  { get; set; }
 
         public int? KursId { get; set; }
@@ -54,5 +54,8 @@ namespace LexiconLMS.Models
         public DbSet<Modul> Moduler { get; set; }
         public DbSet<Aktivitet> Aktiviteter { get; set; }
         public DbSet<AktivitetsTyp> AktivitetsTyper { get; set; }
+
+        public DbSet<Dokument> Dokument { get; set; }
+        public DbSet<DokumentTyp> DokumentTyper { get; set; }
     }
 }

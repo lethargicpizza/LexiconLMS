@@ -1,5 +1,26 @@
-﻿body {
-    padding-top: 50px;
+﻿.site-header
+{
+    padding-top:20px;
+    padding-bottom:20px;
+
+    height:100%;
+    background-image:url("Bilder/header-img.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.header-image
+{
+    height:100%;
+    background-image:url("Bilder/header-img.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+body {
+    padding-top: 0px;
     padding-bottom: 20px;
 }
 

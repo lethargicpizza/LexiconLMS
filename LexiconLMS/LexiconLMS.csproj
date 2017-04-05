@@ -170,6 +170,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AktivitetController.cs" />
     <Compile Include="Controllers\AktivitetsTypController.cs" />
+    <Compile Include="Controllers\DokumentController.cs" />
     <Compile Include="Controllers\KursController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ModulsController.cs" />
@@ -185,10 +186,13 @@
     <Compile Include="Models\Aktivitet.cs" />
     <Compile Include="Models\AktivitetsTyp.cs" />
     <Compile Include="Models\AktivitetsVariabler.cs" />
+    <Compile Include="Models\Dokument.cs" />
+    <Compile Include="Models\DokumentTyp.cs" />
     <Compile Include="Models\ElevIndexViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Klasslista.cs" />
     <Compile Include="Models\Kurs.cs" />
+    <Compile Include="Models\LäggTillElevViewModel.cs" />
     <Compile Include="Models\KursTemp.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Modul.cs" />
@@ -197,6 +201,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Bilder\header-img.png" />
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -204,6 +209,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\Bilder\logo.gif" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -313,6 +319,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <None Include="Views\Shared\_HeaderPartial.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -371,6 +378,12 @@
     <Content Include="Views\Account\Delete.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Shared\_statusPartial.cshtml" />
+    <Content Include="Views\Kurs\LäggTillElev.cshtml" />
+    <Content Include="Views\Dokument\Create.cshtml" />
+    <Content Include="Views\Dokument\Delete.cshtml" />
+    <Content Include="Views\Dokument\Details.cshtml" />
+    <Content Include="Views\Dokument\Edit.cshtml" />
+    <Content Include="Views\Dokument\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

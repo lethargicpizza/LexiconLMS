@@ -74,7 +74,7 @@
             }
         </table>
         <h4>Klasslista</h4>
-
+        @Html.ActionLink("Lägg till elev", "LäggTillElev", new { kursId = Model.Id })
         <table>
             @foreach (var item in Model.KursMedlemmar)
             {
