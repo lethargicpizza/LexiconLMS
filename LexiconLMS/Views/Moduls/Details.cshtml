@@ -64,7 +64,7 @@
         {
             <p>
                 @aktivitet.StartTid.TimeOfDay -@aktivitet.SlutTid, @aktivitet.AktivitetsTyp.Typ @aktivitet.Namn
-                @Html.ActionLink("Detaljer", "Details", new { id = aktivitet.Id })
+                @Html.ActionLink("Detaljer", "Details", "Aktivitet", new { id = aktivitet.Id }, null)
             </p>
         }
     }
