@@ -74,7 +74,7 @@ namespace LexiconLMS.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(30, ErrorMessage = "A name may have max {0} characters long.")]
+        [StringLength(30, ErrorMessage = "Ett namn får ha max {0} tecken")]
         [Display(Name = "Förnamn")]
         public string FirstName { get; set; }
 
@@ -88,7 +88,7 @@ namespace LexiconLMS.Models
         public bool ÄrLärare { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Lösenordet {0} måste ha minst {2} tecken", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Lösenord")]
         public string Password { get; set; }
@@ -103,7 +103,7 @@ namespace LexiconLMS.Models
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
-        [Display(Name = "E-postadress")]
+        [Display(Name = "E-post")]
         public string Email { get; set; }
     }
 
@@ -126,11 +126,11 @@ namespace LexiconLMS.Models
         public string Provider { get; set; }
 
         [Required]
-        [Display(Name = "Code")]
+        [Display(Name = "Kod")]
         public string Code { get; set; }
         public string ReturnUrl { get; set; }
 
-        [Display(Name = "Remember this browser?")]
+        [Display(Name = "Kom ihåg den här användaren?")]
         public bool RememberBrowser { get; set; }
 
         public bool RememberMe { get; set; }
@@ -139,7 +139,7 @@ namespace LexiconLMS.Models
     public class ForgotViewModel
     {
         [Required]
-        [Display(Name = "E-postadress")]
+        [Display(Name = "E-post")]
         public string Email { get; set; }
     }
 
@@ -147,7 +147,7 @@ namespace LexiconLMS.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "E-postadress")]
+        [Display(Name = "E-post")]
         public string Email { get; set; }
 
         [Required]
@@ -167,14 +167,14 @@ namespace LexiconLMS.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Lösenordet {0} måste ha minst {2} tecken", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Lösenord")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Bekräfta lösenord")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessage = "Lösenordet och bekräfta lösenord stämmer inte överrens")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }

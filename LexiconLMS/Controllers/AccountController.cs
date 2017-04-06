@@ -369,7 +369,7 @@ namespace LexiconLMS.Controllers
                     return RedirectToAction("SendCode", new { RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Misslyckad inloggningsförsök.");
+                    ModelState.AddModelError("", "Misslyckat! Felaktigt inloggningsförsök.");
                     return View(model);
             }
         }
