@@ -30,7 +30,7 @@ namespace LexiconLMS.Models
 
         public virtual ApplicationUser Användare { get; set; }
 
-        [Display(Name = "Dokument typ")]
+        [Display(Name = "Dokumenttyp")]
         public virtual DokumentTyp DokumentTyp { get; set; }
     }
 }
