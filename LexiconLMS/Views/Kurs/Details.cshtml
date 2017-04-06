@@ -13,19 +13,32 @@
 <p></p>
 
 <h4>Moduler:</h4>
-
+<p>
     @{
-        foreach (var modul in Model.Moduler)
-        {
-           <p>@Html.DisplayFor(model => modul.Namn)</p>
-        }
-    }
 
+        var mod = Model.Moduler.ToArray();
+        string[] strMod = new string[mod.Length];
+
+        for (int i=0; i<strMod.Length; i++)
+        {
+            strMod[i] = mod[i].Namn;
+        }
+
+        string commaSep = string.Join(", ", strMod);
+
+        @commaSep
+    }
+    
+</p>
 
 <h4>Klasslista</h4>
 
-<table>
-    @{ 
+<table class="table">
+    @{
+    <tr>
+        <th>Namn</th>
+        <th>E-post</th>
+    </tr>
         foreach (var elev in Model.KursMedlemmar)
         {
             <tr>
