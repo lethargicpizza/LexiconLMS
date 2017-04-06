@@ -135,9 +135,11 @@ namespace LexiconLMS.Controllers
             {
                 db.Kurser.Add(kurs);
                 db.SaveChanges();
+
+                TempData["Händelse"] = $"Lyckat! Skapat kursen {kurs.Namn}";
+                TempData["Status"] = "Lyckat";
                 return RedirectToAction("Index");
             }
-
             return View(kurs);
         }
 
@@ -152,6 +154,8 @@ namespace LexiconLMS.Controllers
 
             Kurs kurs = db.Kurser.Find(kursId);
 
+            TempData["Händelse"] = $"Lyckat! Tagit bort modulen {modul.Namn}";
+            TempData["Status"] = "Lyckat";
             return RedirectToAction("Edit", kurs);
         }
 
@@ -160,16 +164,18 @@ namespace LexiconLMS.Controllers
         {
             // kursmedlemmen ska få KursId = null
             var medlemmar = db.Users.Where(u => u.Id == userId);
+            var kurs = db.Kurser.Find(kursId);
 
             if (medlemmar.Count() > 0)
             {
                 var medlem = medlemmar.First();
                 medlem.KursId = null;
                 db.Entry(medlem).State = EntityState.Modified;
+
+                TempData["Händelse"] = $"Lyckat! Tagit bort elev {medlem.FullNamn} från kurs {kurs.Namn} ";
+                TempData["Status"] = "Lyckat";
                 db.SaveChanges();
             }
-
-            Kurs kurs = db.Kurser.Find(kursId);
 
             return RedirectToAction("Edit", kurs);
         }
@@ -204,6 +210,8 @@ namespace LexiconLMS.Controllers
             {
                 db.Entry(kurs).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Händelse"] = $"Lyckat! Redigerat kurs {kurs.Namn}";
+                TempData["Status"] = "Lyckat";
                 return RedirectToAction("Index");
             }
             return View(kurs);
@@ -234,7 +242,8 @@ namespace LexiconLMS.Controllers
             Kurs kurs = db.Kurser.Find(id);
             db.Kurser.Remove(kurs);
             db.SaveChanges();
-
+            TempData["Händelse"] = $"Lyckat! Tagit bort kurs {kurs.Namn}";
+            TempData["Status"] = "Lyckat";
             return RedirectToAction("Index");
         }
 
