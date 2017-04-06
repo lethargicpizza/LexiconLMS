@@ -16,6 +16,7 @@ namespace LexiconLMS.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Aktivitet
+        [Authorize(Roles = "Lärare")]
         public ActionResult Index()
         {
             var aktiviteter = db.Aktiviteter.Include(a => a.AktivitetsTyp).OrderBy(o => o.Modul.Kurs.Namn).ThenBy(t => t.StartTid);
@@ -38,6 +39,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Aktivitet/Create
+        [Authorize(Roles = "Lärare")]
         public ActionResult Create(int? ModulId)
         {
             ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ");
@@ -58,6 +60,7 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Lärare")]
         public ActionResult Create([Bind(Include = "Id,Namn,StartTid,SlutTid,AktivitetsTypId,ModulId")] Aktivitet aktivitet)
         {
             if (ModelState.IsValid)
@@ -78,6 +81,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Aktivitet/Edit/5
+        [Authorize(Roles = "Lärare")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -99,6 +103,7 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Lärare")]
         public ActionResult Edit([Bind(Include = "Id,Namn,StartTid,SlutTid,AktivitetsTypId,ModulId")] Aktivitet aktivitet)
         {
             if (ModelState.IsValid)
@@ -116,6 +121,7 @@ namespace LexiconLMS.Controllers
         }
 
         // Delete som inte visar någon bekräftelse
+        [Authorize(Roles = "Lärare")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -140,34 +146,6 @@ namespace LexiconLMS.Controllers
 
             return RedirectToAction("Edit", "Moduls",  modul);
         }
-
-        //// GET: Aktivitet/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Aktivitet aktivitet = db.Aktiviteter.Find(id);
-        //    if (aktivitet == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(aktivitet);
-        //}
-
-        // POST: Aktivitet/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteConfirmed(int id)
-        //{
-        //    Aktivitet aktivitet = db.Aktiviteter.Find(id);
-        //    int modulid = (int)aktivitet.ModulId;    // ModulId försvinner av någon anledning, därför sparar vi undan det
-        //    //db.Aktiviteter.Remove(aktivitet);
-        //    //db.SaveChanges();
-
-        //    return RedirectToAction("Edit", "Moduls", new { id = modulid});
-        //}
 
         protected override void Dispose(bool disposing)
         {

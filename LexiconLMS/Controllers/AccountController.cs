@@ -100,7 +100,7 @@ namespace LexiconLMS.Controllers
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
+        [Authorize(Roles = "Lärare")]
         public ActionResult Register()
         {
             return View();
@@ -147,6 +147,7 @@ namespace LexiconLMS.Controllers
         }
 
         //GET, Edit
+        [Authorize(Roles = "Lärare")]
         public ActionResult Edit(string id)
         {
             if (String.IsNullOrWhiteSpace(id))
@@ -196,6 +197,7 @@ namespace LexiconLMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Lärare")]
         public ActionResult Edit([Bind(Include = "Id, Password, Epost, Förnamn, Efternamn, KursId, ÄrLärare")] AccountEditViewModel viewModel)
         {
             if(ModelState.IsValid)
@@ -237,6 +239,7 @@ namespace LexiconLMS.Controllers
             return View(viewModel);
         }
 
+        [Authorize(Roles = "Lärare")]
         public ActionResult Details(string id)
         {
             if (String.IsNullOrWhiteSpace(id))
@@ -274,6 +277,7 @@ namespace LexiconLMS.Controllers
             return View(accountDetailViewModel);
         }
 
+        [Authorize(Roles = "Lärare")]
         public ActionResult Delete(string id)
         {
             if (String.IsNullOrWhiteSpace(id))
@@ -295,6 +299,7 @@ namespace LexiconLMS.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Lärare")]
         public ActionResult DeleteConfirmed(string id)
         {
             var user = UserManager.FindById(id);
