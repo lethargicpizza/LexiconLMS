@@ -89,7 +89,7 @@ namespace LexiconLMS.Controllers
                 användare.KursId = kursId;
                 var kurs = db.Kurser.Find(kursId);
                 userManager.Update(användare);
-                TempData["Händelse"] = $"Lyckat! {användare.FullNamn} har laggts till i kurs {kurs.Namn}.";
+                TempData["Händelse"] = $"Lyckat! {användare.FullNamn} har lagts till i kurs {kurs.Namn}.";
                 TempData["Status"] = "Lyckat";
                 return RedirectToAction("LäggTillElev", new { kursId, söksträng = ViewBag.Söksträng });
             }
