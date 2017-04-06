@@ -17,7 +17,7 @@ namespace LexiconLMS.Models
         //[Display(Name = "Namn", Order = -9)]
         //public string FullNamn { get; set; }
 
-        [Display(Name ="E-postadress")]
+        [Display(Name ="E-post")]
         public string Email { get; set; }
     }
 }

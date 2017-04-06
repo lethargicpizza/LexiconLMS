@@ -5,8 +5,10 @@
     ViewBag.Title = "Hem";
 }
 
-@{ 
-    <h2>Välkommen @Model.Användarnamn</h2>
+@{
+    <div class="panel panel-primary">
+        <div class="panel-heading"><h4>Välkommen @Model.Användarnamn</h4></div>
+    </div>
 
     if (Model != null)
     {
@@ -14,53 +16,72 @@
 
         if (@Model.PågåendeKurs != null)
         {
-            <h3>@Model.PågåendeKurs.Namn</h3>
-            <p>@Model.PågåendeKurs.Beskrivning</p>
+            <div class="panel panel-success">
+                <div class="panel-heading"><h4>Pågående kurs, @Model.PågåendeKurs.Namn </h4></div>
+                <div class="panel-body">
+                    <i>@Model.PågåendeKurs.Beskrivning</i>
+                </div>
+            </div>
         }
         else
         {
-            <h3>Pågående kurs</h3>
-            <p>Ingen pågående kurs</p>
+            <div class="panel panel-danger" style="text-align:center;">
+                <div class="panel-heading"><h4>Ingen pågående kurs</h4></div>
+            </div>
         }
 
         if (@Model.PågåendeModul != null)
         {
-            <h3>Pågående modul @Model.PågåendeModul.Namn</h3>
-
-            <p>@Model.PågåendeModul.StartDatum.ToString("yyyy-MM-dd") till @Model.PågåendeModul.SlutDatum.ToString("yyyy-MM-dd")</p>
-            <p>@Model.PågåendeModul.Beskrivning</p>
+            <div class="panel panel-info">
+                <div class="panel-heading"><h4>Pågående modul @Model.PågåendeModul.Namn</h4></div>
+                <div class="panel-body">
+                    <p>Pågår mellan @Model.PågåendeModul.StartDatum.ToString("yyyy-MM-dd") till @Model.PågåendeModul.SlutDatum.ToString("yyyy-MM-dd")</p>
+                    <p>Beskrivning: <i>@Model.PågåendeModul.Beskrivning</i></p>
+                </div>
+            </div>
         }
         else
         {
-            <h3>Pågående modul</h3>
-            <p>Inga pågående moduler</p>
+            <div class="panel panel-danger" style="text-align:center;">
+                <div class="panel-heading"><h4>Ingen pågående modul</h4></div>
+            </div>
         }
 
-        <h3>Kommande aktiviteter </h3>
-        if (@Model.VeckansAktiviteter != null)
+        if (@Model.KommandeDagar != null)
         {
-            int dag = 0;
+            <div class="panel panel-warning">
+                <div class="panel-heading"><h4>Kommande aktiviteter </h4></div>
 
-            foreach (var aktivitet in Model.VeckansAktiviteter)
-            {
-                if (@aktivitet.StartTid.DayOfWeek != DayOfWeek.Saturday && aktivitet.StartTid.DayOfWeek != DayOfWeek.Sunday)
-                {
-                    if (dag != @aktivitet.StartTid.Day)
+                <div class="panel-body">
+                    <div class="row">
+                        @foreach (var dag in Model.KommandeDagar)
                     {
-                        string strDag = culture.DateTimeFormat.GetDayName(aktivitet.StartTid.DayOfWeek);
+                        string strDag = culture.DateTimeFormat.GetDayName(dag.Datum.DayOfWeek);
                         string visaDagNamn = culture.TextInfo.ToTitleCase(strDag);
-                        string visaTextadDatum = aktivitet.StartTid.ToString("M", culture);
-                        <h4>@visaDagNamn @visaTextadDatum</h4>
-                    }
+                        string visaTextadDatum = dag.Datum.ToString("M", culture);
 
-                        <p>@aktivitet.StartTid.TimeOfDay.ToString(@"hh\:mm") - @aktivitet.SlutTid.ToString(@"hh\:mm") @aktivitet.AktivitetsTyp.Typ @aktivitet.Namn</p>
-                    dag = @aktivitet.StartTid.Day;
-                }
-            }
+                            <div class="col-md-2">
+                                <div class="panel panel-warning" style="text-align:center;">
+                                    <div class="panel panel-heading"><p style="font-size:20px;">@visaDagNamn @visaTextadDatum</p></div>
+
+                                    <div class="panel panel-body">
+                                        @foreach (var aktivitet in dag.Aktiviteter)
+                                        {
+                                            <p>@aktivitet.StartTid.TimeOfDay.ToString(@"hh\:mm") - @aktivitet.SlutTid.ToString(@"hh\:mm") @aktivitet.AktivitetsTyp.Typ @aktivitet.Namn</p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
         }
         else
         {
-            <p>Inga planerade aktiviteter</p>
+            <div class="panel panel-danger" style="text-align:center;">
+                <div class="panel-heading"><h4>Inga planerade aktiviteter</h4></div>
+            </div>
         }
     }
 }

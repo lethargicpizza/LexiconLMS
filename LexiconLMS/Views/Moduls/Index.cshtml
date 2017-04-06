@@ -23,7 +23,7 @@ else
 @if (Model != null)
 { 
 <table class="table">
-    <tr>
+    <tr class="active">
         <th>
             @Html.DisplayNameFor(model => model.Namn)
         </th>
@@ -38,25 +38,47 @@ else
 
     @foreach (var item in Model)
     {
+        bool avklaradModul = (DateTime.Today > item.SlutDatum);
+        bool pågåendeModul = (DateTime.Today >= item.StartDatum  && DateTime.Today <= item.SlutDatum);
+        string stil = "";
 
-        bool currentmodule = (DateTime.Now >= item.StartDatum  && DateTime.Now <= item.SlutDatum);
-        string bgcolor = "";
-        if (currentmodule)
-        { 
-            bgcolor = "aqua";
-        }     
-           <tr style='background-color:@bgcolor'>
-        
-
-            <td>
-                @Html.DisplayFor(modelItem => item.Namn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDatum)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SlutDatum)
-            </td>
+        if (avklaradModul)
+        {
+            stil = "success";
+        }
+        else if(pågåendeModul)
+        {
+            stil = "warning";
+        }
+        else
+        {
+            stil = "danger";
+        }
+           <tr class="@stil">
+            @if (pågåendeModul)
+            {
+                <td>
+                    <b>@Html.DisplayFor(modelItem => item.Namn)</b>
+                </td>
+                <td>
+                    <b>@Html.DisplayFor(modelItem => item.StartDatum)</b>
+                </td>
+                <td>
+                   <b>@Html.DisplayFor(modelItem => item.SlutDatum)</b>
+                </td>
+            }
+            else
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Namn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDatum)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SlutDatum)
+                </td>
+            }
 
             @if (User.IsInRole("Lärare"))
             {

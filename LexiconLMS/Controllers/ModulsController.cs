@@ -17,6 +17,7 @@ namespace LexiconLMS.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Moduls
+        [Authorize(Roles = "Lärare")]
         public ActionResult Index()
         {
 
@@ -30,17 +31,16 @@ namespace LexiconLMS.Controllers
                 //var moduler = db.Moduler.Include(m => m.Kurs);
                 var moduler = db.Moduler.Where(k => k.KursId == KursId).OrderBy(k => k.StartDatum);
 
-
                 return View(moduler.ToList());
             }
 
             if (User.IsInRole("Lärare"))
             {
-                var kurser = db.Moduler;
+                var moduler = db.Moduler;
 
-                if (kurser != null)
+                if (moduler != null)
                 {
-                    return View(kurser.ToList());
+                    return View(moduler.ToList());
                 }
             }
 
@@ -85,6 +85,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Aktivitet/Create
+        [Authorize(Roles = "Lärare")]
         public ActionResult Create(int? KursId)
         {
             //ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ");
@@ -117,6 +118,7 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Lärare")]
         public ActionResult Create([Bind(Include = "Id,Namn,Beskrivning,StartDatum,SlutDatum,KursId")] Modul modul)
         {
             if (ModelState.IsValid)
@@ -145,7 +147,8 @@ namespace LexiconLMS.Controllers
             //    return View(modul);
             }
 
-            // GET: Moduls/Edit/5
+        // GET: Moduls/Edit/5
+        [Authorize(Roles = "Lärare")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -153,10 +156,7 @@ namespace LexiconLMS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var modulEditViewModel = new ModulEditViewModel();
-
             Modul modul = db.Moduler.Find(id);
-
             if (modul == null)
             {
                 return HttpNotFound();
@@ -166,6 +166,7 @@ namespace LexiconLMS.Controllers
 
             Kurs kurs = db.Kurser.Find(modul.KursId);
 
+            var modulEditViewModel = new ModulEditViewModel();
             modulEditViewModel.kurs = kurs;
             modulEditViewModel.modul = modul;
             var aktiviteter = db.Aktiviteter.Where(m => m.Modul.Id == id).OrderBy(k => k.StartTid);
@@ -179,6 +180,7 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Lärare")]
         public ActionResult Edit([Bind(Include = "Id,Namn,Beskrivning,StartDatum,SlutDatum,KursId")] Modul modul)
         {
             if (ModelState.IsValid)
@@ -193,6 +195,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Moduls/Delete/5
+        [Authorize(Roles = "Lärare")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -210,6 +213,7 @@ namespace LexiconLMS.Controllers
         // POST: Moduls/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Lärare")]
         public ActionResult DeleteConfirmed(int id)
         {
             Modul modul = db.Moduler.Find(id);

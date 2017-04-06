@@ -16,12 +16,14 @@ namespace LexiconLMS.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: AktivitetsTyps
+        [Authorize(Roles = "Lärare")]
         public ActionResult Index()
         {
             return View(db.AktivitetsTyper.ToList());
         }
 
         // GET: AktivitetsTyps/Details/5
+        [Authorize(Roles = "Lärare")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,6 +39,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: AktivitetsTyps/Create
+        [Authorize(Roles = "Lärare")]
         public ActionResult Create()
         {
             return View();
@@ -47,6 +50,7 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Lärare")]
         public ActionResult Create([Bind(Include = "Id,Typ")] AktivitetsTyp aktivitetsTyp)
         {
             if (ModelState.IsValid)
@@ -60,6 +64,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: AktivitetsTyps/Edit/5
+        [Authorize(Roles = "Lärare")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -79,6 +84,7 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Lärare")]
         public ActionResult Edit([Bind(Include = "Id,Typ")] AktivitetsTyp aktivitetsTyp)
         {
             if (ModelState.IsValid)
@@ -91,6 +97,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: AktivitetsTyps/Delete/5
+        [Authorize(Roles = "Lärare")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -108,6 +115,7 @@ namespace LexiconLMS.Controllers
         // POST: AktivitetsTyps/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Lärare")]
         public ActionResult DeleteConfirmed(int id)
         {
             AktivitetsTyp aktivitetsTyp = db.AktivitetsTyper.Find(id);

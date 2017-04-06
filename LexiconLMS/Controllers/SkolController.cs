@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using Microsoft.AspNet.Identity;
 using System.Web.Mvc;
+using LexiconLMS.Src;
 
 namespace LexiconLMS.Controllers
 {
@@ -15,7 +16,7 @@ namespace LexiconLMS.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            if(User.IsInRole("Lärare"))
+            if (User.IsInRole("Lärare"))
             {
                 return RedirectToAction("Index", "Kurs");
             }
@@ -40,17 +41,43 @@ namespace LexiconLMS.Controllers
             int idag = DateTime.Today.DayOfYear;
             foreach (var modul in moduler)
             {
-                if(idag >= modul.StartDatum.DayOfYear && idag <= modul.SlutDatum.DayOfYear)
+                if (idag >= modul.StartDatum.DayOfYear && idag <= modul.SlutDatum.DayOfYear)
                 {
                     pågåendeModul = modul;
                     break;
                 }
             }
 
-            if(pågåendeModul != null)
+            List<Dag> dagar = new List<Dag>();
+            List<Aktivitet> kommandeAktiviteter = new List<Aktivitet>();
+
+            if (pågåendeModul != null)
             {
-                int veckaFrammåt = idag + 6;
-                aktiviteter = pågåendeModul.Aktiviteter.Where(a => a.StartTid.DayOfYear >= idag && (a.StartTid.DayOfYear <= veckaFrammåt));
+                int veckaFrammåt = idag + 7;
+                aktiviteter = db.Aktiviteter.Where(a => a.ModulId == pågåendeModul.Id);
+
+                int förraDagen = 0;
+                int nästaDag = 0;
+                Dag dag = null;
+                foreach (var aktivitet in aktiviteter)
+                {
+                    if (aktivitet.StartTid.DayOfYear >= idag && aktivitet.StartTid.DayOfYear <= veckaFrammåt)
+                    {
+                        nästaDag = aktivitet.StartTid.DayOfYear;
+
+                        if (nästaDag != förraDagen)
+                        {
+                            if(dag != null)
+                                dagar.Add(dag);
+
+                            dag = new Dag();
+                            dag.Datum = aktivitet.StartTid;
+                        }
+
+                        dag.Aktiviteter.Add(aktivitet);
+                        förraDagen = nästaDag;
+                    }
+                }
             }
 
             var viewModel = new ElevIndexViewModel
@@ -58,7 +85,7 @@ namespace LexiconLMS.Controllers
                 Användarnamn = användare.FullNamn,
                 PågåendeKurs = kurs,
                 PågåendeModul = pågåendeModul,
-                VeckansAktiviteter = aktiviteter,
+                KommandeDagar = dagar,
             };
 
             return View(viewModel);

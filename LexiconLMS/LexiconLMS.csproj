@@ -199,6 +199,7 @@
     <Compile Include="Models\ModulDetailsViewModel.cs" />
     <Compile Include="Models\ModulEditViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Src\Dag.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>

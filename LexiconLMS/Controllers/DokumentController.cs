@@ -10,6 +10,7 @@ using LexiconLMS.Models;
 
 namespace LexiconLMS.Controllers
 {
+    [Authorize]
     public class DokumentController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -37,6 +38,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Dokuments/Create
+        [Authorize(Roles = "Lärare")]
         public ActionResult Create()
         {
             ViewBag.DokumentTypId = new SelectList(db.DokumentTyper, "Id", "Typ");
@@ -48,6 +50,7 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Lärare")]
         public ActionResult Create([Bind(Include = "Id,Namn,Beskrivning,Tidsstämpel,Publiceringsdatum,Fil,AnvändarId,DokumentTypId")] Dokument dokument)
         {
             if (ModelState.IsValid)
@@ -62,6 +65,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Dokuments/Edit/5
+        [Authorize(Roles = "Lärare")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -82,6 +86,7 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Lärare")]
         public ActionResult Edit([Bind(Include = "Id,Namn,Beskrivning,Tidsstämpel,Publiceringsdatum,Fil,AnvändarId,DokumentTypId")] Dokument dokument)
         {
             if (ModelState.IsValid)
@@ -95,6 +100,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Dokuments/Delete/5
+        [Authorize(Roles = "Lärare")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -112,6 +118,7 @@ namespace LexiconLMS.Controllers
         // POST: Dokuments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Lärare")]
         public ActionResult DeleteConfirmed(int id)
         {
             Dokument dokument = db.Dokument.Find(id);
