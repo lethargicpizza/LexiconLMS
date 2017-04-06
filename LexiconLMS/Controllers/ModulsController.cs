@@ -30,17 +30,16 @@ namespace LexiconLMS.Controllers
                 //var moduler = db.Moduler.Include(m => m.Kurs);
                 var moduler = db.Moduler.Where(k => k.KursId == KursId).OrderBy(k => k.StartDatum);
 
-
                 return View(moduler.ToList());
             }
 
             if (User.IsInRole("Lärare"))
             {
-                var kurser = db.Moduler;
+                var moduler = db.Moduler;
 
-                if (kurser != null)
+                if (moduler != null)
                 {
-                    return View(kurser.ToList());
+                    return View(moduler.ToList());
                 }
             }
 
@@ -149,10 +148,7 @@ namespace LexiconLMS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var modulEditViewModel = new ModulEditViewModel();
-
             Modul modul = db.Moduler.Find(id);
-
             if (modul == null)
             {
                 return HttpNotFound();
@@ -162,6 +158,7 @@ namespace LexiconLMS.Controllers
 
             Kurs kurs = db.Kurser.Find(modul.KursId);
 
+            var modulEditViewModel = new ModulEditViewModel();
             modulEditViewModel.kurs = kurs;
             modulEditViewModel.modul = modul;
             var aktiviteter = db.Aktiviteter.Where(m => m.Modul.Id == id).OrderBy(k => k.StartTid);
