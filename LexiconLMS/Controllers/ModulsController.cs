@@ -93,7 +93,11 @@ namespace LexiconLMS.Controllers
             if (KursId != null)
                 TempData["RedirectTo"] = Url.Action("Edit", "Kurs", new { id = KursId });
 
-            ViewBag.Kurs = db.Kurser.Find(KursId);
+            var Kurs = db.Kurser.Find(KursId);
+
+            ViewBag.Kursnamn = Kurs.Namn;
+            ViewBag.KursId = Kurs.Id;
+
 
             return View();
         }
