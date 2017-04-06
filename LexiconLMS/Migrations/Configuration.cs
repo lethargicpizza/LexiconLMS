@@ -103,6 +103,12 @@ namespace LexiconLMS.Migrations
                 DateTime datum = modul.StartDatum;
                 for (int i = startIntervall; i < slutIntervall; i++)
                 {
+                    if(datum.DayOfWeek == DayOfWeek.Saturday || datum.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        datum = datum.AddDays(1);
+                        continue;
+                    }
+
                     string namn = cAktivitetsNamn[random.Next(1, numAktivitetsNamn)];
                     int aktivitetsTyp = random.Next(1,4);
                     Aktivitet morgon = new Aktivitet { Namn = namn, StartTid = new DateTime(datum.Year, datum.Month, datum.Day, 8, 30, 0), SlutTid = new TimeSpan(12, 0, 0), ModulId = modul.Id, AktivitetsTypId = random.Next(1, 4) };
