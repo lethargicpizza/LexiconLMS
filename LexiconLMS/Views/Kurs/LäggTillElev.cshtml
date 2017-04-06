@@ -36,7 +36,7 @@
             @Html.DisplayFor(modelItem => item.Email)
         </td>
         <td>
-            @Html.ActionLink("Lägg elev i kurs", "LäggTillElevConfirmed", new { AnvändarId = item.Id, KursId = Model.KursId })
+            @Html.ActionLink("Lägg till elev i kurs", "LäggTillElevConfirmed", new { AnvändarId = item.Id, KursId = Model.KursId })
         </td>
     </tr>
 }
