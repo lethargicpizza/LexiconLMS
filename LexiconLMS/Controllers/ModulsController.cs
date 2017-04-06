@@ -62,17 +62,25 @@ namespace LexiconLMS.Controllers
                 return HttpNotFound();
             }
 
-            var modulEditViewModel = new ModulEditViewModel();
+            var modulDetailsViewModel = new ModulDetailsViewModel();
             var kurs = db.Kurser.Find(modul.KursId);
 
-            modulEditViewModel.kurs = kurs;
-            modulEditViewModel.modul = modul;
+            modulDetailsViewModel.kurs = kurs;
+            modulDetailsViewModel.modul = modul;
 
-            var aktiviteter = db.Aktiviteter.Where(m => m.Modul.Id == id).OrderBy(k => k.StartTid);
+            var aktiviteterDB = db.Aktiviteter.Where(m => m.Modul.Id == id).OrderBy(k => k.StartTid);
+            var aktiviteter = aktiviteterDB.ToList();
 
-            modulEditViewModel.aktiviteter = aktiviteter.ToList();
+            modulDetailsViewModel.aktiviteter = aktiviteter;
 
-            return View(modulEditViewModel);
+            for (int i = 0; i < aktiviteter.Count(); i++)
+            {
+                modulDetailsViewModel.datum.Add(aktiviteter[i].StartTid.ToString("dd-MM-yyyy"));
+                modulDetailsViewModel.startTid.Add(aktiviteter[i].StartTid.ToString("HH:mm"));
+                modulDetailsViewModel.slutTid.Add(aktiviteter[i].SlutTid.ToString(@"hh\:mm"));
+            }
+
+            return View(modulDetailsViewModel);
 
         }
 
@@ -83,6 +91,8 @@ namespace LexiconLMS.Controllers
 
             if (KursId != null)
                 TempData["RedirectTo"] = Url.Action("Edit", "Kurs", new { id = KursId });
+
+            ViewBag.Kurs = db.Kurser.Find(KursId);
 
             return View();
         }
