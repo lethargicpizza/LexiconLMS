@@ -1,22 +1,26 @@
 ﻿@using System.Globalization;
-@model LexiconLMS.Models.ModulEditViewModel
+@model LexiconLMS.Models.ModulDetailsViewModel
 
 @{
     ViewBag.Title = "Details";
 
 }
-<h2>Modul</h2>
 
 <h4>
-    @Model.modul.Namn
-    @Model.modul.StartDatum.ToShortDateString()
-    &nbsp -- &nbsp
-    @Model.modul.SlutDatum.ToShortDateString()
+    Kurs: &nbsp
+    @Model.kurs.Namn
 </h4>
-<h4>Kurs</h4>
-<h4>@Model.kurs.Namn</h4>
 
-<p><br/></p>
+<h3>
+    Modul: &nbsp
+    @Model.modul.Namn &nbsp
+    @Model.modul.StartDatum.ToShortDateString()
+    -
+    @Model.modul.SlutDatum.ToShortDateString()
+</h3>
+
+
+<p><br /></p>
 
 <h3>Beskrivning:</h3>
 
@@ -27,47 +31,86 @@
 <h3>Aktiviteter</h3>
 
 @{
-    if(Model.aktiviteter.Count == 0)
+    if (Model.aktiviteter.Count == 0)
     {
         <p>Det finns inga aktiviteter ...</p>
     }
-
-    var culture = new CultureInfo("sv-SE");
-
-    int dag = 0;
-
-    foreach (var aktivitet in Model.aktiviteter)
+    else
     {
+        <table class="table">
+            <tr>
+                <th>
+                    <p>Datum</p>
+                </th>
+                <th>
+                    <p>Tid</p>
+                </th>
+                <th>
+                    <p>Aktivitet</p>
+                </th>
+                <th>
+                    <p>Tid</p>
+                </th>
+                <th>
+                    <p>Aktivitet</p>
+                </th>
+                <th></th>
+            </tr>
 
-        if (dag != aktivitet.StartTid.Day)
-        {
-            string strDag = culture.DateTimeFormat.GetDayName(aktivitet.StartTid.DayOfWeek);
-            <p>@culture.TextInfo.ToTitleCase(strDag) @aktivitet.StartTid.Date.ToString("M", culture)</p>
-        }
-
-       
-
-        dag = aktivitet.StartTid.Day;
+            @{
+                string bgcolor;
+                bool flipColor = true;
 
 
-        if (User.IsInRole("Lärare"))
-        {
-            <p>
-                @aktivitet.StartTid.TimeOfDay - @aktivitet.SlutTid, @aktivitet.AktivitetsTyp.Typ @aktivitet.Namn
-                @*@Html.ActionLink("Ändra", "Edit", "Aktivitet", new { id = aktivitet.Id }, null)|
-                @Html.ActionLink("Detaljer", "Details", "Aktivitet", new { id = aktivitet.Id }, null)|
-                @Html.ActionLink("Ta Bort", "Delete", "Aktivitet", new { id = aktivitet.Id }, null)*@
-            </p>
+                for (int i = 0; i < Model.aktiviteter.Count(); i++)
+                {
+                    var datum = Model.datum[i];
 
-        }
-        else
-        {
-            <p>
-                @aktivitet.StartTid.TimeOfDay -@aktivitet.SlutTid, @aktivitet.AktivitetsTyp.Typ @aktivitet.Namn
-                @*@Html.ActionLink("Detaljer", "Details", "Aktivitet", new { id = aktivitet.Id }, null)*@
-            </p>
-        }
-    }
+                    if (flipColor)
+                    {
+                        bgcolor = "#f0f0f0";
+                        flipColor = false;
+                    }
+                    else
+                    {
+                        bgcolor = "#e0e0e0";
+                        flipColor = true;
+                    }
+                    <tr style='background-color:@bgcolor'>
+                        <td>
+                            @Model.datum[i]
+                        </td>
+                        <td>
+                            @Model.startTid[i] - @Model.slutTid[i]
+                        </td>
+                        <td>
+                            @Model.aktiviteter[i].Namn
+                        </td>
+
+                        @if (((i + 1) < Model.aktiviteter.Count()) && (datum == Model.datum[i + 1]))
+                        {
+                            i++;
+                            <td>
+                                @Model.startTid[i] - @Model.slutTid[i]
+                            </td>
+                            <td>
+                                @Model.aktiviteter[i].Namn
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="color: blueviolet">
+                                LEDIGT
+                            </td>
+                            <td style="color: blueviolet">
+                                LEDIGT
+                            </td>
+                        }
+                    </tr>
+                }
+            }
+        </table>
+                }
 }
 
 

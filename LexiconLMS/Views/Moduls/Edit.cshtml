@@ -4,13 +4,21 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Redigera modul</h2>
-<h4>@Model.modul.Namn</h4>
-<h5>Kurs @Model.kurs.Namn</h5>
+<h4>
+    Kurs: &nbsp
+    @Model.kurs.Namn
+</h4>
+
+
+<h3>
+    Redigera Modul: &nbsp
+    @Model.modul.Namn
+</h3>
 
 
 @using (Html.BeginForm("Edit", "Moduls", FormMethod.Post))
 {
+
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
@@ -50,17 +58,9 @@
             </div>
         </div>
 
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.modul.KursId, "Kursnamn", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.modul.Kurs.Namn, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.DropDownList("modul.KursId", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.modul.KursId, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
 
-        @Html.HiddenFor(model => model.modul.KursId, "model.kurs.Id");
-        @Html.HiddenFor(model => model.modul.Kurs, "model.kurs.Namn");
+        @Html.HiddenFor(model => model.modul.KursId, "model.kurs.Id")
+        @Html.HiddenFor(model => model.modul.Kurs, "model.kurs.Namn")
 
 
         <div class="form-group">
@@ -69,36 +69,15 @@
             </div>
         </div>
 
-
-
     </div>
 }
 
 
 
-<h4>Aktiviteter</h4>
-@Html.ActionLink("Ny aktivitet", "Create", "Aktivitet", new { ModulId = Model.modul.Id }, null)
-
-@*<table>
-        @foreach (var item in Model.aktiviteter)
-                {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Namn)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartTid)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SlutTid)
-                </td>
-                <td>
-                    @Html.ActionLink("Redigera", "Edit", "Aktivitet", new { id = item.Id }, null) |
-                    @Html.ActionLink("Ta bort", "Delete", "Aktivitet", new { id = item.Id }, null)
-                </td>
-            </tr>
-        }
-    </table>*@
+<h4>
+    Aktiviteter &nbsp
+    @Html.ActionLink("Ny aktivitet", "Create", "Aktivitet", new { ModulId = Model.modul.Id }, null)
+</h4>
 
 
 @if (Model.aktiviteter.Count != 0)
@@ -109,47 +88,54 @@
                 @Html.DisplayNameFor(model => model.aktiviteter.First().Namn)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.aktiviteter.First().StartTid)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.aktiviteter.First().SlutTid)
+                Tidpunkt
             </th>
             <th></th>
         </tr>
 
-        @foreach (var item in Model.aktiviteter)
-        {
+        @{
+            string bgcolor;
+            bool flipColor = true;
 
-            bool currentmodule = DateTime.Now.Date == item.StartTid.Date;
-
-            string bgcolor = "";
-
-            if (currentmodule)
+            foreach (var item in Model.aktiviteter)
             {
-                bgcolor = "aqua";
+
+                //bool currentmodule = DateTime.Now.Date == item.StartTid.Date;
+
+
+
+                if (flipColor)
+                {
+                    bgcolor = "#f0f0f0";
+                    flipColor = false;
+                }
+                else
+                {
+                    bgcolor = "#e0e0e0";
+                    flipColor = true;
+                }
+                <tr style='background-color:@bgcolor'>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Namn)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartTid)
+                        -
+                        @Html.DisplayFor(modelItem => item.SlutTid)
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("Redigera", "Edit", "Aktivitet", new { id = item.Id }, null) |
+                        @Html.ActionLink("Ta bort", "Delete", "Aktivitet", new { id = item.Id }, null)
+                    </td>
+
+                </tr>
             }
-            <tr style='background-color:@bgcolor'>
-
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.Namn)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartTid)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SlutTid)
-                </td>
-
-                <td>
-                    @Html.ActionLink("Redigera", "Edit", "Aktivitet", new { id = item.Id }, null) |
-                    @Html.ActionLink("Ta bort", "Delete", "Aktivitet", new { id = item.Id }, null)
-                </td>
-
-            </tr>
         }
     </table>
-}
+            }
 
 <div>
     @Html.ActionLink("Tillbaka", "Edit", "Kurs", new { id = Model.kurs.Id }, null)
