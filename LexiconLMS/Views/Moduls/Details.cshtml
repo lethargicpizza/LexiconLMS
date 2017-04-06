@@ -117,5 +117,12 @@
 
 
 <p>
-    @Html.ActionLink("Tillbaka", "Edit", "Kurs", new { id = Model.kurs.Id }, null)
+    @if (User.IsInRole("Lärare"))
+    {
+        @Html.ActionLink("Tillbaka", "Edit", "Kurs", new { id = Model.kurs.Id }, null)
+    }
+    else
+    {
+        @Html.ActionLink("Tillbaka","Index","Moduls");
+    }
 </p>
