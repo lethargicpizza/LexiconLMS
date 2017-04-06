@@ -59,24 +59,31 @@ namespace LexiconLMS.Controllers
                 int förraDagen = 0;
                 int nästaDag = 0;
                 Dag dag = null;
+                int räknare = 0;
+                int räknareStopp = 6;
                 foreach (var aktivitet in aktiviteter)
                 {
-                    if (aktivitet.StartTid.DayOfYear >= idag && aktivitet.StartTid.DayOfYear <= veckaFrammåt)
+                    if (aktivitet.StartTid.DayOfYear < idag)
+                        continue;
+
+                    nästaDag = aktivitet.StartTid.DayOfYear;
+                    if (räknare == räknareStopp)
+                        break;
+
+                    if (nästaDag != förraDagen)
                     {
-                        nästaDag = aktivitet.StartTid.DayOfYear;
-
-                        if (nästaDag != förraDagen)
+                        if (dag != null)
                         {
-                            if(dag != null)
-                                dagar.Add(dag);
-
-                            dag = new Dag();
-                            dag.Datum = aktivitet.StartTid;
+                            dagar.Add(dag);
+                            räknare++;
                         }
 
-                        dag.Aktiviteter.Add(aktivitet);
-                        förraDagen = nästaDag;
+                        dag = new Dag();
+                        dag.Datum = aktivitet.StartTid;
                     }
+
+                    dag.Aktiviteter.Add(aktivitet);
+                    förraDagen = nästaDag;
                 }
             }
 
