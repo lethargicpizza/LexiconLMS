@@ -48,65 +48,57 @@
                 <th>
                     <p>Aktivitet</p>
                 </th>
-                <th>
-                    <p>Tid</p>
-                </th>
-                <th>
-                    <p>Aktivitet</p>
-                </th>
                 <th></th>
             </tr>
 
             @{
-                string bgcolor;
+                string backGroundColor = "#ffffff";
                 bool flipColor = true;
 
+                DateTime datum = new DateTime(01, 01, 01);
 
                 for (int i = 0; i < Model.aktiviteter.Count(); i++)
                 {
-                    var datum = Model.datum[i];
 
-                    if (flipColor)
+                    if (datum != Model.aktiviteter[i].StartTid.Date)
                     {
-                        bgcolor = "#f0f0f0";
-                        flipColor = false;
-                    }
-                    else
-                    {
-                        bgcolor = "#e0e0e0";
-                        flipColor = true;
-                    }
-                    <tr style='background-color:@bgcolor'>
-                        <td>
-                            @Model.datum[i]
-                        </td>
-                        <td>
-                            @Model.startTid[i] - @Model.slutTid[i]
-                        </td>
-                        <td>
-                            @Model.aktiviteter[i].Namn
-                        </td>
+                        datum = Model.aktiviteter[i].StartTid.Date;
 
-                        @if (((i + 1) < Model.aktiviteter.Count()) && (datum == Model.datum[i + 1]))
+                        if (flipColor)
                         {
-                            i++;
+                            backGroundColor = "#f0f0f0";
+                            flipColor = false;
+                        }
+                        else
+                        {
+                            backGroundColor = "#e0e0e0";
+                            flipColor = true;
+                        }
+                        <tr style='background-color: @backGroundColor'>
+                            <td>
+                                @Model.datum[i]
+                            </td>
                             <td>
                                 @Model.startTid[i] - @Model.slutTid[i]
                             </td>
                             <td>
                                 @Model.aktiviteter[i].Namn
                             </td>
-                        }
-                        else
-                        {
-                            <td style="color: blueviolet">
-                                LEDIGT
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr style='background-color: @backGroundColor'>
+                            <td>
                             </td>
-                            <td style="color: blueviolet">
-                                LEDIGT
+                            <td>
+                                @Model.startTid[i] - @Model.slutTid[i]
                             </td>
-                        }
-                    </tr>
+                            <td>
+                                @Model.aktiviteter[i].Namn
+                            </td>
+                        </tr>
+                    }
                 }
             }
         </table>
@@ -123,6 +115,6 @@
     }
     else
     {
-        @Html.ActionLink("Tillbaka","Index","Moduls");
+        @Html.ActionLink("Tillbaka", "Index", "Moduls");
     }
 </p>
