@@ -68,6 +68,9 @@ namespace LexiconLMS.Controllers
                 db.Aktiviteter.Add(aktivitet);
                 db.SaveChanges();
 
+                TempData["Händelse"] = $"Lyckat! Skapat aktiviteten {aktivitet.Namn}";
+                TempData["Status"] = "Lyckat";
+
                 return RedirectToAction("Edit", "Moduls", new { id = aktivitet.ModulId });
                 // return RedirectToAction("Index");
             }
@@ -110,6 +113,10 @@ namespace LexiconLMS.Controllers
             {
                 db.Entry(aktivitet).State = EntityState.Modified;
                 db.SaveChanges();
+
+                TempData["Händelse"] = $"Lyckat! Redigerat aktiviteten {aktivitet.Namn}";
+                TempData["Status"] = "Lyckat";
+
                 return RedirectToAction("Edit", "Moduls", new { id = aktivitet.ModulId });
             }
             ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ", aktivitet.AktivitetsTypId);
@@ -141,6 +148,8 @@ namespace LexiconLMS.Controllers
             db.Aktiviteter.Remove(aktivitet);
             db.SaveChanges();
 
+            TempData["Händelse"] = $"Lyckat! Tagit bort aktiviteten {aktivitet.Namn}";
+            TempData["Status"] = "Lyckat";
 
             Modul modul = db.Moduler.Find(modulid);
 

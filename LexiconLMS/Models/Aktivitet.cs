@@ -36,5 +36,20 @@ namespace LexiconLMS.Models
         public virtual AktivitetsTyp AktivitetsTyp { get; set; }
         public virtual Dokument Aktivitetdokument { get; set; }
         public virtual Modul Modul { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var Slut = StartTid.Date.Add(SlutTid);
+
+            List<ValidationResult> res = new List<ValidationResult>();
+
+            if (Slut < StartTid)
+            {
+                ValidationResult mss = new ValidationResult(errorMessage: "Sluttid måste vara efter starttid");
+                res.Add(mss);
+            }
+
+            return res;
+        }
     }
 }
