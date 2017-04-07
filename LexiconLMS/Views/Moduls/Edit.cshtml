@@ -77,6 +77,12 @@
     @Html.ActionLink("Ny aktivitet", "Create", "Aktivitet", new { ModulId = Model.modul.Id }, null)
 </h4>
 
+@*@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.TextBox("search", null, htmlAttributes: new { @class = "form-control col-md-2", @placeholder = "Sök modul" })
+    <button class="btn btn-default" type="submit">Sök</button>
+}*@
 
 @if (Model.aktiviteter.Count != 0)
 {
