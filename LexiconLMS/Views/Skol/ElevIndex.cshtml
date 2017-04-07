@@ -6,7 +6,7 @@
 }
 
 @{
-    <div class="panel panel-primary">
+    <div class="panel panel-primary" style="margin-top:10px;">
         <div class="panel-heading"><h4>Välkommen @Model.Användarnamn</h4></div>
     </div>
 
@@ -18,9 +18,16 @@
         {
             <div class="panel panel-success">
                 <div class="panel-heading"><h4>Pågående kurs, @Model.PågåendeKurs.Namn </h4></div>
-                <div class="panel-body">
-                    <i>@Model.PågåendeKurs.Beskrivning</i>
-                </div>
+                @if (String.IsNullOrWhiteSpace(@Model.PågåendeKurs.Beskrivning))
+                {
+                    <p>Ingen beskrivning har angivits</p>
+                }
+                else
+                {
+                    <div class="panel-body">
+                        <i>@Model.PågåendeKurs.Beskrivning</i>
+                    </div>
+                }
             </div>
         }
         else
@@ -47,7 +54,7 @@
             </div>
         }
 
-        if (@Model.KommandeDagar != null)
+        if (@Model.KommandeDagar != null && @Model.KommandeDagar.Count() > 0)
         {
             <div class="panel panel-warning">
                 <div class="panel-heading"><h4>Kommande aktiviteter </h4></div>
@@ -67,7 +74,9 @@
                                     <div class="panel panel-body">
                                         @foreach (var aktivitet in dag.Aktiviteter)
                                         {
-                                            <p>@aktivitet.StartTid.TimeOfDay.ToString(@"hh\:mm") - @aktivitet.SlutTid.ToString(@"hh\:mm") @aktivitet.AktivitetsTyp.Typ @aktivitet.Namn</p>
+                                            <p>@aktivitet.StartTid.TimeOfDay.ToString(@"hh\:mm") - @aktivitet.SlutTid.ToString(@"hh\:mm")</p>
+                                            <p>@aktivitet.AktivitetsTyp.Typ</p>
+                                            <p>@aktivitet.Namn</p>
                                         }
                                     </div>
                                 </div>

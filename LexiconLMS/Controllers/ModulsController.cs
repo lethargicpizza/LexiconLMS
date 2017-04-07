@@ -17,7 +17,6 @@ namespace LexiconLMS.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Moduls
-        [Authorize(Roles = "Lärare")]
         public ActionResult Index()
         {
 

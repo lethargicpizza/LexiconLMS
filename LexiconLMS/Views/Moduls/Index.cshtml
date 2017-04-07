@@ -8,6 +8,15 @@
 {
     <h2>Schema för: @ViewBag.KursNamn</h2>
 }
+else
+{
+    <div class="panel panel-danger">
+        <div class="panel panel-heading"><h4>Schema</h4></div>
+        <div class="panel-body">
+            <p>Du läser för närvarande ingen kurs!</p>
+        </div>
+    </div>
+}
 
 @if (User.IsInRole("Lärare"))
 {
@@ -98,11 +107,4 @@ else
     }
 </table>
 }
-else
-{
-    <p>Du läser för närvarande ingen kurs!</p>
-}
-<div>
-    @Html.ActionLink("Tillbaka", "Index")
-</div>
 
