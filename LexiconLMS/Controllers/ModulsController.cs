@@ -75,7 +75,7 @@ namespace LexiconLMS.Controllers
 
             for (int i = 0; i < aktiviteter.Count(); i++)
             {
-                modulDetailsViewModel.datum.Add(aktiviteter[i].StartTid.ToString("dd-MM-yyyy"));
+                modulDetailsViewModel.datum.Add(aktiviteter[i].StartTid.ToString("yyyy-MM-dd"));
                 modulDetailsViewModel.startTid.Add(aktiviteter[i].StartTid.ToString("HH:mm"));
                 modulDetailsViewModel.slutTid.Add(aktiviteter[i].SlutTid.ToString(@"hh\:mm"));
             }
@@ -149,7 +149,7 @@ namespace LexiconLMS.Controllers
 
         // GET: Moduls/Edit/5
         [Authorize(Roles = "Lärare")]
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, string search = null)
         {
             if (id == null)
             {
@@ -169,8 +169,19 @@ namespace LexiconLMS.Controllers
             var modulEditViewModel = new ModulEditViewModel();
             modulEditViewModel.kurs = kurs;
             modulEditViewModel.modul = modul;
-            var aktiviteter = db.Aktiviteter.Where(m => m.Modul.Id == id).OrderBy(k => k.StartTid);
-            modulEditViewModel.aktiviteter = aktiviteter.ToList();
+
+            if (search == null)
+            {
+                var aktiviteter = db.Aktiviteter.Where(m => m.Modul.Id == id).OrderBy(k => k.StartTid);
+                modulEditViewModel.aktiviteter = aktiviteter.ToList();
+            }
+            else
+            {
+                var aktiviteter = db.Aktiviteter.OrderByDescending(s => s.StartTid).ThenBy(s => s.Namn).Where(i => i.Namn.Contains(search));
+                modulEditViewModel.aktiviteter = aktiviteter.ToList();
+            }
+            
+            //modulEditViewModel.aktiviteter = aktiviteter.ToList();
 
             return View(modulEditViewModel);
         }
