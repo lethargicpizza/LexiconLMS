@@ -75,8 +75,8 @@
                                         @foreach (var aktivitet in dag.Aktiviteter)
                                         {
                                             <p>@aktivitet.StartTid.TimeOfDay.ToString(@"hh\:mm") - @aktivitet.SlutTid.ToString(@"hh\:mm")</p>
-                                            <p>@aktivitet.AktivitetsTyp.Typ</p>
                                             <p>@aktivitet.Namn</p>
+                                            <p>@aktivitet.AktivitetsTyp.Typ</p>
                                         }
                                     </div>
                                 </div>
