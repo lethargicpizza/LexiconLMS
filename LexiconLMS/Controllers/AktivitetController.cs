@@ -78,6 +78,14 @@ namespace LexiconLMS.Controllers
                     return View(aktivitet);
                 }
 
+                if (aktivitet.StartTid.Date > modul.SlutDatum.Date)
+                {
+                    //ViewBag.ErrorMessage = "Startdatum får inte vara innan Kursens Startdatum";
+                    TempData["Händelse"] = "Startdatum får inte vara efter modulens startdatum";
+                    TempData["Status"] = "Misslyckat";
+                    return View(aktivitet);
+                }
+
                 foreach (var a in modul.Aktiviteter)
                 {
                     if ((a.StartTid >= aktivitet.StartTid) && (a.StartTid <= (aktivitet.StartTid + aktivitet.SlutTid)))
