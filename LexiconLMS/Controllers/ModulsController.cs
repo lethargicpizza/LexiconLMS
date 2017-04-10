@@ -128,13 +128,17 @@ namespace LexiconLMS.Controllers
             {
                 if (modul.StartDatum > modul.SlutDatum)
                 {
-                    ViewBag.ErrorMessage = "Startdatum måste vara före Slutdatum";
+                    //ViewBag.ErrorMessage = "Startdatum måste vara före Slutdatum";
+                    TempData["Händelse"] = "Startdatum måste vara före slutdatum";
+                    TempData["Status"] = "Misslyckat";
                     return View(modul);
                 }
 
                 if (modul.StartDatum < Kurs.StartDatum)
                 {
-                    ViewBag.ErrorMessage = "Startdatum får inte vara innan Kursens Startdatum";
+                    //ViewBag.ErrorMessage = "Startdatum får inte vara innan Kursens Startdatum";
+                    TempData["Händelse"] = "Startdatum får inte vara innan kursens startdatum";
+                    TempData["Status"] = "Misslyckat";
                     return View(modul);
                 }
 
@@ -142,7 +146,9 @@ namespace LexiconLMS.Controllers
                 {
                     if ((modul.StartDatum >= kursModul.StartDatum) && (modul.SlutDatum <= kursModul.SlutDatum))
                     {
-                        ViewBag.ErrorMessage = "En annan Modul finns redan i detta Tidsintervall ";
+                        //ViewBag.ErrorMessage = "En annan Modul finns redan i detta Tidsintervall ";
+                        TempData["Händelse"] = "En annan Modul finns redan i detta tidsintervall ";
+                        TempData["Status"] = "Misslyckat";
                         return View(modul);
                     }
                 }
@@ -172,18 +178,7 @@ namespace LexiconLMS.Controllers
                 return Redirect(TempData["RedirectTo"].ToString());
 
             return View(modul);
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        modul.KursId = ViewBag.KursId;
-        //        db.Moduler.Add(modul);
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-
-            //    //ViewBag.KursId = new SelectList(db.Kurser, "Id", "Namn", modul.KursId);
-            //    return View(modul);
-            }
+        }
 
         // GET: Moduls/Edit/5
         [Authorize(Roles = "Lärare")]
@@ -248,13 +243,17 @@ namespace LexiconLMS.Controllers
             {
                 if (modul.StartDatum > modul.SlutDatum)
                 {
-                    ViewBag.ErrorMessage = "Startdatum måste vara före Slutdatum";
+                    //ViewBag.ErrorMessage = "Startdatum måste vara före Slutdatum";
+                    TempData["Händelse"] = "Startdatum måste vara före Slutdatum";
+                    TempData["Status"] = "Lyckat";
                     return View(modulEditViewModel);
                 }
 
                 if (modul.StartDatum < Kurs.StartDatum)
                 {
-                    ViewBag.ErrorMessage = "Startdatum får inte vara innan Kursens Startdatum";
+                    //ViewBag.ErrorMessage = "Startdatum får inte vara innan Kursens Startdatum";
+                    TempData["Händelse"] = "Startdatum får inte vara innan kursens startdatum";
+                    TempData["Status"] = "Misslyckat";
                     return View(modulEditViewModel);
                 }
 
