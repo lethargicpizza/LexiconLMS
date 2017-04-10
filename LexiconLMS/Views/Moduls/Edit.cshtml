@@ -15,6 +15,9 @@
     @Model.modul.Namn
 </h3>
 
+<h2 style="color: purple; background-color:#f2e7e7">
+    @ViewBag.ErrorMessage
+</h2>
 
 @using (Html.BeginForm("Edit", "Moduls", FormMethod.Post))
 {
@@ -98,27 +101,32 @@
         </tr>
 
         @{
-            string bgcolor;
+            string backGroundColor ="#ffffff";
             bool flipColor = true;
+
+            DateTime datum = new DateTime(01, 01, 01);
 
             foreach (var item in Model.aktiviteter)
             {
 
                 //bool currentmodule = DateTime.Now.Date == item.StartTid.Date;
 
-
-
-                if (flipColor)
+                if (datum != item.StartTid.Date)
                 {
-                    bgcolor = "#f0f0f0";
-                    flipColor = false;
-                }
-                else
-                {
-                    bgcolor = "#e0e0e0";
-                    flipColor = true;
-                }
-                <tr style='background-color:@bgcolor'>
+                    datum = item.StartTid.Date;
+
+                    if (flipColor)
+                    {
+                        backGroundColor = "#f0f0f0";
+                        flipColor = false;
+                    }
+                    else
+                    {
+                        backGroundColor = "#e0e0e0";
+                        flipColor = true;
+                    }
+
+                <tr style='background-color:@backGroundColor'>
 
                     <td>
                         @Html.DisplayFor(modelItem => item.Namn)
@@ -136,10 +144,31 @@
                     </td>
 
                 </tr>
+                }
+                else
+                {
+                    <tr style='background-color:@backGroundColor'>
+
+                        <td>
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartTid)
+                            -
+                            @Html.DisplayFor(modelItem => item.SlutTid)
+                        </td>
+
+                        <td>
+                            @Html.ActionLink("Redigera", "Edit", "Aktivitet", new { id = item.Id }, null) |
+                            @Html.ActionLink("Ta bort", "Delete", "Aktivitet", new { id = item.Id }, null)
+                        </td>
+
+                    </tr>
+                }
             }
         }
     </table>
-            }
+ }
 
 <div>
     @Html.ActionLink("Tillbaka", "Edit", "Kurs", new { id = Model.kurs.Id }, null)

@@ -120,12 +120,51 @@ namespace LexiconLMS.Controllers
         [Authorize(Roles = "Lärare")]
         public ActionResult Create([Bind(Include = "Id,Namn,Beskrivning,StartDatum,SlutDatum,KursId")] Modul modul)
         {
+            var Kurs = db.Kurser.Find(modul.KursId);
+            ViewBag.Kursnamn = Kurs.Namn;
+            ViewBag.KursId = Kurs.Id;
+
             if (ModelState.IsValid)
             {
+                if (modul.StartDatum > modul.SlutDatum)
+                {
+                    ViewBag.ErrorMessage = "Startdatum måste vara före Slutdatum";
+                    return View(modul);
+                }
+
+                if (modul.StartDatum < Kurs.StartDatum)
+                {
+                    ViewBag.ErrorMessage = "Startdatum får inte vara innan Kursens Startdatum";
+                    return View(modul);
+                }
+
+                foreach (var kursModul in Kurs.Moduler)
+                {
+                    if ((modul.StartDatum >= kursModul.StartDatum) && (modul.SlutDatum <= kursModul.SlutDatum))
+                    {
+                        ViewBag.ErrorMessage = "En annan Modul finns redan i detta Tidsintervall ";
+                        return View(modul);
+                    }
+                }
+
+
                 db.Moduler.Add(modul);
                 db.SaveChanges();
+
+                TempData["Händelse"] = $"Lyckat! {modul.Namn} har lagts till i kurs {modul.Kurs.Namn}.";
+                TempData["Status"] = "Lyckat";
+
                 return RedirectToAction("Edit", "Kurs", new { id = modul.KursId });
+
             }
+            else
+            {
+                TempData["Händelse"] = "Misslyckat! Modul lades inte in";
+                TempData["Status"] = "Misslyckat";
+                return RedirectToAction("Edit", "Kurs", new { id = modul.KursId });
+
+            }
+
 
             //ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ", aktivitet.AktivitetsTypId);
 
@@ -193,13 +232,56 @@ namespace LexiconLMS.Controllers
         [Authorize(Roles = "Lärare")]
         public ActionResult Edit([Bind(Include = "Id,Namn,Beskrivning,StartDatum,SlutDatum,KursId")] Modul modul)
         {
+
+            var modulEditViewModel = new ModulEditViewModel();
+
+            var Kurs = db.Kurser.Find(modul.KursId);
+            var aktiviteter = db.Aktiviteter.Where(m => m.Modul.Id == modul.Id).OrderBy(k => k.StartTid);
+
+            modulEditViewModel.kurs = Kurs;
+            modulEditViewModel.modul = modul;
+            modulEditViewModel.aktiviteter = aktiviteter.ToList();
+
+            var tempModul = modul;
+
             if (ModelState.IsValid)
             {
+                if (modul.StartDatum > modul.SlutDatum)
+                {
+                    ViewBag.ErrorMessage = "Startdatum måste vara före Slutdatum";
+                    return View(modulEditViewModel);
+                }
+
+                if (modul.StartDatum < Kurs.StartDatum)
+                {
+                    ViewBag.ErrorMessage = "Startdatum får inte vara innan Kursens Startdatum";
+                    return View(modulEditViewModel);
+                }
+
+                //foreach (var kursModul in Kurs.Moduler)
+                //{
+                //    if ((modul.StartDatum >= kursModul.StartDatum) && (modul.SlutDatum <= kursModul.SlutDatum))
+                //    {
+                //        ViewBag.ErrorMessage = "En annan Modul finns redan i detta Tidsintervall ";
+                //        return View(modulEditViewModel);
+                //    }
+                //}
+
                 db.Entry(modul).State = EntityState.Modified;
                 db.SaveChanges();
+ 
+                TempData["Händelse"] = $"Lyckat! {modul.Namn} har ändrats i kurs {modul.Kurs.Namn}.";
+                TempData["Status"] = "Lyckat";
 
                 return RedirectToAction("Edit", "Kurs", new { id = modul.KursId });
             }
+            else
+            {
+                TempData["Händelse"] = "Misslyckat! Modul lades inte in";
+                TempData["Status"] = "Misslyckat";
+            }
+
+
             ViewBag.KursId = new SelectList(db.Kurser, "Id", "Namn", modul.KursId);
             return View(modul);
         }
