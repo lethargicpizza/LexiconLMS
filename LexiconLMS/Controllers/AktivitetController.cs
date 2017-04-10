@@ -63,8 +63,32 @@ namespace LexiconLMS.Controllers
         [Authorize(Roles = "Lärare")]
         public ActionResult Create([Bind(Include = "Id,Namn,StartTid,SlutTid,AktivitetsTypId,ModulId")] Aktivitet aktivitet)
         {
+            var modul = db.Moduler.Find(aktivitet.ModulId);
+
+            ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ", aktivitet.AktivitetsTypId);
+
             if (ModelState.IsValid)
             {
+
+                if (aktivitet.StartTid < modul.StartDatum)
+                {
+                    //ViewBag.ErrorMessage = "Startdatum får inte vara innan Kursens Startdatum";
+                    TempData["Händelse"] = "Startdatum får inte vara innan modulens startdatum";
+                    TempData["Status"] = "Misslyckat";
+                    return View(aktivitet);
+                }
+
+                foreach (var a in modul.Aktiviteter)
+                {
+                    if ((a.StartTid >= aktivitet.StartTid) && (a.StartTid <= (aktivitet.StartTid + aktivitet.SlutTid)))
+                    {
+                        //ViewBag.ErrorMessage = "En annan Modul finns redan i detta Tidsintervall ";
+                        TempData["Händelse"] = "En annan aktivitet finns redan i detta tidsintervall ";
+                        TempData["Status"] = "Misslyckat";
+                        return View(aktivitet);
+                    }
+                }
+
                 db.Aktiviteter.Add(aktivitet);
                 db.SaveChanges();
 
@@ -75,7 +99,7 @@ namespace LexiconLMS.Controllers
                 // return RedirectToAction("Index");
             }
 
-            ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ", aktivitet.AktivitetsTypId);
+            //ViewBag.AktivitetsTypId = new SelectList(db.AktivitetsTyper, "Id", "Typ", aktivitet.AktivitetsTypId);
 
             if (TempData["RedirectTo"] != null)
                 return Redirect(TempData["RedirectTo"].ToString());

@@ -131,6 +131,7 @@ namespace LexiconLMS.Controllers
         [Authorize(Roles = "Lärare")]
         public ActionResult Create([Bind(Include = "Id,Namn,Beskrivning,StartDatum")] Kurs kurs)
         {
+
             if (ModelState.IsValid)
             {
                 db.Kurser.Add(kurs);
