@@ -190,6 +190,8 @@ namespace LexiconLMS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Kurs kurs = db.Kurser.Find(id);
+            kurs.Moduler = kurs.Moduler.OrderBy(k => k.StartDatum).ToList();
+
             if (kurs == null)
             {
                 return HttpNotFound();
